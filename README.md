@@ -1,16 +1,11 @@
-# Week3_Concert_Reservation
-콘서트 예약 서비스 서버 구현
+# 콘서트 예약 서비스 구현
 
-||Method|Description|Request|Response|
-|----------|--------------|----------------|-------------------|-----------------|
-|/user/token|POST|유저 토큰 발급|{"user_id": "test"}|{"result": "UUID+대기열정보"}|
-|/reservation/date/concert_id}|GET|예약가능한 날짜 조회||{"result": []}|
-|/reservation/seat/{concert_id}/{concert_date}|GET|예약가능한 좌석 조회||{"result": []}|
-|/reservation|POST|예약하기|{"user_id":"test", "availableDate": "", "availableSeat": ""}|{"result": {"reservation_id", "user_id", "concert_id", "date", "seat", "reservationTime", "cost"}}|
-|/reservation/{reservation_id}|GET|예약번호로 예약 정보 가져오기||{"result": {"user_id", "concert_id", "date", "seat", "reservationTime", "cost"}|
-|/point/charge|POST|포인트 충전|{"user_id":"test", "point": 1000}|{"result": {"user_id: "test", "point": 3000}}|
-|/point/{user_id}|GET|포인트 조회||{"result": "result": {"user_id: "test", "point": 3000}|
-|/point|POST|결제|{"reservation_id", "user_id", "concert_id", "date", "seat", "reservationTime", "cost"}|{"result": {"user_id", "concert_id", "date", "seat", "reservationTime"}}|
+## > [마일스톤](https://github.com/dalle0601/Week3_Concert_Reservation/milestones)
 
-### 시퀀스 다이어그램
-[![](https://mermaid.ink/img/pako:eNrlV-9r20YY_leOg0JDvBDHTmKLEWjmsIX1R6jTfdg8hmZfHFFb8mS5NAuBNGglTQTJoF4cYxd3y5oUVvAar_Og_Yd8p_9hr3SyLNmS4wz2ZfMH-3z3_nje5x69p9vGWSVHsIDL5LsKkbMkJYl5VSxm5IyM4FMSVU3KSiVR1tCD9Mr90Vlq7Pa6bXbSGV26tbY6OglBvlj9ZGV0IbXcT2ol-mhpCdwF9NXavfT612j93ucrdxFtN3rdZ4jVn7O3b7gtGIGpE1RAUrlcIQ_KRF1XHhInnLMIZqllAfG51LLXa9jOzuymNH965s1loRPQTZWUp3yw-uhv3ODRp4fCw_wgw7Sdwl3gkad56CEaXIKBjE9XgAvW7LD66157lx78iuhei503EHvZNusG9ysoSmmwLaj3dpe9aiJ2eGYaF-ywwY3sj5jVpEeiRjzWg1V3zo_BfNoyn7QRa7TM-oUTfOCUI6ExiZzjA6WkBcDTf-9d_sGaNZj4wOrtYBw2a-H1-5Th5huSSJ5otx6JUkH8tkBSAHRSkQSlvb2aXoftr5mntUAN3ZbK2se-bEthUgoNz-VwDUmwnw2mN_-ZJP4DivCVf21FpImoBSviSk04ia-nCSvfZJrwhh_TIni_7JNQ22fVD_8PDXgrnmjbNVIsWfTfJ3BeADhJkdHNCoy_kXIRJHqfWs9fy2OKxwvSiVnt0MO_XDStY6CE291VoHxVym9qSNlAlu08faf32jpiL3TYAPqyMcbb-z3B4eWpaVXeUMIEZiGgR6esuu8kY2c_gujo4T4Q3mathlmt0eb73mULsapBX733whALmh0AHBA736V7NT9wRJ800ZgdczRDzw36i-GLH7BZ5HFJUu16PCf7KP2cyj4ABw6wCqUMXIJ3wuGB1w0-NagJUB2wphGUzXOAX8mtExOGFhQdRn9esKcGPb5gTd1XOSmUyRCpQBrUo7OTYxfbcx3EwvQuOzizVMPOdfbihwEW3_uTfT6YR7-xZtc86Aa1xeCOaL1ErSkSvJj1n4mpMNI90VtVetnxdb8wwQZ1RkXOI55zHLHD6UIK543QY_zuNdB4VeXZTVHNk9HiI6hk_Q_lgEenx41_gY1xZITnHUtLX5HjySiJW0Uia8NMwMCemqhJjlLVz-1lB36O3JbTcPvIqW5vmacPXoNATw_8DM5cRd0aR6SDiu512MkbGw4_SgCD3Z44Iu9euucKjuAiUYuilIOL1Lb9toa1TVIkGQzwcE5UH2ZwRt4BO7GiKektOYsFTa2QCK6UcsCcc-nCwoYIz38Ew30IC9v4MRbmozPJ5OxCcjYaXYwnF-NzEbyFhWg8MbMwH48lFpKJuVhyNr4Twd8rCgSYm4nFkonFWCwK07HEbGIhgklOguLv8Huefd2zM3xpO1gwdv4GmDLIGg?type=png)](https://mermaid.live/edit#pako:eNrlV-9r20YY_leOg0JDvBDHTmKLEWjmsIX1R6jTfdg8hmZfHFFb8mS5NAuBNGglTQTJoF4cYxd3y5oUVvAar_Og_Yd8p_9hr3SyLNmS4wz2ZfMH-3z3_nje5x69p9vGWSVHsIDL5LsKkbMkJYl5VSxm5IyM4FMSVU3KSiVR1tCD9Mr90Vlq7Pa6bXbSGV26tbY6OglBvlj9ZGV0IbXcT2ol-mhpCdwF9NXavfT612j93ucrdxFtN3rdZ4jVn7O3b7gtGIGpE1RAUrlcIQ_KRF1XHhInnLMIZqllAfG51LLXa9jOzuymNH965s1loRPQTZWUp3yw-uhv3ODRp4fCw_wgw7Sdwl3gkad56CEaXIKBjE9XgAvW7LD66157lx78iuhei503EHvZNusG9ysoSmmwLaj3dpe9aiJ2eGYaF-ywwY3sj5jVpEeiRjzWg1V3zo_BfNoyn7QRa7TM-oUTfOCUI6ExiZzjA6WkBcDTf-9d_sGaNZj4wOrtYBw2a-H1-5Th5huSSJ5otx6JUkH8tkBSAHRSkQSlvb2aXoftr5mntUAN3ZbK2se-bEthUgoNz-VwDUmwnw2mN_-ZJP4DivCVf21FpImoBSviSk04ia-nCSvfZJrwhh_TIni_7JNQ22fVD_8PDXgrnmjbNVIsWfTfJ3BeADhJkdHNCoy_kXIRJHqfWs9fy2OKxwvSiVnt0MO_XDStY6CE291VoHxVym9qSNlAlu08faf32jpiL3TYAPqyMcbb-z3B4eWpaVXeUMIEZiGgR6esuu8kY2c_gujo4T4Q3mathlmt0eb73mULsapBX733whALmh0AHBA736V7NT9wRJ800ZgdczRDzw36i-GLH7BZ5HFJUu16PCf7KP2cyj4ABw6wCqUMXIJ3wuGB1w0-NagJUB2wphGUzXOAX8mtExOGFhQdRn9esKcGPb5gTd1XOSmUyRCpQBrUo7OTYxfbcx3EwvQuOzizVMPOdfbihwEW3_uTfT6YR7-xZtc86Aa1xeCOaL1ErSkSvJj1n4mpMNI90VtVetnxdb8wwQZ1RkXOI55zHLHD6UIK543QY_zuNdB4VeXZTVHNk9HiI6hk_Q_lgEenx41_gY1xZITnHUtLX5HjySiJW0Uia8NMwMCemqhJjlLVz-1lB36O3JbTcPvIqW5vmacPXoNATw_8DM5cRd0aR6SDiu512MkbGw4_SgCD3Z44Iu9euucKjuAiUYuilIOL1Lb9toa1TVIkGQzwcE5UH2ZwRt4BO7GiKektOYsFTa2QCK6UcsCcc-nCwoYIz38Ew30IC9v4MRbmozPJ5OxCcjYaXYwnF-NzEbyFhWg8MbMwH48lFpKJuVhyNr4Twd8rCgSYm4nFkonFWCwK07HEbGIhgklOguLv8Huefd2zM3xpO1gwdv4GmDLIGg)
+## > [요구사항분석](https://github.com/dalle0601/Week3_Concert_Reservation/issues/1)
+
+## > [시퀀스 다이어그램](https://github.com/dalle0601/Week3_Concert_Reservation/issues/2)
+
+## > [API 명세](https://github.com/dalle0601/Week3_Concert_Reservation/issues/4)
+
+## > [ERD / mock API 목록](https://github.com/dalle0601/Week3_Concert_Reservation/issues/3)
