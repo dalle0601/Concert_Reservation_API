@@ -4,9 +4,9 @@ import java.time.LocalDateTime;
 
 public record ConcertResponseDTO (
         Long concert_id,
-        String concert_name,
+        String concert_title,
         LocalDateTime concert_date,
-        Long maxSeatNumber,
-        Long avalibleSeatNumber
+        Long maxSeatCnt,
+        Long avalibleSeatCnt
 ){
 }

@@ -1,7 +1,6 @@
 package org.example.ticketing.api.controller;
 
 import org.example.ticketing.api.dto.request.UserRequestDTO;
-import org.example.ticketing.domain.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,44 +15,34 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+
 @ExtendWith(MockitoExtension.class)
-public class PointControllerTest {
+public class ReservationControllerTest {
     //    @Autowired
     private MockMvc mockMvc;
 
-    @Mock
-    private UserService userService;
 
-    @InjectMocks
-    private UserController userController;
-
-    @BeforeEach
-    public void initMockMvc() {
-        mockMvc = MockMvcBuilders
-                .standaloneSetup(userController)
-                .build();
-    }
-
-    @DisplayName("포인트 충전 API")
+    @DisplayName("예약 가능 날짜 조회 API")
     @Test
-    public void chargePointTest() throws Exception {
+    public void getAvailableDate() throws Exception {
         /*
-            - 결제에 사용될 금액을 API 를 통해 충전하는 API 를 작성합니다.
-            - 사용자 식별자 및 충전할 금액을 받아 잔액을 충전합니다.
+            대기열 토큰이 검증 됐다는 전제 하에
+            예약 가능한 날짜 목록을 조회할 수 있습니다.
          */
 
     }
 
-    @DisplayName("포인트 조회 API")
+    @DisplayName("예약 가능 좌석 조회 API")
     @Test
-    public void getPointAmountTest() throws Exception {
+    public void getAvailableSeat() throws Exception {
         /*
-            사용자 식별자를 통해 해당 사용자의 잔액을 조회합니다.
+            날짜 정보를 입력받아 예약가능한 좌석정보를 조회할 수 있습니다.
+            좌석 정보는 1 ~ 50 까지의 좌석번호로 관리됩니다.
          */
 
     }
 
-    @DisplayName("결제 API")
+    @DisplayName("좌석 예약 요청 API")
     @Test
     public void postTempReservationTest() throws Exception {
         /*

@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -16,26 +17,26 @@ public class UserInfo {
     @Column(name = "ID", updatable = false)
     private Long id;
 
-    @Column(name = "UUID")
-    private String uuid;
-
-    @Column(name = "USER_ID")
-    private String userId;
+    @Column(name = "USER_ID", updatable = false)
+    private Long userId;
 
     @Column(name = "POINT")
     private Long point;
 
     @Column(name = "UPDATED_AT")
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CREATED_AT", updatable = false)
-    private Date createdAt;
+    private LocalDateTime createdAt;
+
+    public UserInfo() {}
 
     @Builder
-    public UserInfo(String uuid, String userId) {
-        this.uuid = uuid;
-        this.userId = userId;
+    public UserInfo(Long user_id) {
+        this.userId = user_id;
     }
+
+
 }

@@ -1,5 +1,6 @@
-package org.example.ticketing.api.mockcontroller;
+package org.example.ticketing.api.controller;
 
+import org.example.ticketing.api.dto.request.PointRequestDTO;
 import org.example.ticketing.api.dto.request.ReservationRequestDTO;
 import org.example.ticketing.api.dto.request.UserRequestDTO;
 import org.example.ticketing.api.dto.response.*;
@@ -15,8 +16,8 @@ import java.util.List;
 public class MockController {
     @PostMapping("/mock/user/token")
     public ResponseEntity<UserResponseDTO> issueUserToken (@RequestBody UserRequestDTO userRequestDTO) {
-        // {"userId": "test3"}
-        UserResponseDTO userResponseDTO = new UserResponseDTO(userRequestDTO.userId() + "+UUID+대기열정보");
+        // {"user_id": "test3"}
+        UserResponseDTO userResponseDTO = new UserResponseDTO(userRequestDTO.user_id() + "+UUID+대기열정보");
         return new ResponseEntity<>(userResponseDTO, HttpStatus.OK);
     }
 
@@ -31,14 +32,14 @@ public class MockController {
         return new ResponseEntity<>(concertList, HttpStatus.OK);
     }
 
-    @GetMapping("/mock/reservation/seat/{concert_id}")
+    @GetMapping("/mock/reservation/{concert_id}/seat")
     public ResponseEntity<List<SeatResponseDTO>> getAvailableSeat(@PathVariable Long concert_id) {
         List<SeatResponseDTO> seatList = new ArrayList<>();
         for(Long i = 0L; i < 3L; i++){
-            seatList.add(new SeatResponseDTO(concert_id, i, "A0"+(i+1), 70000L, "Available", null));
+            seatList.add(new SeatResponseDTO( i, "A0"+(i+1), 70000L, "Available"));
         }
-        seatList.add(new SeatResponseDTO(concert_id, 116L, "B13", 80000L, "Available", null));
-        seatList.add(new SeatResponseDTO(concert_id, 201L, "S05", 110000L, "Available", null));
+        seatList.add(new SeatResponseDTO(116L, "B13", 80000L, "Available"));
+        seatList.add(new SeatResponseDTO( 201L, "S05", 110000L, "Available"));
 
 
         return new ResponseEntity<>(seatList, HttpStatus.OK);
@@ -49,26 +50,32 @@ public class MockController {
         // {"concert_id": 3, "seat_id": 116, "cost": 80000, "reservation_time": "2024-04-02T17:30:00"}
         LocalDateTime time_now = LocalDateTime.now();
 
-        ReservationResponseDTO reservationResponseDTO = new ReservationResponseDTO(reservationRequestDTO.concert_id(), reservationRequestDTO.user_id(), "세번째 콘서트", "B13", 80000L, "Reserved", time_now, time_now.plusMinutes(5));
+        ReservationResponseDTO reservationResponseDTO = new ReservationResponseDTO(1L, reservationRequestDTO.concert_id(), 1L, 116L, 80000L, "Reserved", time_now, time_now.plusMinutes(5));
 
         return new ResponseEntity<>(reservationResponseDTO, HttpStatus.OK);
     }
 
     @GetMapping("/mock/point/{user_id}")
-    public ResponseEntity<PointResponseDTO> getUserPoint(@PathVariable String user_id) {
+    public ResponseEntity<PointResponseDTO> getUserPoint(@PathVariable Long user_id) {
         PointResponseDTO pointResponseDTO = new PointResponseDTO(user_id, 5000L);
 
         return new ResponseEntity<>(pointResponseDTO, HttpStatus.OK);
     }
 
-    @PostMapping("/mock/point/charge")
-    public ResponseEntity<ReservationResponseDTO> pointCharge(@RequestBody ReservationRequestDTO reservationRequestDTO) {
-        // {"concert_id": 3, "seat_id": 116, "cost": 80000, "reservation_time": "2024-04-02T17:30:00"}
+    @PatchMapping("/mock/point/charge")
+    public ResponseEntity<PointResponseDTO> pointCharge(@RequestBody PointRequestDTO pointRequestDTO) {
         LocalDateTime time_now = LocalDateTime.now();
+        PointResponseDTO pointResponseDTO = new PointResponseDTO(pointRequestDTO.user_id(), 5000L+pointRequestDTO.point(), time_now);
 
-        ReservationResponseDTO reservationResponseDTO = new ReservationResponseDTO(3L, "test", "세번째 콘서트", "B13", 80000L, "Reserved", time_now, time_now.plusMinutes(5));
+        return new ResponseEntity<>(pointResponseDTO, HttpStatus.OK);
+    }
 
-        return new ResponseEntity<>(reservationResponseDTO, HttpStatus.OK);
+    @PostMapping("/mock/point/payment")
+    public ResponseEntity<PointResponseDTO> pointPayment(@RequestBody PointRequestDTO pointRequestDTO) {
+        LocalDateTime time_now = LocalDateTime.now();
+        PointResponseDTO pointResponseDTO = new PointResponseDTO(pointRequestDTO.user_id(), 5000L+pointRequestDTO.point(), time_now);
+
+        return new ResponseEntity<>(pointResponseDTO, HttpStatus.OK);
     }
 
 }

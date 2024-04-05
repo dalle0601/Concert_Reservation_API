@@ -1,7 +1,10 @@
 package org.example.ticketing.domain.user.repository;
 
+import org.example.ticketing.api.dto.response.QueueWaitInfoResponseDTO;
 import org.example.ticketing.domain.user.model.UserInfo;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository{
@@ -13,9 +16,14 @@ public class UserRepositoryImpl implements UserRepository{
     }
 
     @Override
-    public UserInfo joinUser(String uuid, String userId) {
+    public UserInfo joinUser(Long user_id) {
         return userJpaRepository.save(UserInfo.builder()
-                .uuid(uuid)
-                .userId(userId).build());
+                .user_id(user_id).build());
+    }
+    @Override
+    public UserInfo findUserByUserId(Long user_id) {
+        Optional<UserInfo> userOptional = userJpaRepository.findByUserId(user_id);
+
+        return userOptional.orElse(null);
     }
 }

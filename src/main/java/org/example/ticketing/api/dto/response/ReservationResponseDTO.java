@@ -3,10 +3,10 @@ package org.example.ticketing.api.dto.response;
 import java.time.LocalDateTime;
 
 public record ReservationResponseDTO(
+        Long reservation_id,
         Long concert_id,
-        String user_id,
-        String concert_name,
-        String seat_number,
+        Long user_id,
+        Long seat_id,
         Long cost,
         String seat_status,
         LocalDateTime reservation_time,
