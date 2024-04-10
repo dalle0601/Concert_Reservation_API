@@ -1,6 +1,8 @@
 package org.example.ticketing.domain.user.service;
 
+import org.example.ticketing.api.dto.request.TokenRequestDTO;
 import org.example.ticketing.api.dto.request.UserRequestDTO;
+import org.example.ticketing.api.dto.response.TokenResponseDTO;
 import org.example.ticketing.api.usecase.IssueUserTokenUseCase;
 import org.example.ticketing.domain.user.model.UserInfo;
 import org.example.ticketing.domain.user.repository.UserRepository;
@@ -15,7 +17,7 @@ public class UserService {
         this.issueUserTokenUseCase = issueUserTokenUseCase;
     }
 
-    public String issueToken(UserRequestDTO userRequestDTO) {
+    public TokenResponseDTO issueToken(UserRequestDTO userRequestDTO) {
         return issueUserTokenUseCase.execute(userRequestDTO);
     }
 

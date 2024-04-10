@@ -1,32 +1,26 @@
 package org.example.ticketing.api.usecase;
 
-//import org.example.ticketing.api.component.WaitPollingTask;
-import org.example.ticketing.api.component.polling.QuartzPollingTask;
-import org.example.ticketing.api.component.polling.QuartzSchedulingService;
 import org.example.ticketing.api.dto.request.UserRequestDTO;
-        import org.example.ticketing.domain.user.model.UserInfo;
+import org.example.ticketing.api.dto.response.TokenResponseDTO;
+import org.example.ticketing.api.usecase.common.TokenQueueTableUpdate;
+import org.example.ticketing.domain.user.model.UserInfo;
 import org.example.ticketing.domain.user.repository.QueueRepository;
-import org.example.ticketing.domain.user.repository.TokenRepository;
 import org.example.ticketing.domain.user.repository.UserRepository;
-import org.quartz.*;
-import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.stereotype.Service;
-
 import java.util.UUID;
 @Service
 public class IssueUserTokenUseCase {
     private final UserRepository userRepository;
     private final QueueRepository queueRepository;
-    private final TokenRepository tokenRepository;
-    private final QuartzSchedulingService quartzSchedulingService;
-    public IssueUserTokenUseCase(UserRepository userRepository, QueueRepository queueRepository, TokenRepository tokenRepository, QuartzSchedulingService quartzSchedulingService) {
+    private final TokenQueueTableUpdate tokenQueueTableUpdate;
+
+    public IssueUserTokenUseCase(UserRepository userRepository, QueueRepository queueRepository, TokenQueueTableUpdate tokenQueueTableUpdate) {
         this.userRepository = userRepository;
         this.queueRepository = queueRepository;
-        this.tokenRepository = tokenRepository;
-        this.quartzSchedulingService = quartzSchedulingService;
+        this.tokenQueueTableUpdate = tokenQueueTableUpdate;
     }
 
-    public String execute(UserRequestDTO userRequestDTO) {
+    public TokenResponseDTO execute(UserRequestDTO userRequestDTO) {
         /*
             토큰 발급 처음 요청 (user_id)
             # 1 > UserInfo table 에서 user_id 조회
@@ -51,13 +45,8 @@ public class IssueUserTokenUseCase {
         String userUUID = UUID.randomUUID().toString();
         String token = tokenWithWaitInfo(userUUID);
         // 내 대기열 정보를 Queue 테이블에 update or insert
-        tokenInsertOrUpdateQueue(userRequestDTO.user_id(), token.split("/")[1]);
-
         // # 3 > Token table 에 user_id, token 정보<uuid + / + status> insert or update
-        tokenRepository.tokenInsertOrUpdate(userRequestDTO.user_id(), token);
-
-        quartzSchedulingService.schedulePollingTask();
-        return token;
+        return tokenQueueTableUpdate.execute(userRequestDTO, token);
     }
     /*
         Queue Table 전체 내용의
@@ -65,19 +54,12 @@ public class IssueUserTokenUseCase {
      */
     private String tokenWithWaitInfo(String userUUID) {
         Object[] waitInfo = (Object[]) queueRepository.getQueueOngoingAndWaitInfo();
-        if((Long)waitInfo[0] < 10) {
+        System.out.println((Long)waitInfo[0]);
+        if((Long)waitInfo[0] < 3) {
             return userUUID + "/onGoing";
         } else {
             return userUUID + "/onWait/" + waitInfo[1].toString();
         }
-    }
-
-    /*
-        대기열 정보 까지 포함된 토큰 발급 후
-        Queue Table에 내 대기열 Insert OR Update
-     */
-    private void tokenInsertOrUpdateQueue(Long user_id, String status) {
-        queueRepository.queueInsertOrUpdate(user_id, status);
     }
 
     private UserInfo findUser(Long user_id) {

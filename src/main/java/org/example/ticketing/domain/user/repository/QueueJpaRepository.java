@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface QueueJpaRepository extends JpaRepository<Queue, Long> {
-    @Query("SELECT COALESCE(SUM(CASE WHEN status='ongoing' THEN 1 ELSE 0 END),0) as ongoing_count, COALESCE(SUM(CASE WHEN status='wait' THEN 1 ELSE 0 END),0) as wait_count FROM Queue")
+    @Query("SELECT COALESCE(SUM(CASE WHEN status='onGoing' THEN 1 ELSE 0 END),0) as ongoing_count, COALESCE(SUM(CASE WHEN status='onWait' THEN 1 ELSE 0 END),0) as wait_count FROM Queue")
     Object getQueueOngoingAndWait();
 
     @Query("SELECT q FROM Queue q WHERE q.userId = :userId")

@@ -1,6 +1,7 @@
 package org.example.ticketing.domain.user.repository;
 
 import org.example.ticketing.domain.user.model.Token;
+import org.example.ticketing.domain.user.model.UserInfo;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -26,5 +27,11 @@ public class TokenRepositoryImpl implements TokenRepository{
             Token newToken = new Token(user_id, token, nowDate, nowDate);
             return tokenJpaRepository.save(newToken); // 새로운 엔티티 저장
         }
+    }
+
+    @Override
+    public Token findByUserId(Long user_id) {
+        Optional<Token> tokenOptional = tokenJpaRepository.findByUserId(user_id);
+        return tokenOptional.orElse(null);
     }
 }

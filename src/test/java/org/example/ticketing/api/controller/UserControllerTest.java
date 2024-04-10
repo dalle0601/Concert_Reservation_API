@@ -1,6 +1,7 @@
 package org.example.ticketing.api.controller;
 
-import org.example.ticketing.api.dto.request.UserRequestDTO;
+import org.example.ticketing.api.dto.response.TokenResponseDTO;
+import org.example.ticketing.domain.user.service.TokenService;
 import org.example.ticketing.domain.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -8,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,14 +20,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-//@WebMvcTest(UserController.class)
-public class UserInfoControllerTest {
-//    @Autowired
+public class UserControllerTest {
     private MockMvc mockMvc;
-
     @Mock
     private UserService userService;
-
+    @Mock
+    private TokenService tokenService;
     @InjectMocks
     private UserController userController;
 
@@ -40,14 +38,26 @@ public class UserInfoControllerTest {
 
     @DisplayName("userToken 발급 테스트")
     @Test
-    public void testIssueToken() throws Exception {
-        Long user_id = 1L;
-        when(userService.issueToken(any(UserRequestDTO.class))).thenReturn("generatedToken123");
+    public void issueTokenTest() throws Exception {
+        TokenResponseDTO tokenResponseDTO = new TokenResponseDTO("abc-def-ghi/onGoing");
+        when(userService.issueToken(any())).thenReturn(tokenResponseDTO);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/user/token")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{ \"user_id\": 1}"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("generatedToken123"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.token").value(tokenResponseDTO.token()));
+    }
+
+    @DisplayName("userToken 대기열 조회 테스트")
+    @Test
+    public void confirmTokenTest() throws Exception {
+        TokenResponseDTO tokenResponseDTO = new TokenResponseDTO("abc-def-ghi/onGoing");
+
+        when(tokenService.checkToken(any())).thenReturn(tokenResponseDTO);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/user/token/check/1"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.token").value(tokenResponseDTO.token()));
     }
 }
