@@ -1,8 +1,7 @@
-package org.example.ticketing.api.usecase.reservations;
+package org.example.ticketing.api.usecase.concert;
 
 import org.example.ticketing.api.dto.request.UserRequestDTO;
 import org.example.ticketing.api.dto.response.TokenResponseDTO;
-import org.example.ticketing.api.usecase.concert.GetConcertAvailableDateUseCase;
 import org.example.ticketing.api.usecase.user.ConfirmUserTokenUseCase;
 import org.example.ticketing.domain.concert.model.Concert;
 import org.example.ticketing.domain.concert.repository.ConcertRepository;
@@ -55,7 +54,7 @@ public class GetConcertAvailableDateUseCaseTest {
         concerts.add(new Concert(4L, "4번 콘서트", LocalDateTime.of(2024, 5, 17, 18, 0), 50L, 3L, LocalDateTime.now()));
         concerts.add(new Concert(6L, "6번 콘서트", LocalDateTime.of(2024, 6, 4, 16, 30), 50L, 15L, LocalDateTime.now()));
         concerts.add(new Concert(11L, "11번 콘서트", LocalDateTime.of(2024, 8, 22, 18, 30), 50L, 25L, LocalDateTime.now()));
-        when(concertRepository.getConcertByDate(any())).thenReturn(concerts);
+        when(concertRepository.getConcertDateByToday(any())).thenReturn(concerts);
 
         List<Concert> result = getConcertAvailableDateUseCase.execute(new UserRequestDTO(1L));
         assertNotNull(result);

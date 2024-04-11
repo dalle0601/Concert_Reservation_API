@@ -1,33 +1,32 @@
 package org.example.ticketing.api.usecase.concert;
 
+import org.example.ticketing.api.dto.request.SeatReqeustDTO;
 import org.example.ticketing.api.dto.request.UserRequestDTO;
 import org.example.ticketing.api.dto.response.TokenResponseDTO;
 import org.example.ticketing.api.usecase.user.ConfirmUserTokenUseCase;
-import org.example.ticketing.domain.concert.model.Concert;
+import org.example.ticketing.domain.concert.model.Seat;
 import org.example.ticketing.domain.concert.repository.ConcertRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class GetConcertAvailableDateUseCase {
-
+public class GetConcertAvailableSeatUseCase {
     private ConfirmUserTokenUseCase confirmUserTokenUseCase;
     private ConcertRepository concertRepository;
 
-    public GetConcertAvailableDateUseCase(ConfirmUserTokenUseCase confirmUserTokenUseCase, ConcertRepository concertRepository) {
+    public GetConcertAvailableSeatUseCase(ConfirmUserTokenUseCase confirmUserTokenUseCase, ConcertRepository concertRepository) {
         this.confirmUserTokenUseCase = confirmUserTokenUseCase;
         this.concertRepository = concertRepository;
     }
 
-    public List<Concert> execute(UserRequestDTO userRequestDTO) {
+    public List<Seat> execute(UserRequestDTO userRequestDTO, SeatReqeustDTO seatReqeustDTO) {
         TokenResponseDTO tokenResponseDTO = confirmUserTokenUseCase.execute(userRequestDTO);
         String checkToken = tokenResponseDTO.token().split("/")[1];
 
         if (checkToken.equals("onGoing")) {
             // concert Table 조회
-            return concertRepository.getConcertDateByToday(LocalDateTime.now());
+            return concertRepository.getConcertSeatById(seatReqeustDTO.concert_id());
         } else {
             String eMessage = "";
             if(checkToken.equals("onWait")) {
