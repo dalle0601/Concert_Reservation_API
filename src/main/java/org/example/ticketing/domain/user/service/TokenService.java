@@ -2,7 +2,7 @@ package org.example.ticketing.domain.user.service;
 
 import org.example.ticketing.api.dto.request.UserRequestDTO;
 import org.example.ticketing.api.dto.response.TokenResponseDTO;
-import org.example.ticketing.api.usecase.ConfirmUserTokenUseCase;
+import org.example.ticketing.api.usecase.user.ConfirmUserTokenUseCase;
 import org.springframework.stereotype.Service;
 
 @Service

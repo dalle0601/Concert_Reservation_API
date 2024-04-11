@@ -1,10 +1,8 @@
 package org.example.ticketing.api.usecase.reservations;
 
 import org.example.ticketing.api.dto.request.UserRequestDTO;
-import org.example.ticketing.api.dto.response.ConcertResponseDTO;
 import org.example.ticketing.api.dto.response.TokenResponseDTO;
-import org.example.ticketing.api.dto.response.UserResponseDTO;
-import org.example.ticketing.api.usecase.reservation.GetAvailableDateUseCase;
+import org.example.ticketing.api.usecase.concert.GetConcertAvailableDateUseCase;
 import org.example.ticketing.api.usecase.user.ConfirmUserTokenUseCase;
 import org.example.ticketing.domain.concert.model.Concert;
 import org.example.ticketing.domain.concert.repository.ConcertRepository;
@@ -14,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +20,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class GetAvailableDateUseCaseTest {
-    private GetAvailableDateUseCase getAvailableDateUseCase;
+public class GetConcertAvailableDateUseCaseTest {
+    private GetConcertAvailableDateUseCase getConcertAvailableDateUseCase;
 
     @Mock
     private ConcertRepository concertRepository;
@@ -33,7 +30,7 @@ public class GetAvailableDateUseCaseTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        getAvailableDateUseCase = new GetAvailableDateUseCase(confirmUserTokenUseCase, concertRepository);
+        getConcertAvailableDateUseCase = new GetConcertAvailableDateUseCase(confirmUserTokenUseCase, concertRepository);
 
     }
     @Test
@@ -42,7 +39,7 @@ public class GetAvailableDateUseCaseTest {
         Long userId = 1L;
         when(confirmUserTokenUseCase.execute(any())).thenReturn(new TokenResponseDTO("abcd-efgh-jklm/onWait/5"));
         IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
-            getAvailableDateUseCase.execute(new UserRequestDTO(userId));
+            getConcertAvailableDateUseCase.execute(new UserRequestDTO(userId));
         });
         assertEquals("현재 5명 대기상태 입니다.", exception.getMessage());
 
@@ -60,7 +57,7 @@ public class GetAvailableDateUseCaseTest {
         concerts.add(new Concert(11L, "11번 콘서트", LocalDateTime.of(2024, 8, 22, 18, 30), 50L, 25L, LocalDateTime.now()));
         when(concertRepository.getConcertByDate(any())).thenReturn(concerts);
 
-        List<Concert> result = getAvailableDateUseCase.execute(new UserRequestDTO(1L));
+        List<Concert> result = getConcertAvailableDateUseCase.execute(new UserRequestDTO(1L));
         assertNotNull(result);
         assertEquals(4, result.size());
     }

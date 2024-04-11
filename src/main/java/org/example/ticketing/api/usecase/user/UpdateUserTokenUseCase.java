@@ -1,4 +1,4 @@
-package org.example.ticketing.api.usecase;
+package org.example.ticketing.api.usecase.user;
 
 import org.example.ticketing.api.dto.request.UserRequestDTO;
 import org.example.ticketing.api.dto.response.TokenResponseDTO;

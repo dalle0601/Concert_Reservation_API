@@ -1,6 +1,7 @@
-package org.example.ticketing.domain.reservation.model;
+package org.example.ticketing.domain.concert.model;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -28,4 +29,18 @@ public class Concert {
 
     @Column(name = "CREATED_AT")
     private LocalDateTime createdAt;
+    public Concert() {
+
+    }
+    @Builder
+    public Concert( Long concert_id, String concert_title, LocalDateTime concert_date, Long max_seat_cnt, Long available_seat_cnt, LocalDateTime created_at) {
+        this.concertId = concert_id;
+        this.concertTitle = concert_title;
+        this.concertDate = concert_date;
+        this.maxSeatCnt = max_seat_cnt;
+        this.availableSeatCnt = available_seat_cnt;
+        this.createdAt = created_at;
+    }
+
+
 }

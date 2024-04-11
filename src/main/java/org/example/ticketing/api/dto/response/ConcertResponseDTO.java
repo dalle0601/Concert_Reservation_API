@@ -7,6 +7,6 @@ public record ConcertResponseDTO (
         String concert_title,
         LocalDateTime concert_date,
         Long maxSeatCnt,
-        Long avalibleSeatCnt
+        Long availableSeatCnt
 ){
 }

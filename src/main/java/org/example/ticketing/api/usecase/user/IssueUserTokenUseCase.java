@@ -1,4 +1,4 @@
-package org.example.ticketing.api.usecase;
+package org.example.ticketing.api.usecase.user;
 
 import org.example.ticketing.api.dto.request.UserRequestDTO;
 import org.example.ticketing.api.dto.response.TokenResponseDTO;
@@ -54,7 +54,6 @@ public class IssueUserTokenUseCase {
      */
     private String tokenWithWaitInfo(String userUUID) {
         Object[] waitInfo = (Object[]) queueRepository.getQueueOngoingAndWaitInfo();
-        System.out.println((Long)waitInfo[0]);
         if((Long)waitInfo[0] < 3) {
             return userUUID + "/onGoing";
         } else {

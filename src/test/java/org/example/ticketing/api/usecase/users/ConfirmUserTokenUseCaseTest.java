@@ -2,7 +2,7 @@ package org.example.ticketing.api.usecase.users;
 
 import org.example.ticketing.api.dto.request.UserRequestDTO;
 import org.example.ticketing.api.dto.response.TokenResponseDTO;
-import org.example.ticketing.api.usecase.ConfirmUserTokenUseCase;
+import org.example.ticketing.api.usecase.user.ConfirmUserTokenUseCase;
 import org.example.ticketing.domain.user.model.Token;
 import org.example.ticketing.domain.user.repository.TokenRepository;
 import org.junit.jupiter.api.BeforeEach;

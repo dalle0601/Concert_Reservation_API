@@ -2,7 +2,7 @@ package org.example.ticketing.api.usecase.users;
 
 import org.example.ticketing.api.dto.request.UserRequestDTO;
 import org.example.ticketing.api.dto.response.TokenResponseDTO;
-import org.example.ticketing.api.usecase.IssueUserTokenUseCase;
+import org.example.ticketing.api.usecase.user.IssueUserTokenUseCase;
 import org.example.ticketing.api.usecase.common.TokenQueueTableUpdate;
 import org.example.ticketing.domain.user.model.UserInfo;
 import org.example.ticketing.domain.user.repository.QueueRepository;
