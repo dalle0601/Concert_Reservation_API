@@ -1,7 +1,9 @@
 package org.example.ticketing.api.usecase.user;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.example.ticketing.api.dto.request.UserRequestDTO;
 import org.example.ticketing.api.dto.response.TokenResponseDTO;
+import org.example.ticketing.api.dto.response.UserResponseDTO;
 import org.example.ticketing.api.usecase.common.UpdateTokenQueueWaitInfo;
 import org.example.ticketing.domain.user.model.UserInfo;
 import org.example.ticketing.domain.user.repository.QueueRepository;
@@ -61,7 +63,7 @@ public class IssueUserTokenUseCase {
         }
     }
 
-    private UserInfo findUser(Long user_id) {
+    private UserResponseDTO findUser(Long user_id) {
         return userRepository.findUserByUserId(user_id);
     }
 }

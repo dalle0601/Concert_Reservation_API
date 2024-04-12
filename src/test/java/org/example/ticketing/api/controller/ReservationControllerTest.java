@@ -1,11 +1,6 @@
 package org.example.ticketing.api.controller;
 
-import org.example.ticketing.api.dto.request.ReservationRequestDTO;
-import org.example.ticketing.api.dto.request.UserRequestDTO;
 import org.example.ticketing.api.dto.response.ReservationResponseDTO;
-import org.example.ticketing.domain.concert.model.Seat;
-import org.example.ticketing.domain.concert.service.ConcertService;
-import org.example.ticketing.domain.reservation.model.Reservation;
 import org.example.ticketing.domain.reservation.service.ReservationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,13 +15,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
-import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 

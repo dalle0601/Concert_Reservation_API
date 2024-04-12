@@ -1,6 +1,7 @@
 package org.example.ticketing.api.controller;
 
-import org.example.ticketing.api.dto.request.UserRequestDTO;
+import org.example.ticketing.api.dto.response.UserResponseDTO;
+import org.example.ticketing.api.usecase.point.GetPointUseCase;
 import org.example.ticketing.domain.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -8,29 +9,29 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
 @ExtendWith(MockitoExtension.class)
 public class PointControllerTest {
-    //    @Autowired
     private MockMvc mockMvc;
-
     @Mock
     private UserService userService;
-
+    @Mock
+    private GetPointUseCase getPointUseCase;
     @InjectMocks
-    private UserController userController;
+    private PointController pointController;
 
     @BeforeEach
     public void initMockMvc() {
         mockMvc = MockMvcBuilders
-                .standaloneSetup(userController)
+                .standaloneSetup(pointController)
                 .build();
     }
 
@@ -47,10 +48,13 @@ public class PointControllerTest {
     @DisplayName("포인트 조회 API")
     @Test
     public void getPointAmountTest() throws Exception {
-        /*
-            사용자 식별자를 통해 해당 사용자의 잔액을 조회합니다.
-         */
-
+        Long user_id = 1L;
+        Long point = 5000L;
+        when(userService.getPoint(any())).thenReturn(new UserResponseDTO(user_id, point));
+        mockMvc.perform(MockMvcRequestBuilders.get("/point/1"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.user_id").value(user_id))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.point").value(point));
     }
 
     @DisplayName("결제 API")

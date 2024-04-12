@@ -15,10 +15,10 @@ import java.util.List;
 @RestController
 public class MockController {
     @PostMapping("/mock/user/token")
-    public ResponseEntity<UserResponseDTO> issueUserToken (@RequestBody UserRequestDTO userRequestDTO) {
+    public ResponseEntity<TokenResponseDTO> issueUserToken (@RequestBody UserRequestDTO userRequestDTO) {
         // {"user_id": "test3"}
-        UserResponseDTO userResponseDTO = new UserResponseDTO(userRequestDTO.user_id() + "+UUID+대기열정보");
-        return new ResponseEntity<>(userResponseDTO, HttpStatus.OK);
+        TokenResponseDTO tokenResponseDTO = new TokenResponseDTO(userRequestDTO.user_id() + "+UUID+대기열정보");
+        return new ResponseEntity<>(tokenResponseDTO, HttpStatus.OK);
     }
 
     @GetMapping("/mock/reservation/date")
