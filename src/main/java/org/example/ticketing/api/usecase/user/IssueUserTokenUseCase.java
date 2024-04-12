@@ -2,7 +2,7 @@ package org.example.ticketing.api.usecase.user;
 
 import org.example.ticketing.api.dto.request.UserRequestDTO;
 import org.example.ticketing.api.dto.response.TokenResponseDTO;
-import org.example.ticketing.api.usecase.common.TokenQueueTableUpdate;
+import org.example.ticketing.api.usecase.common.UpdateTokenQueueWaitInfo;
 import org.example.ticketing.domain.user.model.UserInfo;
 import org.example.ticketing.domain.user.repository.QueueRepository;
 import org.example.ticketing.domain.user.repository.UserRepository;
@@ -12,12 +12,12 @@ import java.util.UUID;
 public class IssueUserTokenUseCase {
     private final UserRepository userRepository;
     private final QueueRepository queueRepository;
-    private final TokenQueueTableUpdate tokenQueueTableUpdate;
+    private final UpdateTokenQueueWaitInfo updateTokenQueueWaitInfo;
 
-    public IssueUserTokenUseCase(UserRepository userRepository, QueueRepository queueRepository, TokenQueueTableUpdate tokenQueueTableUpdate) {
+    public IssueUserTokenUseCase(UserRepository userRepository, QueueRepository queueRepository, UpdateTokenQueueWaitInfo updateTokenQueueWaitInfo) {
         this.userRepository = userRepository;
         this.queueRepository = queueRepository;
-        this.tokenQueueTableUpdate = tokenQueueTableUpdate;
+        this.updateTokenQueueWaitInfo = updateTokenQueueWaitInfo;
     }
 
     public TokenResponseDTO execute(UserRequestDTO userRequestDTO) {
@@ -46,7 +46,7 @@ public class IssueUserTokenUseCase {
         String token = tokenWithWaitInfo(userUUID);
         // 내 대기열 정보를 Queue 테이블에 update or insert
         // # 3 > Token table 에 user_id, token 정보<uuid + / + status> insert or update
-        return tokenQueueTableUpdate.execute(userRequestDTO, token);
+        return updateTokenQueueWaitInfo.execute(userRequestDTO, token);
     }
     /*
         Queue Table 전체 내용의

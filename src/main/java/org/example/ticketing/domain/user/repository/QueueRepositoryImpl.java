@@ -38,4 +38,9 @@ public class QueueRepositoryImpl implements QueueRepository{
             return queueJpaRepository.save(newQueue); // 새로운 엔티티 저장
         }
     }
+
+    @Override
+    public void updateQueueStatus(Long user_id, String status) {
+
+    }
 }

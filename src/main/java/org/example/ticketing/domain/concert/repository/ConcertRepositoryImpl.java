@@ -1,13 +1,13 @@
 package org.example.ticketing.domain.concert.repository;
 
-import org.example.ticketing.api.dto.request.SeatReqeustDTO;
-import org.example.ticketing.api.dto.response.SeatResponseDTO;
 import org.example.ticketing.domain.concert.model.Concert;
 import org.example.ticketing.domain.concert.model.Seat;
+import org.example.ticketing.domain.user.model.Token;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ConcertRepositoryImpl implements ConcertRepository{
@@ -25,4 +25,5 @@ public class ConcertRepositoryImpl implements ConcertRepository{
     public List<Seat> getConcertSeatById(Long concert_id) {
         return concertJpaRepository.findByAvailableSeat(concert_id);
     }
+
 }

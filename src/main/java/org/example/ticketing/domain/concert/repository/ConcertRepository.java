@@ -9,6 +9,5 @@ import java.util.List;
 
 public interface ConcertRepository {
     List<Concert> getConcertDateByToday(LocalDateTime today);
-
     List<Seat> getConcertSeatById(Long concert_id);
 }

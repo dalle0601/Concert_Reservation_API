@@ -3,7 +3,7 @@ package org.example.ticketing.api.usecase.users;
 import org.example.ticketing.api.dto.request.UserRequestDTO;
 import org.example.ticketing.api.dto.response.TokenResponseDTO;
 import org.example.ticketing.api.usecase.user.IssueUserTokenUseCase;
-import org.example.ticketing.api.usecase.common.TokenQueueTableUpdate;
+import org.example.ticketing.api.usecase.common.UpdateTokenQueueWaitInfo;
 import org.example.ticketing.domain.user.model.UserInfo;
 import org.example.ticketing.domain.user.repository.QueueRepository;
 import org.example.ticketing.domain.user.repository.UserRepository;
@@ -26,12 +26,12 @@ public class IssueUserTokenUseCaseTest {
     private QueueRepository queueRepository;
 
     @Mock
-    private TokenQueueTableUpdate tokenQueueTableUpdate;
+    private UpdateTokenQueueWaitInfo updateTokenQueueWaitInfo;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        issueUserTokenUseCase = new IssueUserTokenUseCase(userRepository, queueRepository, tokenQueueTableUpdate);
+        issueUserTokenUseCase = new IssueUserTokenUseCase(userRepository, queueRepository, updateTokenQueueWaitInfo);
     }
 
     @DisplayName("유저 토큰 발급 - 처음 발급")
@@ -46,7 +46,7 @@ public class IssueUserTokenUseCaseTest {
         when(userRepository.joinUser(anyLong())).thenReturn(new UserInfo());
         Object[] mockWaitInfo = {10L, 4L};
         when(queueRepository.getQueueOngoingAndWaitInfo()).thenReturn(mockWaitInfo);
-        when(tokenQueueTableUpdate.execute(any(), any())).thenReturn(new TokenResponseDTO("abc-def-ghi/onWait/4"));
+        when(updateTokenQueueWaitInfo.execute(any(), any())).thenReturn(new TokenResponseDTO("abc-def-ghi/onWait/4"));
         TokenResponseDTO actualToken = issueUserTokenUseCase.execute(userRequestDTO);
 
         assertEquals(expectedTokenOnWaitStatus, actualToken.token().split("/")[1]);

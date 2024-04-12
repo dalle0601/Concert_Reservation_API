@@ -1,21 +1,17 @@
 package org.example.ticketing.api.usecase.common;
 
-import org.example.ticketing.api.component.polling.QuartzSchedulingService;
 import org.example.ticketing.api.dto.request.UserRequestDTO;
 import org.example.ticketing.api.dto.response.TokenResponseDTO;
 import org.example.ticketing.domain.user.repository.QueueRepository;
 import org.example.ticketing.domain.user.repository.TokenRepository;
-import org.example.ticketing.domain.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service
-public class TokenQueueTableUpdate {
+public class UpdateTokenQueueWaitInfo {
     private final QueueRepository queueRepository;
     private final TokenRepository tokenRepository;
 
-    public TokenQueueTableUpdate(QueueRepository queueRepository, TokenRepository tokenRepository) {
+    public UpdateTokenQueueWaitInfo(QueueRepository queueRepository, TokenRepository tokenRepository) {
         this.queueRepository = queueRepository;
         this.tokenRepository = tokenRepository;
     }

@@ -3,7 +3,7 @@ package org.example.ticketing.api.usecase.users;
 import org.example.ticketing.api.dto.request.UserRequestDTO;
 import org.example.ticketing.api.dto.response.TokenResponseDTO;
 import org.example.ticketing.api.usecase.user.UpdateUserTokenUseCase;
-import org.example.ticketing.api.usecase.common.TokenQueueTableUpdate;
+import org.example.ticketing.api.usecase.common.UpdateTokenQueueWaitInfo;
 import org.example.ticketing.domain.user.model.Token;
 import org.example.ticketing.domain.user.repository.TokenRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,12 +24,12 @@ public class UpdateUserTokenUseCaseTest {
     private TokenRepository tokenRepository;
 
     @Mock
-    private TokenQueueTableUpdate tokenQueueTableUpdate;
+    private UpdateTokenQueueWaitInfo updateTokenQueueWaitInfo;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        updateUserTokenUseCase = new UpdateUserTokenUseCase(tokenRepository, tokenQueueTableUpdate);
+        updateUserTokenUseCase = new UpdateUserTokenUseCase(tokenRepository, updateTokenQueueWaitInfo);
     }
 
     @DisplayName("유저 토큰 대기열 업데이트")
@@ -47,7 +47,7 @@ public class UpdateUserTokenUseCaseTest {
                 .created_at(LocalDateTime.now()).build();
 
         when(tokenRepository.findByUserId(any())).thenReturn(token);
-        when(tokenQueueTableUpdate.execute(any(), any())).thenReturn(new TokenResponseDTO("abcd-efgh-ijkl/onWait/2"));
+        when(updateTokenQueueWaitInfo.execute(any(), any())).thenReturn(new TokenResponseDTO("abcd-efgh-ijkl/onWait/2"));
         TokenResponseDTO actualToken = updateUserTokenUseCase.execute(userRequestDTO);
 
         assertEquals(expectedTokenOnWaitStatus, actualToken.token().split("/")[1]);

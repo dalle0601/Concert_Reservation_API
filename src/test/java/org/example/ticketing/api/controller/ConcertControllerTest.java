@@ -66,7 +66,7 @@ public class ConcertControllerTest {
     public void GetAvailableConcertSeatTest() throws Exception {
         List<Seat> seats = new ArrayList<>();
         for(int i = 0; i < 4; i++){
-            seats.add(new Seat((long) i, 1L, "A"+i+1, "available"));
+            seats.add(new Seat((long) i, 1L, "A"+i+1, 70000L,"available"));
         }
 
         HttpHeaders headers = new HttpHeaders();

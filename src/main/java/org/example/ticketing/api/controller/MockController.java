@@ -50,7 +50,7 @@ public class MockController {
         // {"concert_id": 3, "seat_id": 116, "cost": 80000, "reservation_time": "2024-04-02T17:30:00"}
         LocalDateTime time_now = LocalDateTime.now();
 
-        ReservationResponseDTO reservationResponseDTO = new ReservationResponseDTO(1L, reservationRequestDTO.concert_id(), 1L, 116L, 80000L, "Reserved", time_now, time_now.plusMinutes(5));
+        ReservationResponseDTO reservationResponseDTO = new ReservationResponseDTO(1L, reservationRequestDTO.concert_id(), 1L, 116L, "Reserved", time_now, time_now.plusMinutes(5));
 
         return new ResponseEntity<>(reservationResponseDTO, HttpStatus.OK);
     }

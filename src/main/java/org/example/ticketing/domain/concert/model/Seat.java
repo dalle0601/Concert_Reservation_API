@@ -19,15 +19,19 @@ public class Seat {
     @Column(name = "SEAT_NAME")
     private String seatName;
 
+    @Column(name = "SEAT_COST")
+    private Long seatCost;
+
     @Column(name = "SEAT_STATUS")
     private String seatStatus;
 
     public Seat() {}
     @Builder
-    public Seat( Long seat_id, Long concert_id, String seat_name, String seat_status) {
+    public Seat( Long seat_id, Long concert_id, String seat_name, Long seat_cost, String seat_status) {
         this.seatId = seat_id;
         this.concertId = concert_id;
         this.seatName = seat_name;
+        this.seatCost = seat_cost;
         this.seatStatus = seat_status;
     }
 }

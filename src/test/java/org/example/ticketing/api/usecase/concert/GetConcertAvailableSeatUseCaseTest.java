@@ -34,11 +34,11 @@ public class GetConcertAvailableSeatUseCaseTest {
 
     }
     @Test
-    @DisplayName("예약가능한 날짜의 콘서트 좌석을 호출했지만 대기상태가 dead인 경우 ->> 예외발생")
+    @DisplayName("예약가능한 날짜의 콘서트 좌석을 호출했지만 대기상태가 expired 경우 ->> 예외발생")
     void getAvailableDateTestOnWait() {
         Long userId = 1L;
         Long concertId = 1L;
-        when(confirmUserTokenUseCase.execute(any())).thenReturn(new TokenResponseDTO("abcd-efgh-jklm/dead"));
+        when(confirmUserTokenUseCase.execute(any())).thenReturn(new TokenResponseDTO("abcd-efgh-jklm/expired"));
         IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
             getConcertAvailableSeatUseCase.execute(new UserRequestDTO(userId), new SeatReqeustDTO(concertId));
         });
@@ -54,7 +54,7 @@ public class GetConcertAvailableSeatUseCaseTest {
         List<Seat> seats = new ArrayList<>();
 
         for(int i = 0; i < 4; i++){
-            seats.add(new Seat((long) i, 1L, "A"+i+1, "availble"));
+            seats.add(new Seat((long) i, 1L, "A"+i+1, 70000L,"availble"));
         }
 
         when(concertRepository.getConcertSeatById(any())).thenReturn(seats);

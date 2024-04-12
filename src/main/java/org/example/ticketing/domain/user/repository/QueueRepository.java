@@ -10,4 +10,5 @@ public interface QueueRepository {
     Object getQueueOngoingAndWaitInfo();
     Optional<Queue> findByUserId(Long user_id);
     Queue queueInsertOrUpdate(Long user_id, String status);
+    void updateQueueStatus(Long user_id, String status);
 }

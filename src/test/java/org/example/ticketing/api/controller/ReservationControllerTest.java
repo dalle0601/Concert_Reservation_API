@@ -1,57 +1,78 @@
 package org.example.ticketing.api.controller;
 
+import org.example.ticketing.api.dto.request.ReservationRequestDTO;
 import org.example.ticketing.api.dto.request.UserRequestDTO;
+import org.example.ticketing.api.dto.response.ReservationResponseDTO;
+import org.example.ticketing.domain.concert.model.Seat;
+import org.example.ticketing.domain.concert.service.ConcertService;
+import org.example.ticketing.domain.reservation.model.Reservation;
+import org.example.ticketing.domain.reservation.service.ReservationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class ReservationControllerTest {
-    //    @Autowired
     private MockMvc mockMvc;
+    @Mock
+    private ReservationService reservationService;
+    @InjectMocks
+    private ReservationController reservationController;
 
-
-    @DisplayName("예약 가능 날짜 조회 API")
-    @Test
-    public void getAvailableDate() throws Exception {
-        /*
-            대기열 토큰이 검증 됐다는 전제 하에
-            예약 가능한 날짜 목록을 조회할 수 있습니다.
-         */
-
-    }
-
-    @DisplayName("예약 가능 좌석 조회 API")
-    @Test
-    public void getAvailableSeat() throws Exception {
-        /*
-            날짜 정보를 입력받아 예약가능한 좌석정보를 조회할 수 있습니다.
-            좌석 정보는 1 ~ 50 까지의 좌석번호로 관리됩니다.
-         */
-
+    @BeforeEach
+    public void initMockMvc() {
+        mockMvc = MockMvcBuilders
+                .standaloneSetup(reservationController)
+                .build();
     }
 
     @DisplayName("좌석 예약 요청 API")
     @Test
-    public void postTempReservationTest() throws Exception {
-        /*
-            - 날짜와 좌석 정보를 입력받아 좌석을 예약 처리하는 API 를 작성합니다.
-            - 좌석 예약과 동시에 해당 좌석은 그 유저에게 약 5분간 임시 배정됩니다. ( 시간은 정책에 따라 자율적으로 정의합니다. )
-            - 배정 시간 내에 결제가 완료되지 않았다면 좌석에 대한 임시 배정은 해제되어야 합니다.
-            - 배정 시간 내에는 다른 사용자는 예약할 수 없어야 합니다.
-         */
+    public void reservationConcertTest() throws Exception {
+        Long reservation_id = 1L;
+        Long user_id = 1L;
+        Long concert_id = 1L;
+        Long seat_id = 1L;
+        Long cost = 80000L;
+        String seat_status = "reserved";
+        LocalDateTime reservation_time = LocalDateTime.now();
+        LocalDateTime expiration_time = LocalDateTime.now().plusMinutes(5);
+        LocalDateTime created_at = LocalDateTime.now();
 
+        ReservationResponseDTO reservation = new ReservationResponseDTO(user_id, concert_id, seat_id, cost, seat_status, reservation_time, expiration_time);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("user_id", "1"); // user_id를 문자열에서 Long으로 변환하여 사용
+
+        when(reservationService.reservationConcert(any(), any())).thenReturn(reservation);
+
+        mockMvc.perform(MockMvcRequestBuilders.patch("/reservation")
+                        .headers(headers)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"concert_id\":0,\"seat_id\":0,\"user_id\":1,\"reservation_time\":\"2024-04-12T06:22:23.226Z\",\"expiration_time\":\"2024-04-12T06:22:23.226Z\"}"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.concert_id").value(concert_id))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.seat_id").value(seat_id))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.cost").value(cost));
     }
 
 
