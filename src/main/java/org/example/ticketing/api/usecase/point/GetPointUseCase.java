@@ -13,7 +13,7 @@ public class GetPointUseCase {
         this.userRepository = userRepository;
     }
 
-    public UserResponseDTO execute(Long user_id){
+    public UserInfo execute(Long user_id){
         return userRepository.findUserByUserId(user_id);
     }
 }

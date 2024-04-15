@@ -1,6 +1,8 @@
 package org.example.ticketing.api.controller;
 
 import org.example.ticketing.api.dto.response.TokenResponseDTO;
+import org.example.ticketing.api.usecase.user.IssueUserTokenUseCase;
+import org.example.ticketing.api.usecase.users.IssueUserTokenUseCaseTest;
 import org.example.ticketing.domain.user.service.TokenService;
 import org.example.ticketing.domain.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +25,7 @@ import static org.mockito.Mockito.when;
 public class UserControllerTest {
     private MockMvc mockMvc;
     @Mock
-    private UserService userService;
+    private IssueUserTokenUseCase issueUserTokenUseCase;
     @Mock
     private TokenService tokenService;
     @InjectMocks
@@ -40,7 +42,7 @@ public class UserControllerTest {
     @Test
     public void issueTokenTest() throws Exception {
         TokenResponseDTO tokenResponseDTO = new TokenResponseDTO("abc-def-ghi/onGoing");
-        when(userService.issueToken(any())).thenReturn(tokenResponseDTO);
+        when(issueUserTokenUseCase.execute(any())).thenReturn(tokenResponseDTO);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/user/token")
                         .contentType(MediaType.APPLICATION_JSON)

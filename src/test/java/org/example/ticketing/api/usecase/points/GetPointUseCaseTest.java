@@ -35,9 +35,9 @@ public class GetPointUseCaseTest {
     @DisplayName("잔액 확인 테스트")
     void amountPointTest() {
         Long user_id = 1L;
-        when(userRepository.findUserByUserId(any())).thenReturn(new UserResponseDTO(user_id, 1000L));
-        UserResponseDTO acturePoint = getPointUseCase.execute(user_id);
-        assertEquals(1000L, acturePoint.point());
+        when(userRepository.findUserByUserId(any())).thenReturn(new UserInfo(user_id, 1000L));
+        UserInfo acturePoint = getPointUseCase.execute(user_id);
+        assertEquals(1000L, acturePoint.getPoint());
     }
 
    

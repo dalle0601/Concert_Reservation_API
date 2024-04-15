@@ -1,6 +1,8 @@
 package org.example.ticketing.domain.user.repository;
 
+import org.example.ticketing.api.dto.response.QueueWaitInfoResponseDTO;
 import org.example.ticketing.domain.user.model.Queue;
+import org.example.ticketing.domain.user.model.projection.QueueWaitInfo;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -15,8 +17,11 @@ public class QueueRepositoryImpl implements QueueRepository{
     }
 
     @Override
-    public Object getQueueOngoingAndWaitInfo() {
-        return queueJpaRepository.getQueueOngoingAndWait();
+    public QueueWaitInfoResponseDTO getQueueOngoingAndWaitInfo() {
+        QueueWaitInfo result = queueJpaRepository.getQueueOngoingAndWait();
+        Long onGoing = result.getOnGoing();
+        Long onWait = result.getOnWait();
+        return new QueueWaitInfoResponseDTO(onGoing, onWait);
     }
 
     @Override

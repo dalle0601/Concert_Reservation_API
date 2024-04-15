@@ -2,45 +2,35 @@ package org.example.ticketing.api.usecase.user;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.example.ticketing.api.dto.request.UserRequestDTO;
+import org.example.ticketing.api.dto.response.QueueWaitInfoResponseDTO;
 import org.example.ticketing.api.dto.response.TokenResponseDTO;
 import org.example.ticketing.api.dto.response.UserResponseDTO;
 import org.example.ticketing.api.usecase.common.UpdateTokenQueueWaitInfo;
 import org.example.ticketing.domain.user.model.UserInfo;
 import org.example.ticketing.domain.user.repository.QueueRepository;
 import org.example.ticketing.domain.user.repository.UserRepository;
+import org.example.ticketing.domain.user.service.QueueService;
+import org.example.ticketing.domain.user.service.UserService;
 import org.springframework.stereotype.Service;
 import java.util.UUID;
 @Service
 public class IssueUserTokenUseCase {
-    private final UserRepository userRepository;
-    private final QueueRepository queueRepository;
+    private final UserService userService;
+    private final QueueService queueService;
     private final UpdateTokenQueueWaitInfo updateTokenQueueWaitInfo;
 
-    public IssueUserTokenUseCase(UserRepository userRepository, QueueRepository queueRepository, UpdateTokenQueueWaitInfo updateTokenQueueWaitInfo) {
-        this.userRepository = userRepository;
-        this.queueRepository = queueRepository;
+    public IssueUserTokenUseCase(UserService userService, QueueService queueService, UpdateTokenQueueWaitInfo updateTokenQueueWaitInfo) {
+        this.userService = userService;
+        this.queueService = queueService;
         this.updateTokenQueueWaitInfo = updateTokenQueueWaitInfo;
     }
 
     public TokenResponseDTO execute(UserRequestDTO userRequestDTO) {
-        /*
-            토큰 발급 처음 요청 (user_id)
-            # 1 > UserInfo table 에서 user_id 조회
-                    > user_id 있으면 다음스텝
-                    > user_id 없으면 UserInfo table insert [ userRepository.joinUser(userRequestDTO.user_id()) ]
-
-            # 2 > Queue table 에서 대기열 정보 생성 및 user_id, status 정보<onGoing or onWait> insert or update
-
-            # 3 > Token table 에 user_id, token 정보<uuid + / + status> insert or update
-
-            # 4 loop > polling 이용한 Queue Table 대기열 정보 최신화 및 그에 따른 token 정보값 Token table update
-         */
-
         // # 1 > UserInfo table 에서 user_id 조회
         if(findUser(userRequestDTO.user_id()) == null) {
             // 없으면 User table에 insert 후
             // user_id 와 token을 insert or update
-            UserInfo newUser = userRepository.joinUser(userRequestDTO.user_id());
+            UserInfo newUser = userService.joinUser(userRequestDTO);
         }
 
         // # 2 > Queue table 에서 대기열 정보 생성 및 insert or update
@@ -55,15 +45,16 @@ public class IssueUserTokenUseCase {
         status = onGoing, onWait 상태인 갯수 가져올 메소드
      */
     private String tokenWithWaitInfo(String userUUID) {
-        Object[] waitInfo = (Object[]) queueRepository.getQueueOngoingAndWaitInfo();
-        if((Long)waitInfo[0] < 3) {
+        QueueWaitInfoResponseDTO waitInfo = queueService.findQueueOngoingAndWaitInfo();
+        if(waitInfo.onGoing() < 3) {
             return userUUID + "/onGoing";
         } else {
-            return userUUID + "/onWait/" + waitInfo[1].toString();
+            return userUUID + "/onWait/" + waitInfo.onWait().toString();
         }
     }
 
-    private UserResponseDTO findUser(Long user_id) {
-        return userRepository.findUserByUserId(user_id);
+    private UserInfo findUser(Long user_id) {
+        UserRequestDTO userRequestDTO = new UserRequestDTO(user_id);
+        return userService.findUserInfo(userRequestDTO);
     }
 }

@@ -34,8 +34,13 @@ public class UserInfo {
     public UserInfo() {}
 
     @Builder
-    public UserInfo(Long user_id) {
-        this.userId = user_id;
+    public UserInfo(Long userId) {
+        this.userId = userId;
+    }
+
+    public UserInfo(Long userId, Long point) {
+        this.userId = userId;
+        this.point = point;
     }
 
 

@@ -21,12 +21,11 @@ public class UserRepositoryImpl implements UserRepository{
     @Override
     public UserInfo joinUser(Long user_id) {
         return userJpaRepository.save(UserInfo.builder()
-                .user_id(user_id).build());
+                .userId(user_id).build());
     }
     @Override
-    public UserResponseDTO findUserByUserId(Long user_id) {
+    public UserInfo findUserByUserId(Long user_id) {
         Optional<UserInfo> userOptional = userJpaRepository.findByUserId(user_id);
-        return userOptional.map(userInfo -> new UserResponseDTO(userInfo.getUserId(), userInfo.getPoint()))
-                .orElse(null);
+        return userOptional.orElse(null);
     }
 }

@@ -5,6 +5,7 @@ import org.example.ticketing.api.dto.request.PointRequestDTO;
 import org.example.ticketing.api.dto.response.PointResponseDTO;
 import org.example.ticketing.api.dto.response.UserResponseDTO;
 import org.example.ticketing.domain.concert.service.ConcertService;
+import org.example.ticketing.domain.user.model.UserInfo;
 import org.example.ticketing.domain.user.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +23,10 @@ public class PointController {
 
     @Operation(summary = "포인트 잔액 조회")
     @GetMapping("/point/{user_id}")
-    public ResponseEntity<UserResponseDTO> getUserPoint(@PathVariable Long user_id) {
-        UserResponseDTO userResponseDTO = userService.getPoint(user_id);
+    public ResponseEntity<UserInfo> getUserPoint(@PathVariable Long user_id) {
+        UserInfo userInfo = userService.getPoint(user_id);
 
-        return new ResponseEntity<>(userResponseDTO, HttpStatus.OK);
+        return new ResponseEntity<>(userInfo, HttpStatus.OK);
     }
 
     @Operation(summary = "포인트 충전")

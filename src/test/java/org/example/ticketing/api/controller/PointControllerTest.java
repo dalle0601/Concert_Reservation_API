@@ -2,6 +2,7 @@ package org.example.ticketing.api.controller;
 
 import org.example.ticketing.api.dto.response.UserResponseDTO;
 import org.example.ticketing.api.usecase.point.GetPointUseCase;
+import org.example.ticketing.domain.user.model.UserInfo;
 import org.example.ticketing.domain.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -50,10 +51,10 @@ public class PointControllerTest {
     public void getPointAmountTest() throws Exception {
         Long user_id = 1L;
         Long point = 5000L;
-        when(userService.getPoint(any())).thenReturn(new UserResponseDTO(user_id, point));
+        when(userService.getPoint(any())).thenReturn(new UserInfo());
         mockMvc.perform(MockMvcRequestBuilders.get("/point/1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.user_id").value(user_id))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.userId").value(user_id))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.point").value(point));
     }
 
