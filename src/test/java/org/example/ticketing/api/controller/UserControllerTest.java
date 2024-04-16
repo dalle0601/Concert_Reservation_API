@@ -1,10 +1,10 @@
 package org.example.ticketing.api.controller;
 
+import org.example.ticketing.api.dto.response.QueueResponseDTO;
 import org.example.ticketing.api.dto.response.TokenResponseDTO;
-import org.example.ticketing.api.usecase.user.IssueUserTokenUseCase;
-import org.example.ticketing.api.usecase.users.IssueUserTokenUseCaseTest;
+import org.example.ticketing.api.usecase.user.CheckTokenUseCase;
+import org.example.ticketing.api.usecase.user.EnterQueueUseCase;
 import org.example.ticketing.domain.user.service.TokenService;
-import org.example.ticketing.domain.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,6 +18,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.time.LocalDateTime;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -25,9 +27,9 @@ import static org.mockito.Mockito.when;
 public class UserControllerTest {
     private MockMvc mockMvc;
     @Mock
-    private IssueUserTokenUseCase issueUserTokenUseCase;
+    private EnterQueueUseCase enterQueueUseCase;
     @Mock
-    private TokenService tokenService;
+    private CheckTokenUseCase checkTokenUseCase;
     @InjectMocks
     private UserController userController;
 
@@ -38,28 +40,30 @@ public class UserControllerTest {
                 .build();
     }
 
-    @DisplayName("userToken 발급 테스트")
+    @DisplayName("유저 대기열 진입 요청 테스트")
     @Test
-    public void issueTokenTest() throws Exception {
-        TokenResponseDTO tokenResponseDTO = new TokenResponseDTO("abc-def-ghi/onGoing");
-        when(issueUserTokenUseCase.execute(any())).thenReturn(tokenResponseDTO);
+    public void enterQueueTest() throws Exception {
+        QueueResponseDTO queueResponseDTO = new QueueResponseDTO("대기중입니다.", 19L, null, null);
+        when(enterQueueUseCase.execute(any())).thenReturn(queueResponseDTO);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/user/token")
+        mockMvc.perform(MockMvcRequestBuilders.post("/user/queue/enter")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{ \"user_id\": 1}"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.token").value(tokenResponseDTO.token()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("대기중입니다."))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.waitCount").value(19L));
     }
 
-    @DisplayName("userToken 대기열 조회 테스트")
+    @DisplayName("유저 토큰 확인 요청")
     @Test
     public void confirmTokenTest() throws Exception {
-        TokenResponseDTO tokenResponseDTO = new TokenResponseDTO("abc-def-ghi/onGoing");
+        TokenResponseDTO tokenResponseDTO = new TokenResponseDTO("유효한 토큰입니다.", "abcd-efgh-ijkl", LocalDateTime.now().plusMinutes(5));
 
-        when(tokenService.checkToken(any())).thenReturn(tokenResponseDTO);
+        when(checkTokenUseCase.execute(any())).thenReturn(tokenResponseDTO);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/user/token/check/1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.token").value(tokenResponseDTO.token()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("유효한 토큰입니다."))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.token").value("abcd-efgh-ijkl"));
     }
 }

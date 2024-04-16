@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface QueueRepository {
-    QueueWaitInfoResponseDTO getQueueOngoingAndWaitInfo();
-    Optional<Queue> findByUserId(Long user_id);
-    Queue queueInsertOrUpdate(Long user_id, String status);
-    void updateQueueStatus(Long user_id, String status);
+    Optional<Queue> findByUserId(Long userId);
+    Queue enterQueue(Long userId);
+    Long findQueueCount();
+    void deleteQueue(Long userId) throws Exception;
 }

@@ -6,7 +6,6 @@ import org.example.ticketing.domain.user.model.projection.QueueWaitInfo;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -17,35 +16,44 @@ public class QueueRepositoryImpl implements QueueRepository{
     }
 
     @Override
-    public QueueWaitInfoResponseDTO getQueueOngoingAndWaitInfo() {
-        QueueWaitInfo result = queueJpaRepository.getQueueOngoingAndWait();
-        Long onGoing = result.getOnGoing();
-        Long onWait = result.getOnWait();
-        return new QueueWaitInfoResponseDTO(onGoing, onWait);
-    }
-
-    @Override
     public Optional<Queue> findByUserId(Long user_id) {
         return queueJpaRepository.findByUserId(user_id);
     }
 
     @Override
-    public Queue queueInsertOrUpdate(Long user_id, String status) {
-        Optional<Queue> existingQueueOptional = queueJpaRepository.findByUserId(user_id);
+    public Queue enterQueue(Long userId) {
+        Queue queue = new Queue(userId, LocalDateTime.now());
+        return queueJpaRepository.save(queue);
+    }
 
-        if (existingQueueOptional.isPresent()) {
-            Queue existingQueue = existingQueueOptional.get();
-            existingQueue = new Queue(existingQueue.getQueueId(), user_id, status, LocalDateTime.now(), existingQueue.getCreatedAt());
-            return queueJpaRepository.save(existingQueue);
-        } else {
-            LocalDateTime nowDate = LocalDateTime.now();
-            Queue newQueue = new Queue(user_id, status, nowDate, nowDate);
-            return queueJpaRepository.save(newQueue); // 새로운 엔티티 저장
-        }
+//    @Override
+//    public Queue queueInsertOrUpdate(Long user_id, String status) {
+//        Optional<Queue> existingQueueOptional = queueJpaRepository.findByUserId(user_id);
+//
+//        if (existingQueueOptional.isPresent()) {
+//            Queue existingQueue = existingQueueOptional.get();
+//            existingQueue = new Queue(existingQueue.getQueueId(), user_id, LocalDateTime.now());
+//            return queueJpaRepository.save(existingQueue);
+//        } else {
+//            LocalDateTime nowDate = LocalDateTime.now();
+//            Queue newQueue = new Queue(user_id, nowDate);
+//            return queueJpaRepository.save(newQueue); // 새로운 엔티티 저장
+//        }
+//    }
+
+    @Override
+    public Long findQueueCount() {
+        return queueJpaRepository.findQueueCount();
     }
 
     @Override
-    public void updateQueueStatus(Long user_id, String status) {
-
+    public void deleteQueue(Long userId) throws Exception {
+        Optional<Queue> deleteValue = queueJpaRepository.findByUserId(userId);
+        if(deleteValue.isPresent()) {
+            queueJpaRepository.delete(deleteValue.get());
+        } else {
+            throw new Exception("대기열이 존재하지 않습니다.");
+        }
     }
+
 }

@@ -11,10 +11,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface QueueJpaRepository extends JpaRepository<Queue, Long> {
-    @Query("SELECT COALESCE(SUM(CASE WHEN status='onGoing' THEN 1 ELSE 0 END), 0) as onGoing, " +
-            "COALESCE(SUM(CASE WHEN status='onWait' THEN 1 ELSE 0 END), 0) as onWait FROM Queue")
-    QueueWaitInfo getQueueOngoingAndWait();
 
     @Query("SELECT q FROM Queue q WHERE q.userId = :userId")
     Optional<Queue> findByUserId(@Param("userId") Long userId);
+
+
+    @Query("SELECT COUNT(*) as queueCount FROM Queue")
+    Long findQueueCount();
 }

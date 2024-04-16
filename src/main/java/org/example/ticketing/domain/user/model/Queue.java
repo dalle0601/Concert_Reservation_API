@@ -19,29 +19,19 @@ public class Queue {
     @Column(name = "USER_ID")
     private Long userId;
 
-    @Column(name = "STATUS")
-    private String status;
-
     @Column(name = "UPDATED_AT")
     private LocalDateTime updatedAt;
 
-    @Column(name = "CREATED_AT")
-    private LocalDateTime createdAt;
-
     public Queue() {}
     @Builder
-    public Queue(Long user_id, String status, LocalDateTime updated_at, LocalDateTime created_at) {
+    public Queue(Long user_id, LocalDateTime updated_at) {
         this.userId = user_id;
-        this.status = status;
         this.updatedAt = updated_at;
-        this.createdAt = created_at;
     }
-    public Queue(Long queue_id, Long user_id, String status, LocalDateTime updated_at, LocalDateTime created_at) {
+    public Queue(Long queue_id, Long user_id, LocalDateTime updated_at) {
         this.queueId = queue_id;
         this.userId = user_id;
-        this.status = status;
         this.updatedAt = updated_at;
-        this.createdAt = created_at;
     }
 }
 

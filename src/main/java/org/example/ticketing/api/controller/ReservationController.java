@@ -21,10 +21,10 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
-    @Operation(summary = "좌석 예약")
-    @PatchMapping("/reservation")
-    public ResponseEntity<ReservationResponseDTO> reserve(@RequestHeader("user_id") Long user_id, @RequestBody ReservationRequestDTO reservationRequestDTO) {
-        UserRequestDTO userRequestDTO = new UserRequestDTO(user_id);
-        return ResponseEntity.status(HttpStatus.OK).body(reservationService.reservationConcert(userRequestDTO, reservationRequestDTO));
-    }
+//    @Operation(summary = "좌석 예약")
+//    @PatchMapping("/reservation")
+//    public ResponseEntity<ReservationResponseDTO> reserve(@RequestHeader("user_id") Long user_id, @RequestBody ReservationRequestDTO reservationRequestDTO) {
+//        UserRequestDTO userRequestDTO = new UserRequestDTO(user_id);
+//        return ResponseEntity.status(HttpStatus.OK).body(reservationService.reservationConcert(userRequestDTO, reservationRequestDTO));
+//    }
 }

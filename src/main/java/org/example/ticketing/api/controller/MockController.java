@@ -14,11 +14,16 @@ import java.util.List;
 
 @RestController
 public class MockController {
-    @PostMapping("/mock/user/token")
-    public ResponseEntity<TokenResponseDTO> issueUserToken (@RequestBody UserRequestDTO userRequestDTO) {
+    @PostMapping("/mock/user/queue/enter")
+    public String issueUserToken (@RequestBody UserRequestDTO userRequestDTO) {
         // {"user_id": "test3"}
-        TokenResponseDTO tokenResponseDTO = new TokenResponseDTO(userRequestDTO.user_id() + "+UUID+대기열정보");
-        return new ResponseEntity<>(tokenResponseDTO, HttpStatus.OK);
+        return """
+                {
+                "message" : "대기중 입니다.",
+                 "waitCount" : 5,
+                 "token" : null,
+                 "expireTime" : null
+                """;
     }
 
     @GetMapping("/mock/reservation/date")

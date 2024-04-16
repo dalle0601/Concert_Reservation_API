@@ -1,5 +1,6 @@
 package org.example.ticketing.domain.user.service;
 
+import jakarta.transaction.Transactional;
 import org.example.ticketing.api.dto.response.QueueWaitInfoResponseDTO;
 import org.example.ticketing.domain.user.model.Queue;
 import org.example.ticketing.domain.user.repository.QueueRepository;
@@ -13,7 +14,18 @@ public class QueueService {
         this.queueRepository = queueRepository;
     }
 
-    public QueueWaitInfoResponseDTO findQueueOngoingAndWaitInfo() {
-        return queueRepository.getQueueOngoingAndWaitInfo();
+    public Queue findQueueInfo(Long userId) {
+        return queueRepository.findByUserId(userId).orElse(null);
+    }
+    @Transactional
+    public Queue enterQueue(Long userId) {
+        return queueRepository.enterQueue(userId);
+    }
+    public Long findQueueCount() {
+        return queueRepository.findQueueCount();
+    }
+    @Transactional
+    public void deleteQueue(Long userId) throws Exception {
+        queueRepository.deleteQueue(userId);
     }
 }

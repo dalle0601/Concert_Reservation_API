@@ -22,27 +22,22 @@ public class Token {
     @Column(name = "TOKEN_VALUE")
     private String tokenValue;
 
-    @Column(name = "UDATED_AT")
-    private LocalDateTime updatedAt;
-
-    @Column(name = "CREATED_AT")
-    private LocalDateTime createdAt;
+    @Column(name = "EXPIRED_AT")
+    private LocalDateTime expiredAt;
 
     public Token() {}
 
     @Builder
-    public Token( Long user_id, String token_value, LocalDateTime updated_at, LocalDateTime created_at) {
+    public Token( Long user_id, String token_value, LocalDateTime expiredAt) {
         this.userId = user_id;
         this.tokenValue = token_value;
-        this.updatedAt = updated_at;
-        this.createdAt = created_at;
+        this.expiredAt = expiredAt;
     }
-    public Token(Long token_id, Long user_id, String token_value, LocalDateTime updated_at, LocalDateTime created_at) {
+    public Token(Long token_id, Long user_id, String token_value, LocalDateTime expiredAt) {
         this.tokenId = token_id;
         this.userId = user_id;
         this.tokenValue = token_value;
-        this.updatedAt = updated_at;
-        this.createdAt = created_at;
+        this.expiredAt = expiredAt;
     }
 }
 
