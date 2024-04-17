@@ -27,27 +27,24 @@ public class MockController {
     }
 
     @GetMapping("/mock/reservation/date")
-    public ResponseEntity<List<ConcertResponseDTO>> getAvailableDate() {
-        List<ConcertResponseDTO> concertList = new ArrayList<>();
-        concertList.add(new ConcertResponseDTO(1L, "첫번째콘서트", LocalDateTime.of(2024, 4, 28, 16, 0), 200L, 17L));
-        concertList.add(new ConcertResponseDTO(2L, "두번째콘서트", LocalDateTime.of(2024, 4, 28, 20, 30), 150L, 20L));
-        concertList.add(new ConcertResponseDTO(3L, "세번째콘서트", LocalDateTime.of(2024, 5, 8, 17, 0), 210L, 5L));
-        concertList.add(new ConcertResponseDTO(4L, "네번째콘서트", LocalDateTime.of(2024, 5, 23, 16, 30), 880L, 112L));
-
-        return new ResponseEntity<>(concertList, HttpStatus.OK);
+    public String getAvailableDate() {
+//        List<ConcertResponseDTO> concertList = new ArrayList<>();
+//        concertList.add(new ConcertResponseDTO(1L, "첫번째콘서트", LocalDateTime.of(2024, 4, 28, 16, 0), 200L, 17L));
+//        concertList.add(new ConcertResponseDTO(2L, "두번째콘서트", LocalDateTime.of(2024, 4, 28, 20, 30), 150L, 20L));
+//        concertList.add(new ConcertResponseDTO(3L, "세번째콘서트", LocalDateTime.of(2024, 5, 8, 17, 0), 210L, 5L));
+//        concertList.add(new ConcertResponseDTO(4L, "네번째콘서트", LocalDateTime.of(2024, 5, 23, 16, 30), 880L, 112L));
+//
+//        return new ResponseEntity<>(concertList, HttpStatus.OK);
+        return """
+        
+                """;
     }
 
     @GetMapping("/mock/reservation/{concert_id}/seat")
-    public ResponseEntity<List<SeatResponseDTO>> getAvailableSeat(@PathVariable Long concert_id) {
-        List<SeatResponseDTO> seatList = new ArrayList<>();
-        for(Long i = 0L; i < 3L; i++){
-            seatList.add(new SeatResponseDTO( i, "A0"+(i+1), 70000L, "Available"));
-        }
-        seatList.add(new SeatResponseDTO(116L, "B13", 80000L, "Available"));
-        seatList.add(new SeatResponseDTO( 201L, "S05", 110000L, "Available"));
-
-
-        return new ResponseEntity<>(seatList, HttpStatus.OK);
+    public String getAvailableSeat(@PathVariable Long concert_id) {
+        return """
+                
+                """;
     }
 
     @PostMapping("/mock/reservation")

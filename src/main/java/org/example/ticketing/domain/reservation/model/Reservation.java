@@ -24,25 +24,25 @@ public class Reservation {
     @Column(name = "SEAT_ID")
     private Long seatId;
 
+    @Column(name = "STATUS")
+    private String status;
+
     @Column(name = "RESERVATION_TIME")
     private LocalDateTime reservationTime;
 
     @Column(name = "EXPIRATION_TIME")
     private LocalDateTime expirationTime;
 
-    @Column(name = "CREATED_AT")
-    private LocalDateTime createdAt;
-
     public Reservation() {}
     @Builder
-    public Reservation( Long reservation_id, Long user_id, Long concert_id, Long seat_id, LocalDateTime reservation_time, LocalDateTime expiration_time, LocalDateTime created_at) {
+    public Reservation( Long reservation_id, Long user_id, Long concert_id, Long seat_id, String status, LocalDateTime reservation_time, LocalDateTime expiration_time) {
         this.reservationId = reservation_id;
         this.userId = user_id;
         this.concertId = concert_id;
         this.seatId = seat_id;
+        this.status = status;
         this.reservationTime = reservation_time;
         this.expirationTime = expiration_time;
-        this.createdAt = created_at;
     }
 
     public Reservation(Long user_id, Long concert_id, Long seat_id, LocalDateTime reservation_time, LocalDateTime expiration_time) {

@@ -6,25 +6,26 @@ import org.example.ticketing.api.usecase.concert.GetConcertAvailableDateUseCase;
 import org.example.ticketing.api.usecase.concert.GetConcertAvailableSeatUseCase;
 import org.example.ticketing.domain.concert.model.Concert;
 import org.example.ticketing.domain.concert.model.Seat;
+import org.example.ticketing.domain.concert.repository.ConcertRepository;
+import org.example.ticketing.domain.reservation.model.Reservation;
+import org.example.ticketing.domain.reservation.repository.ReservationRepository;
+import org.example.ticketing.domain.reservation.service.ReservationService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class ConcertService {
-    private final GetConcertAvailableDateUseCase getConcertAvailableDateUseCase;
-    private final GetConcertAvailableSeatUseCase getConcertAvailableSeatUseCase;
+    private final ConcertRepository concertRepository;
 
-    public ConcertService(GetConcertAvailableDateUseCase getConcertAvailableDateUseCase, GetConcertAvailableSeatUseCase getConcertAvailableSeatUseCase) {
-        this.getConcertAvailableDateUseCase = getConcertAvailableDateUseCase;
-        this.getConcertAvailableSeatUseCase = getConcertAvailableSeatUseCase;
+    public ConcertService(ConcertRepository concertRepository) {
+        this.concertRepository = concertRepository;
     }
-
-    public List<Concert> getConcertDate(UserRequestDTO userRequestDTO) {
-        return getConcertAvailableDateUseCase.execute(userRequestDTO);
+    public List<Concert> getConcertDate(LocalDateTime currentDate) {
+        return concertRepository.getConcertDateByToday(currentDate);
     }
-
-    public List<Seat> getConcertSeat(UserRequestDTO userRequestDTO, SeatReqeustDTO seatReqeustDTO) {
-        return getConcertAvailableSeatUseCase.execute(userRequestDTO, seatReqeustDTO);
+    public List<Concert> findByConcertId(Long concertId) {
+        return concertRepository.findByConcertId(concertId);
     }
 }

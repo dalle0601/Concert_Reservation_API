@@ -5,17 +5,11 @@ import org.example.ticketing.api.dto.request.UserRequestDTO;
 import org.example.ticketing.api.dto.response.ReservationResponseDTO;
 import org.example.ticketing.api.usecase.common.ChangeSeatStatus;
 import org.example.ticketing.domain.reservation.repository.ReservationRepository;
+import org.example.ticketing.domain.reservation.service.ReservationService;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MakeReservationUseCase {
-    private final ReservationRepository reservationRepository;
-    private final ChangeSeatStatus changeSeatStatus;
-
-    public MakeReservationUseCase(ReservationRepository reservationRepository, ChangeSeatStatus changeSeatStatus) {
-        this.reservationRepository = reservationRepository;
-        this.changeSeatStatus = changeSeatStatus;
-    }
 
     public ReservationResponseDTO execute(UserRequestDTO userRequestDTO, ReservationRequestDTO reservationRequestDTO) {
 //        TokenResponseDTO tokenResponseDTO = confirmQueueUseCase.execute(userRequestDTO);

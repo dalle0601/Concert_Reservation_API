@@ -20,8 +20,8 @@ public class MakeReservationUseCaseTest {
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.openMocks(this);
-        makeReservationUseCase = new MakeReservationUseCase(reservationRepository, changeSeatStatus);
+//        MockitoAnnotations.openMocks(this);
+//        makeReservationUseCase = new MakeReservationUseCase(reservationRepository, changeSeatStatus);
     }
 
     @DisplayName("토큰 확인 후 성공하면 콘서트 ID, 선택된 날짜,좌석으로 예약신청 한다")

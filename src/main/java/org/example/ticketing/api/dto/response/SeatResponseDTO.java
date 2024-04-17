@@ -1,11 +1,9 @@
 package org.example.ticketing.api.dto.response;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 public record SeatResponseDTO (
-        Long seat_id,
-        String seat_number,
-        Long cost,
-        String seat_status
+        String message,
+        List<SeatDTO> seatList
 ){
 }
