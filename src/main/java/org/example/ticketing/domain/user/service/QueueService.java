@@ -1,10 +1,14 @@
 package org.example.ticketing.domain.user.service;
 
+import jakarta.persistence.LockModeType;
 import jakarta.transaction.Transactional;
-import org.example.ticketing.api.dto.response.QueueWaitInfoResponseDTO;
 import org.example.ticketing.domain.user.model.Queue;
 import org.example.ticketing.domain.user.repository.QueueRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class QueueService {
@@ -21,11 +25,15 @@ public class QueueService {
     public Queue enterQueue(Long userId) {
         return queueRepository.enterQueue(userId);
     }
-    public Long findQueueCount() {
-        return queueRepository.findQueueCount();
+    public Long findQueueCount(LocalDateTime myTime) {
+        return queueRepository.findQueueCount(myTime);
     }
     @Transactional
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     public void deleteQueue(Long userId) throws Exception {
         queueRepository.deleteQueue(userId);
+    }
+    public List<Queue> getUsersToRemove(int count) {
+        return queueRepository.findFirstNOrderByUpdatedAtAsc(count);
     }
 }

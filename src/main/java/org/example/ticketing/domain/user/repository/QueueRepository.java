@@ -10,6 +10,7 @@ import java.util.Optional;
 public interface QueueRepository {
     Optional<Queue> findByUserId(Long userId);
     Queue enterQueue(Long userId);
-    Long findQueueCount();
+    Long findQueueCount(LocalDateTime myTime);
     void deleteQueue(Long userId) throws Exception;
+    List<Queue> findFirstNOrderByUpdatedAtAsc(int count);
 }

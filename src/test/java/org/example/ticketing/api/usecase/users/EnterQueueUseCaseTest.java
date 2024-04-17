@@ -48,8 +48,6 @@ public class EnterQueueUseCaseTest {
 
         verify(userService, times(1)).findUserInfo(userRequestDTO);
         verify(userService, times(1)).joinUser(userRequestDTO);
-        verify(queueService, times(1)).findQueueInfo(userInfo.getUserId());
-        verify(queueService, times(1)).enterQueue(userRequestDTO.user_id());
         verify(updateQueueUseCase, times(1)).execute(userRequestDTO);
     }
 
@@ -68,8 +66,6 @@ public class EnterQueueUseCaseTest {
 
         verify(userService, times(1)).findUserInfo(userRequestDTO);
         verify(userService, never()).joinUser(userRequestDTO);
-        verify(queueService, times(1)).findQueueInfo(userInfo.getUserId());
-        verify(queueService, never()).enterQueue(userRequestDTO.user_id());
         verify(updateQueueUseCase, times(1)).execute(userRequestDTO);
     }
 

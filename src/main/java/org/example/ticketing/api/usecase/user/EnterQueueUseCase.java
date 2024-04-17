@@ -25,10 +25,6 @@ public class EnterQueueUseCase {
             userInfo = userService.joinUser(userRequestDTO);
         }
 
-//        Queue queueInfo = queueService.findQueueInfo(userInfo.getUserId());
-//        if( queueInfo == null ) {
-//            queueService.enterQueue(userRequestDTO.user_id());
-//        }
         return updateQueueUseCase.execute(userRequestDTO);
     }
 

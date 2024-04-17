@@ -6,6 +6,7 @@ import org.example.ticketing.domain.user.model.projection.QueueWaitInfo;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -42,8 +43,8 @@ public class QueueRepositoryImpl implements QueueRepository{
 //    }
 
     @Override
-    public Long findQueueCount() {
-        return queueJpaRepository.findQueueCount();
+    public Long findQueueCount(LocalDateTime myTime) {
+        return queueJpaRepository.findQueueCount(myTime);
     }
 
     @Override
@@ -54,6 +55,11 @@ public class QueueRepositoryImpl implements QueueRepository{
         } else {
             throw new Exception("대기열이 존재하지 않습니다.");
         }
+    }
+
+    @Override
+    public List<Queue> findFirstNOrderByUpdatedAtAsc(int count) {
+        return queueJpaRepository.findFirstNOrderByUpdatedAtAsc(count);
     }
 
 }

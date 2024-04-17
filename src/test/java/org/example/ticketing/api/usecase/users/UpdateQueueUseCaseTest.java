@@ -37,7 +37,7 @@ public class UpdateQueueUseCaseTest {
 
         when(tokenService.findTokenCount()).thenReturn(10L);
         when(queueService.findQueueInfo(any())).thenReturn(null);
-        when(queueService.findQueueCount()).thenReturn(2L);
+        when(queueService.findQueueCount(any())).thenReturn(2L);
         QueueResponseDTO responseDTO = updateQueueUseCase.execute(new UserRequestDTO(userId));
 
         assertEquals("대기중입니다.", responseDTO.message());
@@ -52,7 +52,7 @@ public class UpdateQueueUseCaseTest {
 
         when(tokenService.findTokenCount()).thenReturn(9L);
         when(queueService.findQueueInfo(any())).thenReturn(null);
-        when(queueService.findQueueCount()).thenReturn(0L);
+        when(queueService.findQueueCount(any())).thenReturn(0L);
         QueueResponseDTO responseDTO = updateQueueUseCase.execute(new UserRequestDTO(userId));
 
         assertEquals("유효토큰이 발급되었습니다.", responseDTO.message());
@@ -66,7 +66,7 @@ public class UpdateQueueUseCaseTest {
 
         when(tokenService.findTokenCount()).thenReturn(9L);
         when(queueService.findQueueInfo(any())).thenReturn(null);
-        when(queueService.findQueueCount()).thenReturn(2L);
+        when(queueService.findQueueCount(any())).thenReturn(2L);
         QueueResponseDTO responseDTO = updateQueueUseCase.execute(new UserRequestDTO(userId));
 
         assertEquals("대기중입니다.", responseDTO.message());

@@ -11,6 +11,6 @@ public interface TokenRepository {
     Long findTokenCount();
     Token enterToken(Token tokenValue);
     List<Token> findByExpiredAtBefore(LocalDateTime currentTime);
-    void deleteAll(List<Token> tokens);
+    void deleteToken(List<Token> tokens);
 
 }

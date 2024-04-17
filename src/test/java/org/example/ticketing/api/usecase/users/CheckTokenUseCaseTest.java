@@ -38,7 +38,7 @@ public class CheckTokenUseCaseTest {
     @Test
     public void executeTest_availableToken() throws Exception {
         UserRequestDTO userRequestDTO = new UserRequestDTO(1L);
-        Token token = new Token(1L, "tokenValue", LocalDateTime.now().plusMinutes(5));
+        Token token = new Token(1L, "tokenValue", LocalDateTime.now().plusMinutes(5), true);
 
         when(tokenService.checkToken(userRequestDTO)).thenReturn(token);
 

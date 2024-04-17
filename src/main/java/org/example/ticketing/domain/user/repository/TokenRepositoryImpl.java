@@ -38,7 +38,7 @@ public class TokenRepositoryImpl implements TokenRepository{
     }
 
     @Override
-    public void deleteAll(List<Token> tokens) {
-        tokenJpaRepository.deleteAll(tokens);
+    public void deleteToken(List<Token> tokens) {
+        tokenJpaRepository.deleteToken(tokens);
     }
 }
