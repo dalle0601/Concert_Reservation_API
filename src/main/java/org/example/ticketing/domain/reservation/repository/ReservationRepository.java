@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ReservationRepository {
-    Reservation reservationConcert(Reservation reservation);
-
     List<Reservation> findReservedOrTempSeat(String[] statuses, Long concertId);
+    Reservation save(Reservation reservation);
+    Reservation findNonAvailableByConcertIdAndSeatId(Long concertId, Long seatId);
 }

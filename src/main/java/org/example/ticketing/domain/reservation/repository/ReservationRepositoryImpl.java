@@ -13,12 +13,16 @@ public class ReservationRepositoryImpl implements ReservationRepository{
         this.reservationJpaRepository = reservationJpaRepository;
     }
     @Override
-    public Reservation reservationConcert(Reservation reservation) {
+    public List<Reservation> findReservedOrTempSeat(String[] statuses, Long concertId) {
+        return reservationJpaRepository.findByStatusInAndConcertId(statuses, concertId);
+    }
+    @Override
+    public Reservation save(Reservation reservation) {
         return reservationJpaRepository.save(reservation);
     }
 
     @Override
-    public List<Reservation> findReservedOrTempSeat(String[] statuses, Long concertId) {
-        return reservationJpaRepository.findByStatusInAndConcertId(statuses, concertId);
+    public Reservation findNonAvailableByConcertIdAndSeatId(Long concertId, Long seatId) {
+        return reservationJpaRepository.findNonAvailableByConcertIdAndSeatId(concertId, seatId);
     }
 }

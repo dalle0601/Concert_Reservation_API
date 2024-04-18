@@ -16,11 +16,16 @@ public class ReservationService {
     public ReservationService(ReservationRepository reservationRepository) {
         this.reservationRepository = reservationRepository;
     }
-//    public ReservationResponseDTO reservationConcert(UserRequestDTO userRequestDTO, ReservationRequestDTO reservationRequestDTO) {
-//        return makeReservationUseCase.execute(userRequestDTO, reservationRequestDTO);
-//    }
 
     public List<Reservation> findReservedOrTempSeat(String[] statuses, Long concertId) {
         return reservationRepository.findReservedOrTempSeat(statuses, concertId);
+    }
+
+    public Reservation save(Reservation reservation) {
+        return reservationRepository.save(reservation);
+    }
+
+    public Reservation findNonAvailableByConcertIdAndSeatId(Long concertId, Long seatId){
+        return reservationRepository.findNonAvailableByConcertIdAndSeatId(concertId, seatId);
     }
 }

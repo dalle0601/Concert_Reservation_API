@@ -8,8 +8,10 @@ import org.example.ticketing.api.dto.response.TokenResponseDTO;
 import org.example.ticketing.api.usecase.common.ChangeSeatStatus;
 import org.example.ticketing.api.usecase.user.CheckTokenUseCase;
 import org.example.ticketing.domain.concert.model.Concert;
+import org.example.ticketing.domain.reservation.model.Reservation;
 import org.example.ticketing.domain.reservation.repository.ReservationRepository;
 import org.example.ticketing.domain.reservation.service.ReservationService;
+import org.example.ticketing.domain.user.service.TokenService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,61 +20,36 @@ import java.util.List;
 @Service
 public class MakeReservationUseCase {
     private final ReservationService reservationService;
+    private final TokenService tokenService;
     private final CheckTokenUseCase checkTokenUseCase;
 
-    public MakeReservationUseCase(ReservationService reservationService, CheckTokenUseCase checkTokenUseCase) {
+    public MakeReservationUseCase(ReservationService reservationService, TokenService tokenService, CheckTokenUseCase checkTokenUseCase) {
         this.reservationService = reservationService;
+        this.tokenService = tokenService;
         this.checkTokenUseCase = checkTokenUseCase;
     }
 
     public ReservationResponseDTO execute(ReservationRequestDTO reservationRequestDTO) {
+        try {
+            TokenResponseDTO tokenResponseDTO = checkTokenUseCase.execute(new UserRequestDTO(reservationRequestDTO.userId()));
+            String isValidToken = tokenResponseDTO.token();
 
-//        try {
-//            TokenResponseDTO tokenResponseDTO = checkTokenUseCase.execute(new UserRequestDTO(reservationRequestDTO.userId()));
-//            String isValidToken = tokenResponseDTO.token();
-//
-//            if (isValidToken != null) {
-//                // 토큰이 유효한 경우, 콘서트 정보 조회
-//                List<Concert> concertList = concertService.getConcertDate(LocalDateTime.now());
-//                return new ConcertResponseDTO("이용가능한 콘서트 날짜 조회 성공", concertList);
-//            } else {
-//                // 토큰이 유효하지 않은 경우
-//                return new ConcertResponseDTO("토큰이 유효하지 않습니다.", null);
-//            }
-//        } catch (Exception e) {
-//            return new ConcertResponseDTO("콘서트 조회 중 오류가 발생했습니다.", null);
-//        }
-
-//        TokenResponseDTO tokenResponseDTO = confirmQueueUseCase.execute(userRequestDTO);
-//        String checkToken = tokenResponseDTO.token().split("/")[1];
-//
-//        if (checkToken.equals("onGoing")) {
-//            Reservation reservation = new Reservation(reservationRequestDTO.userId(),
-//                                        reservationRequestDTO.concert_id(),
-//                                        reservationRequestDTO.seat_id(),
-//                                        reservationRequestDTO.reservation_time(),
-//                                        reservationRequestDTO.expiration_time());
-//            Reservation reservedData = reservationRepository.reservationConcert(reservation);
-//            Seat reservedSeat = changeSeatStatus.execute(reservationRequestDTO.seat_id(), "reserved");
-//            updateTokenQueueStatus.execute(reservationRequestDTO.userId());
-//
-//            return new ReservationResponseDTO(
-//                    reservedData.getUserId(),
-//                    reservedData.getConcertId(),
-//                    reservedSeat.getSeatId(),
-//                    reservedSeat.getSeatCost(),
-//                    reservedSeat.getSeatStatus(),
-//                    reservedData.getReservationTime(),
-//                    reservedData.getExpirationTime());
-//        } else {
-//            String eMessage = "";
-//            if(checkToken.equals("onWait")) {
-//                eMessage = "현재 " + tokenResponseDTO.token().split("/")[2] + "명 대기상태 입니다.";
-//            } else {
-//                eMessage = "토큰이 만료되었습니다.";
-//            }
-//            throw new IllegalStateException(eMessage);
-//        }
-        return null;
+            Reservation checkReservation = reservationService.findNonAvailableByConcertIdAndSeatId(reservationRequestDTO.concertId(), reservationRequestDTO.seatId());
+            if(checkReservation != null){
+                return new ReservationResponseDTO("해당 좌석은 예약할 수 없습니다.", null);
+            }
+            if (isValidToken != null) {
+                // 토큰이 유효한 경우, 좌석 예약 진행
+                Reservation reservation = reservationService.save(new Reservation(reservationRequestDTO.userId(), reservationRequestDTO.concertId(), reservationRequestDTO.seatId(), "temporary", reservationRequestDTO.cost(), LocalDateTime.now(), LocalDateTime.now().plusMinutes(5)));
+                // 좌석 예약 후 토큰 만료처리
+                tokenService.deleteByUserIdAndUseTrue(isValidToken, false);
+                return new ReservationResponseDTO("좌석 예약 성공", reservation);
+            } else {
+                // 토큰이 유효하지 않은 경우
+                return new ReservationResponseDTO("토큰이 유효하지 않습니다.", null);
+            }
+        } catch (Exception e) {
+            return new ReservationResponseDTO("예약 중 오류가 발생했습니다.", null);
+        }
     }
 }

@@ -22,4 +22,8 @@ public interface TokenJpaRepository extends JpaRepository<Token, Long> {
     @Modifying
     @Query("UPDATE Token t SET t.use = false WHERE t IN :tokens")
     void deleteToken(List<Token> tokens);
+    @Transactional
+    @Modifying
+    @Query("UPDATE Token t SET t.use = :use WHERE t.tokenValue = :tokenValue")
+    void updateUseByTokenValue(String tokenValue, boolean use);
 }

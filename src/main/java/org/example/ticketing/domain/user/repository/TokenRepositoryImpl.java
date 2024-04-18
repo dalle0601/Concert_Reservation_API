@@ -41,4 +41,9 @@ public class TokenRepositoryImpl implements TokenRepository{
     public void deleteToken(List<Token> tokens) {
         tokenJpaRepository.deleteToken(tokens);
     }
+
+    @Override
+    public void deleteByUserIdAndUseTrue(String tokenValue, boolean use) {
+        tokenJpaRepository.updateUseByTokenValue(tokenValue, use);
+    }
 }

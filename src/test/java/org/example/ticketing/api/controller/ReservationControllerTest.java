@@ -1,6 +1,8 @@
 package org.example.ticketing.api.controller;
 
 import org.example.ticketing.api.dto.response.ReservationResponseDTO;
+import org.example.ticketing.api.usecase.reservation.MakeReservationUseCase;
+import org.example.ticketing.domain.reservation.model.Reservation;
 import org.example.ticketing.domain.reservation.service.ReservationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,7 +27,7 @@ import static org.mockito.Mockito.when;
 public class ReservationControllerTest {
     private MockMvc mockMvc;
     @Mock
-    private ReservationService reservationService;
+    private MakeReservationUseCase makeReservationUseCase;
     @InjectMocks
     private ReservationController reservationController;
 
@@ -39,30 +41,27 @@ public class ReservationControllerTest {
     @DisplayName("좌석 예약 요청 API")
     @Test
     public void reservationConcertTest() throws Exception {
-//        Long reservation_id = 1L;
-//        Long userId = 1L;
-//        Long concert_id = 1L;
-//        Long seat_id = 1L;
-//        Long cost = 80000L;
-//        String seat_status = "reserved";
-//        LocalDateTime reservation_time = LocalDateTime.now();
-//        LocalDateTime expiration_time = LocalDateTime.now().plusMinutes(5);
-//        LocalDateTime created_at = LocalDateTime.now();
-//
-//        ReservationResponseDTO reservation = new ReservationResponseDTO(userId, concert_id, seat_id, cost, seat_status, reservation_time, expiration_time);
-//
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.add("userId", "1"); // user_id를 문자열에서 Long으로 변환하여 사용
-//
-//        when(reservationService.reservationConcert(any(), any())).thenReturn(reservation);
-//
-//        mockMvc.perform(MockMvcRequestBuilders.patch("/reservation")
-//                        .headers(headers)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content("{\"concert_id\":0,\"seat_id\":0,\"userId\":1,\"reservation_time\":\"2024-04-12T06:22:23.226Z\",\"expiration_time\":\"2024-04-12T06:22:23.226Z\"}"))
-//                .andExpect(MockMvcResultMatchers.status().isOk())
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.concert_id").value(concert_id))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.seat_id").value(seat_id))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.cost").value(cost));
+        Long userId = 1L;
+        Long concertId = 1L;
+        Long seatId = 1L;
+        Long cost = 50000L;
+        LocalDateTime reservation_time = LocalDateTime.now();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("userId", "1");
+
+        when(makeReservationUseCase.execute(any())).thenReturn(new ReservationResponseDTO("좌석 예약 성공", new Reservation(userId, concertId, seatId, "temporary", 50000L, reservation_time, reservation_time.plusMinutes(5))));
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/reservation")
+                    .headers(headers)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("{\"concertId\":1,\"seatId\":1,\"userId\":1,\"cost\":50000}"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("좌석 예약 성공"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.reservation.seatId").value(seatId))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.reservation.concertId").value(concertId))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.reservation.userId").value(userId))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.reservation.status").value("temporary"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.reservation.cost").value(cost));
     }
 }

@@ -60,10 +60,10 @@ public class GetConcertAvailableSeatUseCaseTest {
         Long concertId = 1L;
         List<Reservation> seatList = new ArrayList<>();
         for(int i = 1; i <= 25; i++){
-            seatList.add(new Reservation((long)i*2, (long)i*2, 1L, (long)i*2, "reserved", LocalDateTime.now(), LocalDateTime.now().plusMinutes(5)));
+            seatList.add(new Reservation((long)i*2, (long)i*2, (long)i*2, "reserved", 50000L, LocalDateTime.now(), LocalDateTime.now().plusMinutes(5)));
         }
         List<Concert> concertList = new ArrayList<>();
-        concertList.add(new Concert(1L, "첫번째콘서트", LocalDateTime.now(), 50L, 20L, LocalDateTime.now()));
+        concertList.add(new Concert(1L, "첫번째콘서트", LocalDateTime.now(), 50L, 25L, LocalDateTime.now()));
 
         when(concertService.findByConcertId(any())).thenReturn(concertList);
         when(checkTokenUseCase.execute(any())).thenReturn(new TokenResponseDTO("유효한 토큰입니다.", "abcd-efgh-ijkl", LocalDateTime.now().plusMinutes(5)));

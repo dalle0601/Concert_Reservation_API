@@ -1,55 +1,63 @@
 package org.example.ticketing.api.usecase.reservations;
 
+import org.example.ticketing.api.dto.request.ReservationRequestDTO;
+import org.example.ticketing.api.dto.response.ReservationResponseDTO;
+import org.example.ticketing.api.dto.response.TokenResponseDTO;
 import org.example.ticketing.api.usecase.common.ChangeSeatStatus;
 import org.example.ticketing.api.usecase.reservation.MakeReservationUseCase;
+import org.example.ticketing.api.usecase.user.CheckTokenUseCase;
+import org.example.ticketing.domain.reservation.model.Reservation;
 import org.example.ticketing.domain.reservation.repository.ReservationRepository;
+import org.example.ticketing.domain.reservation.service.ReservationService;
+import org.example.ticketing.domain.user.service.TokenService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.time.LocalDateTime;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 public class MakeReservationUseCaseTest {
     private MakeReservationUseCase makeReservationUseCase;
+
     @Mock
-    private ReservationRepository reservationRepository;
+    private CheckTokenUseCase checkTokenUseCase;
     @Mock
-    private ChangeSeatStatus changeSeatStatus;
+    private ReservationService reservationService;
+    @Mock
+    private TokenService tokenService;
 
     @BeforeEach
     public void setup() {
-//        MockitoAnnotations.openMocks(this);
-//        makeReservationUseCase = new MakeReservationUseCase(reservationRepository, changeSeatStatus);
+        MockitoAnnotations.openMocks(this);
+        makeReservationUseCase = new MakeReservationUseCase(reservationService, tokenService, checkTokenUseCase);
     }
 
-    @DisplayName("토큰 확인 후 성공하면 콘서트 ID, 선택된 날짜,좌석으로 예약신청 한다")
+    @DisplayName("토큰 확인 후 성공하면 콘서트 ID, 좌석으로 예약신청 한다")
     @Test
-    void postReservationTest() {
-//        Long userId = 1L;
-//        Long concert_id = 1L;
-//        Long seat_id = 1L;
-//        LocalDateTime reservation_time = LocalDateTime.now();
-//        UserRequestDTO userRequestDTO = new UserRequestDTO(userId);
-//        ReservationRequestDTO reservationRequestDTO = new ReservationRequestDTO(userId, concert_id, seat_id, reservation_time, reservation_time.plusMinutes(5));
-//
-//        when(confirmQueueUseCase.execute(any())).thenReturn(new TokenResponseDTO("abcd-efgh-jklm/onGoing"));
-//
-//        Reservation expectedReservation = new Reservation(1L, 1L, 1L, 1L, LocalDateTime.now(), LocalDateTime.now().plusMinutes(5), LocalDateTime.now());
-//        when(reservationRepository.reservationConcert(any())).thenReturn(expectedReservation);
-//
-//        when(changeSeatStatus.execute(any(), any())).thenReturn(new Seat(seat_id, concert_id, "A1", 80000L, "reserved"));
-//        ReservationResponseDTO actualReservation = makeReservationUseCase.execute(userRequestDTO, reservationRequestDTO);
-//
-//        assertAll("Reservation",
-//                () -> assertNotNull(actualReservation),
-//                () -> assertEquals(expectedReservation.getUserId(), actualReservation.userId()),
-//                () -> assertEquals(expectedReservation.getConcertId(), actualReservation.concert_id()),
-//                () -> assertEquals(expectedReservation.getSeatId(), actualReservation.seat_id()),
-//                () -> assertEquals(expectedReservation.getReservationTime(), actualReservation.reservation_time()),
-//                () -> assertEquals(expectedReservation.getExpirationTime(), actualReservation.reservation_deadline())
-//        );
+    void postReservationTest() throws Exception {
+        Long userId = 1L;
+        Long concertId = 1L;
+        Long seatId = 1L;
+        Long cost = 50000L;
+        LocalDateTime reservation_time = LocalDateTime.now();
+        // 토큰 확인 후
+        // 파라미터로 넘겨받은 userId, concertId, seatId 로 예약을 진행하자.
+        when(checkTokenUseCase.execute(any())).thenReturn(new TokenResponseDTO("유효한 토큰입니다.", "abcd-efgh-ijkl", LocalDateTime.now().plusMinutes(5)));
+
+        when(reservationService.save(any())).thenReturn(new Reservation(userId, concertId, seatId, "temporary", cost, reservation_time, reservation_time.plusMinutes(5)));
+
+        ReservationResponseDTO actualValue = makeReservationUseCase.execute(new ReservationRequestDTO(concertId, seatId, userId, cost));
+        assertEquals("좌석 예약 성공", actualValue.message());
+        assertEquals(userId, actualValue.reservation().getUserId());
+        assertEquals(concertId, actualValue.reservation().getConcertId());
+        assertEquals(seatId, actualValue.reservation().getSeatId());
+        assertEquals("temporary", actualValue.reservation().getStatus());
 
     }
 

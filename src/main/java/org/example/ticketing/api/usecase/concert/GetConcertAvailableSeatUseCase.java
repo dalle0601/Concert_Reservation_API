@@ -46,7 +46,7 @@ public class GetConcertAvailableSeatUseCase {
                         allSeat.add(new SeatDTO((long)i, "B"+(i-25), 45000L, "available"));
                     }
                 }
-                String[] statuses = {"reserved", "temp"};
+                String[] statuses = {"reserved", "temporary"};
                 List<Reservation> seatList = reservationService.findReservedOrTempSeat(statuses, concertId);
 
                 List<SeatDTO> availableSeats = allSeat.stream()

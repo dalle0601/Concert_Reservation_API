@@ -113,13 +113,10 @@ public class MockController {
     }
 
     @PostMapping("/mock/reservation")
-    public ResponseEntity<ReservationResponseDTO> tempReservation(@RequestBody ReservationRequestDTO reservationRequestDTO) {
-        // {"concert_id": 3, "seat_id": 116, "cost": 80000, "reservation_time": "2024-04-02T17:30:00"}
-        LocalDateTime time_now = LocalDateTime.now();
-
-        ReservationResponseDTO reservationResponseDTO = new ReservationResponseDTO(1L, reservationRequestDTO.concert_id(), 1L, 116L, "Reserved", time_now, time_now.plusMinutes(5));
-
-        return new ResponseEntity<>(reservationResponseDTO, HttpStatus.OK);
+    public String tempReservation(@RequestBody ReservationRequestDTO reservationRequestDTO) {
+        return """
+                
+                """;
     }
 
     @GetMapping("/mock/point/{userId}")
@@ -133,13 +130,21 @@ public class MockController {
                 """;
     }
 
-//    @PatchMapping("/mock/point/charge")
-//    public ResponseEntity<PointResponseDTO> pointCharge(@RequestBody PointRequestDTO pointRequestDTO) {
-//        LocalDateTime time_now = LocalDateTime.now();
-//        PointResponseDTO pointResponseDTO = new PointResponseDTO(pointRequestDTO.userId(), 5000L+pointRequestDTO.point(), time_now);
-//
-//        return new ResponseEntity<>(pointResponseDTO, HttpStatus.OK);
-//    }
+    @PatchMapping("/mock/point/charge")
+    public String pointCharge(@RequestBody PointRequestDTO pointRequestDTO) {
+        return """
+                {
+                    "message": "포인트 충전 성공",
+                    "pointHistory": {
+                        "pointId": 1,
+                        "userId": 1,
+                        "point": 1000,
+                        "status": "charge",
+                        "createdAt": "2024-04-18T15:26:48.55241"
+                    }
+                }
+                """;
+    }
 
 //    @PostMapping("/mock/point/payment")
 //    public ResponseEntity<PointResponseDTO> pointPayment(@RequestBody PointRequestDTO pointRequestDTO) {

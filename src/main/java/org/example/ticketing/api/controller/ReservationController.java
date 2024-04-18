@@ -22,7 +22,7 @@ public class ReservationController {
     }
 
     @Operation(summary = "좌석 예약")
-    @PatchMapping("/reservation")
+    @PostMapping("/reservation")
     public ResponseEntity<ReservationResponseDTO> reserve(@RequestHeader("userId") Long userId, @RequestBody ReservationRequestDTO reservationRequestDTO) {
         return ResponseEntity.status(HttpStatus.OK).body(makeReservationUseCase.execute(reservationRequestDTO));
     }
