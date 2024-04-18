@@ -19,13 +19,13 @@ public class UserRepositoryImpl implements UserRepository{
     }
 
     @Override
-    public UserInfo joinUser(Long user_id) {
+    public UserInfo joinUser(Long userId) {
         return userJpaRepository.save(UserInfo.builder()
-                .userId(user_id).build());
+                .userId(userId).build());
     }
     @Override
-    public UserInfo findUserByUserId(Long user_id) {
-        Optional<UserInfo> userOptional = userJpaRepository.findByUserId(user_id);
+    public UserInfo findUserByUserId(Long userId) {
+        Optional<UserInfo> userOptional = userJpaRepository.findByUserId(userId);
         return userOptional.orElse(null);
     }
 }

@@ -27,7 +27,7 @@ public class UserController {
     }
     @Operation(summary = "유저 대기열 진입 요청")
     @PostMapping("/user/queue/enter")
-    public ResponseEntity<QueueResponseDTO> issueUserToken (@RequestBody UserRequestDTO userRequestDTO) throws Exception {
+    public ResponseEntity<QueueResponseDTO> enterQueue (@RequestBody UserRequestDTO userRequestDTO) throws Exception {
         return ResponseEntity.status(HttpStatus.OK).body(enterQueueUseCase.execute(userRequestDTO));
     }
     @Operation(summary = "유저 토큰 확인 요청")

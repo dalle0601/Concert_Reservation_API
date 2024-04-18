@@ -23,15 +23,15 @@ public class ConcertController {
 
     @Operation(summary = "예약가능한 콘서트 날짜 조회")
     @GetMapping("/concert/date")
-    public ResponseEntity<ConcertResponseDTO> getConcertDate(@RequestHeader("user_id") Long user_id) throws Exception {
-        UserRequestDTO userRequestDTO = new UserRequestDTO(user_id);
+    public ResponseEntity<ConcertResponseDTO> getConcertDate(@RequestHeader("userId") Long userId) throws Exception {
+        UserRequestDTO userRequestDTO = new UserRequestDTO(userId);
         return ResponseEntity.status(HttpStatus.OK).body(getConcertAvailableDateUseCase.execute(userRequestDTO));
     }
     @Operation(summary = "예약가능한 콘서트 좌석 조회")
-    @GetMapping("/concert/{concert_id}/seat")
-    public ResponseEntity<SeatResponseDTO> getConcertSeat(@RequestHeader("user_id") Long user_id, @PathVariable("concert_id") Long concert_id) throws Exception {
-        UserRequestDTO userRequestDTO = new UserRequestDTO(user_id);
-        return ResponseEntity.status(HttpStatus.OK).body(getConcertAvailableSeatUseCase.execute(userRequestDTO, concert_id));
+    @GetMapping("/concert/{concertId}/seat")
+    public ResponseEntity<SeatResponseDTO> getConcertSeat(@RequestHeader("userId") Long userId, @PathVariable("concertId") Long concertId) throws Exception {
+        UserRequestDTO userRequestDTO = new UserRequestDTO(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(getConcertAvailableSeatUseCase.execute(userRequestDTO, concertId));
     }
 
 }

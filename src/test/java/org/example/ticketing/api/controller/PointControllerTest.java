@@ -1,5 +1,6 @@
 package org.example.ticketing.api.controller;
 
+import org.example.ticketing.api.dto.response.PointResponseDTO;
 import org.example.ticketing.api.dto.response.UserResponseDTO;
 import org.example.ticketing.api.usecase.point.GetPointUseCase;
 import org.example.ticketing.domain.user.model.UserInfo;
@@ -22,8 +23,6 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class PointControllerTest {
     private MockMvc mockMvc;
-    @Mock
-    private UserService userService;
     @Mock
     private GetPointUseCase getPointUseCase;
     @InjectMocks
@@ -49,12 +48,13 @@ public class PointControllerTest {
     @DisplayName("포인트 조회 API")
     @Test
     public void getPointAmountTest() throws Exception {
-        Long user_id = 1L;
+        Long userId = 1L;
         Long point = 5000L;
-        when(userService.getPoint(any())).thenReturn(new UserInfo());
+        String message = "유저 정보 조회 성공";
+        when(getPointUseCase.execute(any())).thenReturn(new PointResponseDTO(message, userId, point));
         mockMvc.perform(MockMvcRequestBuilders.get("/point/1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.userId").value(user_id))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.userId").value(userId))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.point").value(point));
     }
 

@@ -3,11 +3,8 @@ package org.example.ticketing.api.dto.response;
 import java.time.LocalDateTime;
 
 public record PointResponseDTO (
-        Long user_id,
-        Long point,
-        LocalDateTime execute_time
+        String message,
+        Long userId,
+        Long point
 ){
-    public PointResponseDTO(Long user_id, Long point){
-        this(user_id, point, LocalDateTime.now());
-    }
 }

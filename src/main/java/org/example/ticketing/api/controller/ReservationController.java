@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.example.ticketing.api.dto.request.ReservationRequestDTO;
 import org.example.ticketing.api.dto.request.UserRequestDTO;
 import org.example.ticketing.api.dto.response.ReservationResponseDTO;
+import org.example.ticketing.api.usecase.reservation.MakeReservationUseCase;
 import org.example.ticketing.domain.reservation.model.Reservation;
 import org.example.ticketing.domain.reservation.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +15,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class ReservationController {
 
-    private final ReservationService reservationService;
-
+    private final MakeReservationUseCase makeReservationUseCase;
     @Autowired
-    public ReservationController(ReservationService reservationService) {
-        this.reservationService = reservationService;
+    public ReservationController(MakeReservationUseCase makeReservationUseCase) {
+        this.makeReservationUseCase = makeReservationUseCase;
     }
 
-//    @Operation(summary = "좌석 예약")
-//    @PatchMapping("/reservation")
-//    public ResponseEntity<ReservationResponseDTO> reserve(@RequestHeader("user_id") Long user_id, @RequestBody ReservationRequestDTO reservationRequestDTO) {
-//        UserRequestDTO userRequestDTO = new UserRequestDTO(user_id);
-//        return ResponseEntity.status(HttpStatus.OK).body(reservationService.reservationConcert(userRequestDTO, reservationRequestDTO));
-//    }
+    @Operation(summary = "좌석 예약")
+    @PatchMapping("/reservation")
+    public ResponseEntity<ReservationResponseDTO> reserve(@RequestHeader("userId") Long userId, @RequestBody ReservationRequestDTO reservationRequestDTO) {
+        return ResponseEntity.status(HttpStatus.OK).body(makeReservationUseCase.execute(reservationRequestDTO));
+    }
 }

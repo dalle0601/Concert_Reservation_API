@@ -15,35 +15,100 @@ import java.util.List;
 @RestController
 public class MockController {
     @PostMapping("/mock/user/queue/enter")
-    public String issueUserToken (@RequestBody UserRequestDTO userRequestDTO) {
+    public String enterQueue (@RequestBody UserRequestDTO userRequestDTO) {
         // {"user_id": "test3"}
         return """
                 {
-                "message" : "대기중 입니다.",
-                 "waitCount" : 5,
-                 "token" : null,
-                 "expireTime" : null
+                    "message" : "대기중 입니다.",
+                    "waitCount" : 5,
+                    "token" : null,
+                    "expireTime" : null
+                }
+                """;
+    }
+
+    @GetMapping("/mock/user/token/check/{userId}")
+    public String checkUserToken (@PathVariable Long userId) {
+        return """
+                {
+                    "message": "유효한 토큰입니다.",
+                    "token": "c7de6670-4112-4016-9dad-bf91247ea012",
+                    "expiredTime": "2024-04-18T11:37:14.260946"
+                }
                 """;
     }
 
     @GetMapping("/mock/reservation/date")
     public String getAvailableDate() {
-//        List<ConcertResponseDTO> concertList = new ArrayList<>();
-//        concertList.add(new ConcertResponseDTO(1L, "첫번째콘서트", LocalDateTime.of(2024, 4, 28, 16, 0), 200L, 17L));
-//        concertList.add(new ConcertResponseDTO(2L, "두번째콘서트", LocalDateTime.of(2024, 4, 28, 20, 30), 150L, 20L));
-//        concertList.add(new ConcertResponseDTO(3L, "세번째콘서트", LocalDateTime.of(2024, 5, 8, 17, 0), 210L, 5L));
-//        concertList.add(new ConcertResponseDTO(4L, "네번째콘서트", LocalDateTime.of(2024, 5, 23, 16, 30), 880L, 112L));
-//
-//        return new ResponseEntity<>(concertList, HttpStatus.OK);
         return """
-        
+                {
+                    "message": "이용가능한 콘서트 날짜 조회 성공",
+                    "concertList": [
+                        {
+                            "concertId": 1,
+                            "concertTitle": "첫번재 콘서트",
+                            "concertDate": "2024-04-19T15:30:00",
+                            "maxSeatCnt": 50,
+                            "availableSeatCnt": 20,
+                            "createdAt": "2024-04-12T15:30:00"
+                        },
+                        {
+                            "concertId": 2,
+                            "concertTitle": "두번째 콘서트",
+                            "concertDate": "2024-04-22T17:30:00",
+                            "maxSeatCnt": 50,
+                            "availableSeatCnt": 11,
+                            "createdAt": "2024-04-10T15:30:00"
+                        }
+                    ]
+                }
                 """;
     }
 
-    @GetMapping("/mock/reservation/{concert_id}/seat")
-    public String getAvailableSeat(@PathVariable Long concert_id) {
+    @GetMapping("/mock/reservation/{concertId}/seat")
+    public String getAvailableSeat(@PathVariable Long concertId) {
         return """
-                
+                {
+                    "message": "이용가능한 콘서트 좌석 조회 성공",
+                    "seatList": [
+                        {
+                            "seat_id": 1,
+                            "seat_number": "A1",
+                            "cost": 50000,
+                            "seat_status": "available"
+                        },
+                        {
+                            "seat_id": 2,
+                            "seat_number": "A2",
+                            "cost": 50000,
+                            "seat_status": "available"
+                        },
+                        {
+                            "seat_id": 3,
+                            "seat_number": "A3",
+                            "cost": 50000,
+                            "seat_status": "available"
+                        },
+                        {
+                            "seat_id": 23,
+                            "seat_number": "A23",
+                            "cost": 50000,
+                            "seat_status": "available"
+                        },
+                        {
+                            "seat_id": 37,
+                            "seat_number": "B12",
+                            "cost": 45000,
+                            "seat_status": "available"
+                        },
+                        {
+                            "seat_id": 47,
+                            "seat_number": "B22",
+                            "cost": 45000,
+                            "seat_status": "available"
+                        },
+                    ]
+                }
                 """;
     }
 
@@ -57,27 +122,31 @@ public class MockController {
         return new ResponseEntity<>(reservationResponseDTO, HttpStatus.OK);
     }
 
-    @GetMapping("/mock/point/{user_id}")
-    public ResponseEntity<PointResponseDTO> getUserPoint(@PathVariable Long user_id) {
-        PointResponseDTO pointResponseDTO = new PointResponseDTO(user_id, 5000L);
-
-        return new ResponseEntity<>(pointResponseDTO, HttpStatus.OK);
+    @GetMapping("/mock/point/{userId}")
+    public String getUserPoint(@PathVariable Long userId) {
+        return """
+                {
+                    "message": "유저 정보 조회 성공",
+                    "userId": 1,
+                    "point": 5000
+                }
+                """;
     }
 
-    @PatchMapping("/mock/point/charge")
-    public ResponseEntity<PointResponseDTO> pointCharge(@RequestBody PointRequestDTO pointRequestDTO) {
-        LocalDateTime time_now = LocalDateTime.now();
-        PointResponseDTO pointResponseDTO = new PointResponseDTO(pointRequestDTO.user_id(), 5000L+pointRequestDTO.point(), time_now);
+//    @PatchMapping("/mock/point/charge")
+//    public ResponseEntity<PointResponseDTO> pointCharge(@RequestBody PointRequestDTO pointRequestDTO) {
+//        LocalDateTime time_now = LocalDateTime.now();
+//        PointResponseDTO pointResponseDTO = new PointResponseDTO(pointRequestDTO.user_id(), 5000L+pointRequestDTO.point(), time_now);
+//
+//        return new ResponseEntity<>(pointResponseDTO, HttpStatus.OK);
+//    }
 
-        return new ResponseEntity<>(pointResponseDTO, HttpStatus.OK);
-    }
-
-    @PostMapping("/mock/point/payment")
-    public ResponseEntity<PointResponseDTO> pointPayment(@RequestBody PointRequestDTO pointRequestDTO) {
-        LocalDateTime time_now = LocalDateTime.now();
-        PointResponseDTO pointResponseDTO = new PointResponseDTO(pointRequestDTO.user_id(), 5000L+pointRequestDTO.point(), time_now);
-
-        return new ResponseEntity<>(pointResponseDTO, HttpStatus.OK);
-    }
+//    @PostMapping("/mock/point/payment")
+//    public ResponseEntity<PointResponseDTO> pointPayment(@RequestBody PointRequestDTO pointRequestDTO) {
+//        LocalDateTime time_now = LocalDateTime.now();
+//        PointResponseDTO pointResponseDTO = new PointResponseDTO(pointRequestDTO.user_id(), 5000L+pointRequestDTO.point(), time_now);
+//
+//        return new ResponseEntity<>(pointResponseDTO, HttpStatus.OK);
+//    }
 
 }

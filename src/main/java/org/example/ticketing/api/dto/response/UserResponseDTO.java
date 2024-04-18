@@ -1,9 +1,9 @@
 package org.example.ticketing.api.dto.response;
 
-import java.time.LocalDateTime;
+import org.example.ticketing.domain.user.model.UserInfo;
 
 public record UserResponseDTO (
-        Long user_id,
-        Long point
+        String message,
+        UserInfo userInfo
 ) {
 }

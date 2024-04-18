@@ -6,6 +6,6 @@ import org.example.ticketing.domain.user.model.UserInfo;
 
 public interface UserRepository {
     // 유저 등록
-    UserInfo joinUser(Long user_id);
-    UserInfo findUserByUserId(Long user_id);
+    UserInfo joinUser(Long userId);
+    UserInfo findUserByUserId(Long userId);
 }

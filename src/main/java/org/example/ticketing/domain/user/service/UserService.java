@@ -9,10 +9,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    private final GetPointUseCase getPointUseCase;
-    public UserService (UserRepository userRepository, GetPointUseCase getPointUseCase) {
+    public UserService (UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.getPointUseCase = getPointUseCase;
     }
     public UserInfo findUserInfo(UserRequestDTO userRequestDTO) {
         return userRepository.findUserByUserId(userRequestDTO.user_id());
@@ -20,9 +18,5 @@ public class UserService {
 
     public UserInfo joinUser(UserRequestDTO userRequestDTO){
         return userRepository.joinUser(userRequestDTO.user_id());
-    }
-
-    public UserInfo getPoint(Long user_id){
-        return getPointUseCase.execute(user_id);
     }
 }
