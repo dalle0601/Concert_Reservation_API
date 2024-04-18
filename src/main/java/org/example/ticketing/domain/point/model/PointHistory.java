@@ -3,6 +3,7 @@ package org.example.ticketing.domain.point.model;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -24,16 +25,26 @@ public class PointHistory {
     @Column(name = "STATUS")
     private String status;
 
-    @Column(name = "CREATED_AT")
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "CREATED_AT", updatable = false)
     private LocalDateTime createdAt;
 
-    public PointHistory() {}
     @Builder
-    public PointHistory( Long point_id, Long user_id, Long point, String status, LocalDateTime created_at) {
-        this.pointId = point_id;
-        this.userId = user_id;
+    public PointHistory(Long pointId, Long userId, Long point, String status, LocalDateTime createdAt) {
+        this.pointId = pointId;
+        this.userId = userId;
         this.point = point;
         this.status = status;
-        this.createdAt = created_at;
+        this.createdAt = createdAt;
+    }
+    public PointHistory(Long userId, Long point, String status) {
+        this.userId = userId;
+        this.point = point;
+        this.status = status;
+    }
+
+    public PointHistory() {
+
     }
 }

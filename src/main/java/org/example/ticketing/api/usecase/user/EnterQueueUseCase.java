@@ -20,16 +20,15 @@ public class EnterQueueUseCase {
     }
 
     public QueueResponseDTO execute(UserRequestDTO userRequestDTO) throws Exception {
-        UserInfo userInfo = findUser(userRequestDTO.user_id());
+        UserInfo userInfo = findUser(userRequestDTO.userId());
         if(userInfo == null) {
-            userInfo = userService.joinUser(userRequestDTO);
+            userService.joinUser(userRequestDTO);
         }
-
         return updateQueueUseCase.execute(userRequestDTO);
     }
 
-    private UserInfo findUser(Long user_id) {
-        UserRequestDTO userRequestDTO = new UserRequestDTO(user_id);
+    private UserInfo findUser(Long userId) {
+        UserRequestDTO userRequestDTO = new UserRequestDTO(userId);
         return userService.findUserInfo(userRequestDTO);
     }
 }

@@ -1,7 +1,7 @@
 package org.example.ticketing.domain.user.service;
 
+import jakarta.transaction.Transactional;
 import org.example.ticketing.api.dto.request.UserRequestDTO;
-import org.example.ticketing.api.usecase.point.GetPointUseCase;
 import org.example.ticketing.domain.user.model.UserInfo;
 import org.example.ticketing.domain.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -13,10 +13,14 @@ public class UserService {
         this.userRepository = userRepository;
     }
     public UserInfo findUserInfo(UserRequestDTO userRequestDTO) {
-        return userRepository.findUserByUserId(userRequestDTO.user_id());
+        return userRepository.findUserByUserId(userRequestDTO.userId());
     }
-
+    @Transactional
     public UserInfo joinUser(UserRequestDTO userRequestDTO){
-        return userRepository.joinUser(userRequestDTO.user_id());
+        return userRepository.joinUser(userRequestDTO.userId());
+    }
+    @Transactional
+    public UserInfo chargePoint(UserInfo userInfo){
+        return userRepository.save(userInfo);
     }
 }

@@ -53,7 +53,7 @@ public class ConcertControllerTest {
         concerts.add(new Concert(3L, "333번째 콘서트", LocalDateTime.of(2024, 7, 17, 17, 00), 50L, 4L, LocalDateTime.now()));
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("user_id", "1");
+        headers.add("userId", "1");
 
         ConcertResponseDTO actualValue = new ConcertResponseDTO("이용가능한 콘서트 날짜 조회 성공", concerts);
         when(getConcertAvailableDateUseCase.execute(any())).thenReturn(actualValue);
@@ -68,7 +68,7 @@ public class ConcertControllerTest {
     @Test
     public void GetAvailableConcertSeatTest() throws Exception {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("user_id", "1");
+        headers.add("userId", "1");
 
         List<SeatDTO> expectSeatList = new ArrayList<>();
         for(int i = 1; i <= 25; i++){

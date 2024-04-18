@@ -48,7 +48,7 @@ public class UserControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/user/queue/enter")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{ \"user_id\": 1}"))
+                        .content("{ \"userId\": 1}"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("대기중입니다."))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.waitCount").value(19L));

@@ -28,4 +28,9 @@ public class UserRepositoryImpl implements UserRepository{
         Optional<UserInfo> userOptional = userJpaRepository.findByUserId(userId);
         return userOptional.orElse(null);
     }
+
+    @Override
+    public UserInfo save(UserInfo userInfo) {
+        return userJpaRepository.save(userInfo);
+    }
 }

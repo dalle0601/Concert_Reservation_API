@@ -27,12 +27,12 @@ public class MakeReservationUseCaseTest {
     @DisplayName("토큰 확인 후 성공하면 콘서트 ID, 선택된 날짜,좌석으로 예약신청 한다")
     @Test
     void postReservationTest() {
-//        Long user_id = 1L;
+//        Long userId = 1L;
 //        Long concert_id = 1L;
 //        Long seat_id = 1L;
 //        LocalDateTime reservation_time = LocalDateTime.now();
-//        UserRequestDTO userRequestDTO = new UserRequestDTO(user_id);
-//        ReservationRequestDTO reservationRequestDTO = new ReservationRequestDTO(user_id, concert_id, seat_id, reservation_time, reservation_time.plusMinutes(5));
+//        UserRequestDTO userRequestDTO = new UserRequestDTO(userId);
+//        ReservationRequestDTO reservationRequestDTO = new ReservationRequestDTO(userId, concert_id, seat_id, reservation_time, reservation_time.plusMinutes(5));
 //
 //        when(confirmQueueUseCase.execute(any())).thenReturn(new TokenResponseDTO("abcd-efgh-jklm/onGoing"));
 //
@@ -44,7 +44,7 @@ public class MakeReservationUseCaseTest {
 //
 //        assertAll("Reservation",
 //                () -> assertNotNull(actualReservation),
-//                () -> assertEquals(expectedReservation.getUserId(), actualReservation.user_id()),
+//                () -> assertEquals(expectedReservation.getUserId(), actualReservation.userId()),
 //                () -> assertEquals(expectedReservation.getConcertId(), actualReservation.concert_id()),
 //                () -> assertEquals(expectedReservation.getSeatId(), actualReservation.seat_id()),
 //                () -> assertEquals(expectedReservation.getReservationTime(), actualReservation.reservation_time()),

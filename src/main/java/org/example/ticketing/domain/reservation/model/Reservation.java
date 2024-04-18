@@ -35,9 +35,9 @@ public class Reservation {
 
     public Reservation() {}
     @Builder
-    public Reservation( Long reservation_id, Long user_id, Long concert_id, Long seat_id, String status, LocalDateTime reservation_time, LocalDateTime expiration_time) {
+    public Reservation( Long reservation_id, Long userId, Long concert_id, Long seat_id, String status, LocalDateTime reservation_time, LocalDateTime expiration_time) {
         this.reservationId = reservation_id;
-        this.userId = user_id;
+        this.userId = userId;
         this.concertId = concert_id;
         this.seatId = seat_id;
         this.status = status;
@@ -45,8 +45,8 @@ public class Reservation {
         this.expirationTime = expiration_time;
     }
 
-    public Reservation(Long user_id, Long concert_id, Long seat_id, LocalDateTime reservation_time, LocalDateTime expiration_time) {
-        this.userId = user_id;
+    public Reservation(Long userId, Long concert_id, Long seat_id, LocalDateTime reservation_time, LocalDateTime expiration_time) {
+        this.userId = userId;
         this.concertId = concert_id;
         this.seatId = seat_id;
         this.reservationTime = reservation_time;

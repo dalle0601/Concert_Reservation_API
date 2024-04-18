@@ -16,7 +16,7 @@ public class TokenService {
         this.tokenRepository = tokenRepository;
     }
     public Token checkToken(UserRequestDTO userRequestDTO) {
-        return tokenRepository.findByUserId(userRequestDTO.user_id());
+        return tokenRepository.findByUserId(userRequestDTO.userId());
     }
     public Long findTokenCount() {
         return tokenRepository.findTokenCount();

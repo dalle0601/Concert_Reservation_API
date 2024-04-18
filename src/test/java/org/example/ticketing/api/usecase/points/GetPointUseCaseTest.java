@@ -3,7 +3,6 @@ package org.example.ticketing.api.usecase.points;
 import org.example.ticketing.api.dto.response.PointResponseDTO;
 import org.example.ticketing.api.usecase.point.GetPointUseCase;
 import org.example.ticketing.domain.user.model.UserInfo;
-import org.example.ticketing.domain.user.repository.UserRepository;
 import org.example.ticketing.domain.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -12,7 +11,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 

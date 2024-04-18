@@ -23,7 +23,7 @@ public class UpdateQueueUseCase {
 
     public QueueResponseDTO execute(UserRequestDTO userRequestDTO) throws Exception {
 
-        Queue myQueue = queueService.findQueueInfo(userRequestDTO.user_id());
+        Queue myQueue = queueService.findQueueInfo(userRequestDTO.userId());
         Token myToken = tokenService.checkToken(userRequestDTO);
         // # 1 token table 인원 조회
         Long tokenCount = tokenService.findTokenCount();
@@ -39,14 +39,14 @@ public class UpdateQueueUseCase {
             String userUUID = UUID.randomUUID().toString();
 //            LocalDateTime tokenExpiredTime = LocalDateTime.now().plusMinutes(1);
             LocalDateTime tokenExpiredTime = LocalDateTime.now().plusSeconds(30);
-            Token tokenValue = new Token(userRequestDTO.user_id(), userUUID, tokenExpiredTime, true);
+            Token tokenValue = new Token(userRequestDTO.userId(), userUUID, tokenExpiredTime, true);
             tokenService.enterToken(tokenValue);
             if(myQueue == null) {
                 return new QueueResponseDTO("유효토큰이 발급되었습니다.", null, tokenValue.getTokenValue(), tokenValue.getExpiredAt());
             }
         } else {
             if(myQueue == null){
-                queueService.enterQueue(userRequestDTO.user_id());
+                queueService.enterQueue(userRequestDTO.userId());
             }
         }
         return new QueueResponseDTO("대기중입니다.", queueCount, null,null);

@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface TokenRepository {
-    Token findByUserId(Long user_id);
+    Token findByUserId(Long userId);
     Long findTokenCount();
     Token enterToken(Token tokenValue);
     List<Token> findByExpiredAtBefore(LocalDateTime currentTime);

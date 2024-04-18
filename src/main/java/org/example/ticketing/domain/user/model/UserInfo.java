@@ -21,7 +21,7 @@ public class UserInfo {
     private Long userId;
 
     @Column(name = "POINT")
-    private Long point;
+    private Long point = 0L;
 
     @Column(name = "UPDATED_AT")
     private LocalDateTime updatedAt;
@@ -43,5 +43,10 @@ public class UserInfo {
         this.point = point;
     }
 
-
+    public UserInfo(Long id, Long userId, Long point, LocalDateTime currentTime) {
+        this.id = id;
+        this.userId = userId;
+        this.point = point;
+        this.updatedAt = currentTime;
+    }
 }

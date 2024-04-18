@@ -8,4 +8,5 @@ public interface UserRepository {
     // 유저 등록
     UserInfo joinUser(Long userId);
     UserInfo findUserByUserId(Long userId);
+    UserInfo save(UserInfo userInfo);
 }

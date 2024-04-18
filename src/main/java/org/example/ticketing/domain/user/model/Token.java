@@ -31,15 +31,15 @@ public class Token {
     public Token() {}
 
     @Builder
-    public Token( Long user_id, String token_value, LocalDateTime expiredAt, boolean use) {
-        this.userId = user_id;
+    public Token( Long userId, String token_value, LocalDateTime expiredAt, boolean use) {
+        this.userId = userId;
         this.tokenValue = token_value;
         this.expiredAt = expiredAt;
         this.use = use;
     }
-    public Token(Long token_id, Long user_id, String token_value, LocalDateTime expiredAt, boolean use) {
+    public Token(Long token_id, Long userId, String token_value, LocalDateTime expiredAt, boolean use) {
         this.tokenId = token_id;
-        this.userId = user_id;
+        this.userId = userId;
         this.tokenValue = token_value;
         this.expiredAt = expiredAt;
         this.use = use;

@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 public interface UserJpaRepository extends JpaRepository<UserInfo, Long> {
-    Optional<UserInfo> findByUserId(Long userID);
+    Optional<UserInfo> findByUserId(Long userId);
 
 }

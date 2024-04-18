@@ -1,8 +1,6 @@
 package org.example.ticketing.domain.user.repository;
 
-import org.example.ticketing.api.dto.response.QueueWaitInfoResponseDTO;
 import org.example.ticketing.domain.user.model.Queue;
-import org.example.ticketing.domain.user.model.projection.QueueWaitInfo;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -17,8 +15,8 @@ public class QueueRepositoryImpl implements QueueRepository{
     }
 
     @Override
-    public Optional<Queue> findByUserId(Long user_id) {
-        return queueJpaRepository.findByUserId(user_id);
+    public Optional<Queue> findByUserId(Long userId) {
+        return queueJpaRepository.findByUserId(userId);
     }
 
     @Override
@@ -28,16 +26,16 @@ public class QueueRepositoryImpl implements QueueRepository{
     }
 
 //    @Override
-//    public Queue queueInsertOrUpdate(Long user_id, String status) {
-//        Optional<Queue> existingQueueOptional = queueJpaRepository.findByUserId(user_id);
+//    public Queue queueInsertOrUpdate(Long userId, String status) {
+//        Optional<Queue> existingQueueOptional = queueJpaRepository.findByUserId(userId);
 //
 //        if (existingQueueOptional.isPresent()) {
 //            Queue existingQueue = existingQueueOptional.get();
-//            existingQueue = new Queue(existingQueue.getQueueId(), user_id, LocalDateTime.now());
+//            existingQueue = new Queue(existingQueue.getQueueId(), userId, LocalDateTime.now());
 //            return queueJpaRepository.save(existingQueue);
 //        } else {
 //            LocalDateTime nowDate = LocalDateTime.now();
-//            Queue newQueue = new Queue(user_id, nowDate);
+//            Queue newQueue = new Queue(userId, nowDate);
 //            return queueJpaRepository.save(newQueue); // 새로운 엔티티 저장
 //        }
 //    }

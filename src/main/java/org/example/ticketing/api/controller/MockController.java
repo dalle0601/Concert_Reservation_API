@@ -16,7 +16,7 @@ import java.util.List;
 public class MockController {
     @PostMapping("/mock/user/queue/enter")
     public String enterQueue (@RequestBody UserRequestDTO userRequestDTO) {
-        // {"user_id": "test3"}
+        // {"userId": "test3"}
         return """
                 {
                     "message" : "대기중 입니다.",
@@ -136,7 +136,7 @@ public class MockController {
 //    @PatchMapping("/mock/point/charge")
 //    public ResponseEntity<PointResponseDTO> pointCharge(@RequestBody PointRequestDTO pointRequestDTO) {
 //        LocalDateTime time_now = LocalDateTime.now();
-//        PointResponseDTO pointResponseDTO = new PointResponseDTO(pointRequestDTO.user_id(), 5000L+pointRequestDTO.point(), time_now);
+//        PointResponseDTO pointResponseDTO = new PointResponseDTO(pointRequestDTO.userId(), 5000L+pointRequestDTO.point(), time_now);
 //
 //        return new ResponseEntity<>(pointResponseDTO, HttpStatus.OK);
 //    }
@@ -144,7 +144,7 @@ public class MockController {
 //    @PostMapping("/mock/point/payment")
 //    public ResponseEntity<PointResponseDTO> pointPayment(@RequestBody PointRequestDTO pointRequestDTO) {
 //        LocalDateTime time_now = LocalDateTime.now();
-//        PointResponseDTO pointResponseDTO = new PointResponseDTO(pointRequestDTO.user_id(), 5000L+pointRequestDTO.point(), time_now);
+//        PointResponseDTO pointResponseDTO = new PointResponseDTO(pointRequestDTO.userId(), 5000L+pointRequestDTO.point(), time_now);
 //
 //        return new ResponseEntity<>(pointResponseDTO, HttpStatus.OK);
 //    }

@@ -28,7 +28,7 @@ public class MakeReservationUseCase {
     public ReservationResponseDTO execute(ReservationRequestDTO reservationRequestDTO) {
 
 //        try {
-//            TokenResponseDTO tokenResponseDTO = checkTokenUseCase.execute(new UserRequestDTO(reservationRequestDTO.user_id()));
+//            TokenResponseDTO tokenResponseDTO = checkTokenUseCase.execute(new UserRequestDTO(reservationRequestDTO.userId()));
 //            String isValidToken = tokenResponseDTO.token();
 //
 //            if (isValidToken != null) {
@@ -47,14 +47,14 @@ public class MakeReservationUseCase {
 //        String checkToken = tokenResponseDTO.token().split("/")[1];
 //
 //        if (checkToken.equals("onGoing")) {
-//            Reservation reservation = new Reservation(reservationRequestDTO.user_id(),
+//            Reservation reservation = new Reservation(reservationRequestDTO.userId(),
 //                                        reservationRequestDTO.concert_id(),
 //                                        reservationRequestDTO.seat_id(),
 //                                        reservationRequestDTO.reservation_time(),
 //                                        reservationRequestDTO.expiration_time());
 //            Reservation reservedData = reservationRepository.reservationConcert(reservation);
 //            Seat reservedSeat = changeSeatStatus.execute(reservationRequestDTO.seat_id(), "reserved");
-//            updateTokenQueueStatus.execute(reservationRequestDTO.user_id());
+//            updateTokenQueueStatus.execute(reservationRequestDTO.userId());
 //
 //            return new ReservationResponseDTO(
 //                    reservedData.getUserId(),

@@ -24,13 +24,13 @@ public class Queue {
 
     public Queue() {}
     @Builder
-    public Queue(Long user_id, LocalDateTime updated_at) {
-        this.userId = user_id;
+    public Queue(Long userId, LocalDateTime updated_at) {
+        this.userId = userId;
         this.updatedAt = updated_at;
     }
-    public Queue(Long queue_id, Long user_id, LocalDateTime updated_at) {
+    public Queue(Long queue_id, Long userId, LocalDateTime updated_at) {
         this.queueId = queue_id;
-        this.userId = user_id;
+        this.userId = userId;
         this.updatedAt = updated_at;
     }
 }

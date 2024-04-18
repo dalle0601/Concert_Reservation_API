@@ -17,8 +17,8 @@ public class TokenRepositoryImpl implements TokenRepository{
     }
 
     @Override
-    public Token findByUserId(Long user_id) {
-        Optional<Token> tokenOptional = tokenJpaRepository.findByUserId(user_id);
+    public Token findByUserId(Long userId) {
+        Optional<Token> tokenOptional = tokenJpaRepository.findByUserId(userId);
         return tokenOptional.orElse(null);
     }
 

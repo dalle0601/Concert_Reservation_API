@@ -1,8 +1,11 @@
 package org.example.ticketing.api.controller;
 
+import org.example.ticketing.api.dto.response.PointHistorySaveResponseDTO;
 import org.example.ticketing.api.dto.response.PointResponseDTO;
 import org.example.ticketing.api.dto.response.UserResponseDTO;
+import org.example.ticketing.api.usecase.point.ChargePointUseCase;
 import org.example.ticketing.api.usecase.point.GetPointUseCase;
+import org.example.ticketing.domain.point.model.PointHistory;
 import org.example.ticketing.domain.user.model.UserInfo;
 import org.example.ticketing.domain.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,10 +15,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.time.LocalDateTime;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -25,6 +31,8 @@ public class PointControllerTest {
     private MockMvc mockMvc;
     @Mock
     private GetPointUseCase getPointUseCase;
+    @Mock
+    private ChargePointUseCase chargePointUseCase;
     @InjectMocks
     private PointController pointController;
 
@@ -38,10 +46,20 @@ public class PointControllerTest {
     @DisplayName("포인트 충전 API")
     @Test
     public void chargePointTest() throws Exception {
-        /*
-            - 결제에 사용될 금액을 API 를 통해 충전하는 API 를 작성합니다.
-            - 사용자 식별자 및 충전할 금액을 받아 잔액을 충전합니다.
-         */
+        Long userId = 1L;
+        Long point = 2000L;
+        String message = "포인트 충전 성공";
+        String status = "charge";
+
+        when(chargePointUseCase.execute(any())).thenReturn(new PointHistorySaveResponseDTO(message, new PointHistory(1L, userId, point,status, LocalDateTime.now())));;
+        mockMvc.perform(MockMvcRequestBuilders.patch("/point/charge")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"userId\": 1, \"point\": 3000}"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("포인트 충전 성공")) // 응답 본문에서 message 값이 올바른지 확인합니다.
+                .andExpect(MockMvcResultMatchers.jsonPath("$.pointHistory.userId").value(userId)) // 응답 본문에서 pointHistory의 userId 값이 올바른지 확인합니다.
+                .andExpect(MockMvcResultMatchers.jsonPath("$.pointHistory.point").value(point))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.pointHistory.status").value(status));
 
     }
 
