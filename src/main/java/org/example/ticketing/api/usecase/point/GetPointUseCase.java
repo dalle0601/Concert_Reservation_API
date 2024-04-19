@@ -1,18 +1,10 @@
 package org.example.ticketing.api.usecase.point;
 
 import org.example.ticketing.api.dto.request.UserRequestDTO;
-import org.example.ticketing.api.dto.response.ConcertResponseDTO;
 import org.example.ticketing.api.dto.response.PointResponseDTO;
-import org.example.ticketing.api.dto.response.TokenResponseDTO;
-import org.example.ticketing.api.dto.response.UserResponseDTO;
-import org.example.ticketing.domain.concert.model.Concert;
 import org.example.ticketing.domain.user.model.UserInfo;
-import org.example.ticketing.domain.user.repository.UserRepository;
 import org.example.ticketing.domain.user.service.UserService;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 public class GetPointUseCase {

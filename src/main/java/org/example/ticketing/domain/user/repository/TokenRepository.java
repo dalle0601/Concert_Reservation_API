@@ -1,6 +1,5 @@
 package org.example.ticketing.domain.user.repository;
 
-import org.example.ticketing.api.dto.request.TokenRequestDTO;
 import org.example.ticketing.domain.user.model.Token;
 
 import java.time.LocalDateTime;

@@ -1,8 +1,7 @@
 package org.example.ticketing.api.dto.response;
 
-public record PointResponseDTO (
+public record PaymentResponseDTO (
         String message,
-        Long userId,
-        Long point
+        PaymentInfoDTO paymentInfoDTO
 ){
 }

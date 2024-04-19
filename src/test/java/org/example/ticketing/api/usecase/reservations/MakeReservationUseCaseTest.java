@@ -6,6 +6,8 @@ import org.example.ticketing.api.dto.response.TokenResponseDTO;
 import org.example.ticketing.api.usecase.common.ChangeSeatStatus;
 import org.example.ticketing.api.usecase.reservation.MakeReservationUseCase;
 import org.example.ticketing.api.usecase.user.CheckTokenUseCase;
+import org.example.ticketing.domain.concert.model.Concert;
+import org.example.ticketing.domain.concert.service.ConcertService;
 import org.example.ticketing.domain.reservation.model.Reservation;
 import org.example.ticketing.domain.reservation.repository.ReservationRepository;
 import org.example.ticketing.domain.reservation.service.ReservationService;
@@ -30,12 +32,14 @@ public class MakeReservationUseCaseTest {
     @Mock
     private ReservationService reservationService;
     @Mock
+    private ConcertService concertService;
+    @Mock
     private TokenService tokenService;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        makeReservationUseCase = new MakeReservationUseCase(reservationService, tokenService, checkTokenUseCase);
+        makeReservationUseCase = new MakeReservationUseCase(reservationService, tokenService, concertService, checkTokenUseCase);
     }
 
     @DisplayName("토큰 확인 후 성공하면 콘서트 ID, 좌석으로 예약신청 한다")
@@ -49,7 +53,7 @@ public class MakeReservationUseCaseTest {
         // 토큰 확인 후
         // 파라미터로 넘겨받은 userId, concertId, seatId 로 예약을 진행하자.
         when(checkTokenUseCase.execute(any())).thenReturn(new TokenResponseDTO("유효한 토큰입니다.", "abcd-efgh-ijkl", LocalDateTime.now().plusMinutes(5)));
-
+        when(concertService.findByConcertId(any())).thenReturn(new Concert(1L, "첫번째콘서트", LocalDateTime.now(), 50L, 25L, LocalDateTime.now()));
         when(reservationService.save(any())).thenReturn(new Reservation(userId, concertId, seatId, "temporary", cost, reservation_time, reservation_time.plusMinutes(5)));
 
         ReservationResponseDTO actualValue = makeReservationUseCase.execute(new ReservationRequestDTO(concertId, seatId, userId, cost));

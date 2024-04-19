@@ -1,7 +1,6 @@
 package org.example.ticketing.api.usecase.concert;
 
 import org.example.ticketing.api.dto.request.UserRequestDTO;
-import org.example.ticketing.api.dto.response.ConcertResponseDTO;
 import org.example.ticketing.api.dto.response.SeatDTO;
 import org.example.ticketing.api.dto.response.SeatResponseDTO;
 import org.example.ticketing.api.dto.response.TokenResponseDTO;
@@ -33,8 +32,8 @@ public class GetConcertAvailableSeatUseCase {
 
             if (isValidToken != null) {
                 // 토큰이 유효한 경우, 콘서트 정보 조회
-                List<Concert> concertList = concertService.findByConcertId(concertId);
-                if(concertList.isEmpty()) {
+                Concert concert = concertService.findByConcertId(concertId);
+                if(concert == null) {
                     return new SeatResponseDTO("해당 콘서트는 존재하지 않습니다.", null);
                 }
 

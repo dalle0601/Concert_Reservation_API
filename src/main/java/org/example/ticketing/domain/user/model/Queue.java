@@ -3,7 +3,6 @@ package org.example.ticketing.domain.user.model;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 

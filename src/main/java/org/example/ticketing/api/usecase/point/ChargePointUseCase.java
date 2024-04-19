@@ -4,7 +4,6 @@ import org.example.ticketing.api.dto.request.PointHistorySaveRequestDTO;
 import org.example.ticketing.api.dto.request.PointRequestDTO;
 import org.example.ticketing.api.dto.request.UserRequestDTO;
 import org.example.ticketing.api.dto.response.PointHistorySaveResponseDTO;
-import org.example.ticketing.api.dto.response.PointResponseDTO;
 import org.example.ticketing.domain.user.model.UserInfo;
 import org.example.ticketing.domain.user.service.UserService;
 import org.springframework.stereotype.Service;

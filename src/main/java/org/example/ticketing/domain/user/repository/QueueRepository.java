@@ -1,6 +1,5 @@
 package org.example.ticketing.domain.user.repository;
 
-import org.example.ticketing.api.dto.response.QueueWaitInfoResponseDTO;
 import org.example.ticketing.domain.user.model.Queue;
 
 import java.time.LocalDateTime;

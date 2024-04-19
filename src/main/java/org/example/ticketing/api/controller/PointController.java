@@ -1,28 +1,27 @@
 package org.example.ticketing.api.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import org.example.ticketing.api.dto.request.PaymentRequestDTO;
 import org.example.ticketing.api.dto.request.PointRequestDTO;
+import org.example.ticketing.api.dto.response.PaymentResponseDTO;
 import org.example.ticketing.api.dto.response.PointHistorySaveResponseDTO;
 import org.example.ticketing.api.dto.response.PointResponseDTO;
-import org.example.ticketing.api.dto.response.UserResponseDTO;
 import org.example.ticketing.api.usecase.point.ChargePointUseCase;
 import org.example.ticketing.api.usecase.point.GetPointUseCase;
-import org.example.ticketing.domain.concert.service.ConcertService;
-import org.example.ticketing.domain.user.model.UserInfo;
-import org.example.ticketing.domain.user.service.UserService;
+import org.example.ticketing.api.usecase.point.PaymentUseCase;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
 
 @RestController
 public class PointController {
     private final GetPointUseCase getPointUseCase;
     private final ChargePointUseCase chargePointUseCase;
-    public PointController(GetPointUseCase getPointUseCase, ChargePointUseCase chargePointUseCase) {
+    private final PaymentUseCase paymentUseCase;
+    public PointController(GetPointUseCase getPointUseCase, ChargePointUseCase chargePointUseCase, PaymentUseCase paymentUseCase) {
         this.getPointUseCase = getPointUseCase;
         this.chargePointUseCase = chargePointUseCase;
+        this.paymentUseCase = paymentUseCase;
     }
 
 
@@ -40,12 +39,10 @@ public class PointController {
         return new ResponseEntity<>(pointHistorySaveResponseDTO, HttpStatus.OK);
     }
 
-//    @Operation(summary = "결제")
-//    @PostMapping("/point/payment")
-//    public ResponseEntity<PointResponseDTO> pointPayment(@RequestBody PointRequestDTO pointRequestDTO) {
-//        LocalDateTime time_now = LocalDateTime.now();
-//        PointResponseDTO pointResponseDTO = new PointResponseDTO(pointRequestDTO.userId(), 5000L+pointRequestDTO.point(), time_now);
-//
-//        return new ResponseEntity<>(pointResponseDTO, HttpStatus.OK);
-//    }
+    @Operation(summary = "결제")
+    @PostMapping("/point/payment")
+    public ResponseEntity<PaymentResponseDTO> pointPayment(@RequestBody PaymentRequestDTO paymentRequestDTO) {
+        PaymentResponseDTO paymentResponseDTO = paymentUseCase.execute(paymentRequestDTO);
+        return new ResponseEntity<>(paymentResponseDTO, HttpStatus.OK);
+    }
 }

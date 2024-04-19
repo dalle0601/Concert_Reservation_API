@@ -6,7 +6,6 @@ import org.example.ticketing.api.dto.response.QueueResponseDTO;
 import org.example.ticketing.api.dto.response.TokenResponseDTO;
 import org.example.ticketing.api.usecase.user.CheckTokenUseCase;
 import org.example.ticketing.api.usecase.user.EnterQueueUseCase;
-import org.example.ticketing.domain.user.model.Token;
 import org.example.ticketing.domain.user.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

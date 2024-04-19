@@ -3,14 +3,7 @@ package org.example.ticketing.api.controller;
 import org.example.ticketing.api.dto.request.PointRequestDTO;
 import org.example.ticketing.api.dto.request.ReservationRequestDTO;
 import org.example.ticketing.api.dto.request.UserRequestDTO;
-import org.example.ticketing.api.dto.response.*;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 public class MockController {
@@ -115,7 +108,19 @@ public class MockController {
     @PostMapping("/mock/reservation")
     public String tempReservation(@RequestBody ReservationRequestDTO reservationRequestDTO) {
         return """
-                
+                {
+                    "message": "좌석 예약 성공",
+                    "reservation": {
+                        "reservationId": 1,
+                        "userId": 1,
+                        "concertId": 1,
+                        "seatId": 1,
+                        "status": "temporary",
+                        "cost": 50000,
+                        "reservationTime": "2024-04-18T19:38:34.925159",
+                        "expirationTime": "2024-04-18T19:43:34.925177"
+                    }
+                }
                 """;
     }
 
@@ -146,12 +151,22 @@ public class MockController {
                 """;
     }
 
-//    @PostMapping("/mock/point/payment")
-//    public ResponseEntity<PointResponseDTO> pointPayment(@RequestBody PointRequestDTO pointRequestDTO) {
-//        LocalDateTime time_now = LocalDateTime.now();
-//        PointResponseDTO pointResponseDTO = new PointResponseDTO(pointRequestDTO.userId(), 5000L+pointRequestDTO.point(), time_now);
-//
-//        return new ResponseEntity<>(pointResponseDTO, HttpStatus.OK);
-//    }
+    @PostMapping("/mock/point/payment")
+    public String pointPayment(@RequestBody PointRequestDTO pointRequestDTO) {
+        return """
+                {
+                    "message": "결제 완료",
+                    "paymentInfoDTO": {
+                        "userId": 1,
+                        "reservationId": 1,
+                        "concertId": 1,
+                        "seatId": 2,
+                        "cost": 50000,
+                        "status": "reserved",
+                        "paymentTime": "2024-04-19T13:54:31.740541"
+                    }
+                }
+                """;
+    }
 
 }

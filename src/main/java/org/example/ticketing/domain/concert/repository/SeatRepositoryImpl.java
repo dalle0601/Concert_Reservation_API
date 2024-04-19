@@ -1,11 +1,8 @@
 package org.example.ticketing.domain.concert.repository;
 
-import org.example.ticketing.domain.concert.model.Concert;
 import org.example.ticketing.domain.concert.model.Seat;
-import org.example.ticketing.domain.user.model.Token;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Repository

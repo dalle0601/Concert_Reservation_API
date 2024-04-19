@@ -1,7 +1,6 @@
 package org.example.ticketing.api.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import org.example.ticketing.api.dto.request.SeatReqeustDTO;
 import org.example.ticketing.api.dto.request.UserRequestDTO;
 import org.example.ticketing.api.dto.response.ConcertResponseDTO;
 import org.example.ticketing.api.dto.response.SeatResponseDTO;

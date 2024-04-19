@@ -1,7 +1,5 @@
 package org.example.ticketing.domain.user.repository;
 
-import org.example.ticketing.api.dto.response.QueueWaitInfoResponseDTO;
-import org.example.ticketing.api.dto.response.UserResponseDTO;
 import org.example.ticketing.domain.user.model.UserInfo;
 
 public interface UserRepository {
@@ -9,4 +7,5 @@ public interface UserRepository {
     UserInfo joinUser(Long userId);
     UserInfo findUserByUserId(Long userId);
     UserInfo save(UserInfo userInfo);
+    void updatePointByUserId(Long userId, Long point);
 }

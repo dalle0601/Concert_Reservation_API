@@ -1,13 +1,13 @@
 package org.example.ticketing.api.controller;
 
+import org.example.ticketing.api.dto.response.PaymentInfoDTO;
+import org.example.ticketing.api.dto.response.PaymentResponseDTO;
 import org.example.ticketing.api.dto.response.PointHistorySaveResponseDTO;
 import org.example.ticketing.api.dto.response.PointResponseDTO;
-import org.example.ticketing.api.dto.response.UserResponseDTO;
 import org.example.ticketing.api.usecase.point.ChargePointUseCase;
 import org.example.ticketing.api.usecase.point.GetPointUseCase;
+import org.example.ticketing.api.usecase.point.PaymentUseCase;
 import org.example.ticketing.domain.point.model.PointHistory;
-import org.example.ticketing.domain.user.model.UserInfo;
-import org.example.ticketing.domain.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,6 +33,8 @@ public class PointControllerTest {
     private GetPointUseCase getPointUseCase;
     @Mock
     private ChargePointUseCase chargePointUseCase;
+    @Mock
+    private PaymentUseCase paymentUseCase;
     @InjectMocks
     private PointController pointController;
 
@@ -79,12 +81,21 @@ public class PointControllerTest {
     @DisplayName("결제 API")
     @Test
     public void postTempReservationTest() throws Exception {
-        /*
-            - 날짜와 좌석 정보를 입력받아 좌석을 예약 처리하는 API 를 작성합니다.
-            - 좌석 예약과 동시에 해당 좌석은 그 유저에게 약 5분간 임시 배정됩니다. ( 시간은 정책에 따라 자율적으로 정의합니다. )
-            - 배정 시간 내에 결제가 완료되지 않았다면 좌석에 대한 임시 배정은 해제되어야 합니다.
-            - 배정 시간 내에는 다른 사용자는 예약할 수 없어야 합니다.
-         */
+        Long userId = 1L;
+        Long reservationId = 1L;
+        String message = "결제 완료";
+
+        PaymentInfoDTO paymentInfoDTO = new PaymentInfoDTO(userId, reservationId, 1L, 1L, 50000L, "reserved", LocalDateTime.now());
+        when(paymentUseCase.execute(any())).thenReturn(new PaymentResponseDTO(message, paymentInfoDTO));
+        mockMvc.perform(MockMvcRequestBuilders.post("/point/payment")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"reservationId\": 1, \"userId\": 1}"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value(message))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.paymentInfoDTO.seatId").value(1L))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.paymentInfoDTO.status").value("reserved"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.paymentInfoDTO.cost").value(50000L));
+
 
     }
 

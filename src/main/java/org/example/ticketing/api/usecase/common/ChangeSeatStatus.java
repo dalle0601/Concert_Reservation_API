@@ -1,7 +1,6 @@
 package org.example.ticketing.api.usecase.common;
 
 import org.example.ticketing.domain.concert.model.Seat;
-import org.example.ticketing.domain.concert.repository.ConcertRepository;
 import org.example.ticketing.domain.concert.repository.SeatRepository;
 import org.springframework.stereotype.Service;
 

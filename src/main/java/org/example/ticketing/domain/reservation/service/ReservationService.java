@@ -1,14 +1,13 @@
 package org.example.ticketing.domain.reservation.service;
 
-import org.example.ticketing.api.dto.request.ReservationRequestDTO;
-import org.example.ticketing.api.dto.request.UserRequestDTO;
-import org.example.ticketing.api.dto.response.ReservationResponseDTO;
-import org.example.ticketing.api.usecase.reservation.MakeReservationUseCase;
+import org.example.ticketing.api.dto.request.PaymentReservationUpdateDTO;
 import org.example.ticketing.domain.reservation.model.Reservation;
 import org.example.ticketing.domain.reservation.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReservationService {
@@ -27,5 +26,13 @@ public class ReservationService {
 
     public Reservation findNonAvailableByConcertIdAndSeatId(Long concertId, Long seatId){
         return reservationRepository.findNonAvailableByConcertIdAndSeatId(concertId, seatId);
+    }
+
+    public Optional<Reservation> findById(Long reservationId){
+        return reservationRepository.findById(reservationId);
+    }
+
+    public void updateStateAndExpirationTime(PaymentReservationUpdateDTO paymentReservationUpdateDTO) {
+        reservationRepository.updateStateAndExpirationTime(paymentReservationUpdateDTO);
     }
 }

@@ -1,13 +1,10 @@
 package org.example.ticketing.domain.concert.repository;
 
 import org.example.ticketing.domain.concert.model.Concert;
-import org.example.ticketing.domain.concert.model.Seat;
-import org.example.ticketing.domain.user.model.Token;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class ConcertRepositoryImpl implements ConcertRepository{
@@ -22,7 +19,7 @@ public class ConcertRepositoryImpl implements ConcertRepository{
     }
 
     @Override
-    public List<Concert> findByConcertId(Long concertId) {
+    public Concert findByConcertId(Long concertId) {
         return concertJpaRepository.findByConcertId(concertId);
     }
 

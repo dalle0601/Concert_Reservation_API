@@ -1,9 +1,5 @@
 package org.example.ticketing.domain.user.repository;
 
-import jakarta.persistence.EntityNotFoundException;
-import org.apache.catalina.User;
-import org.example.ticketing.api.dto.response.QueueWaitInfoResponseDTO;
-import org.example.ticketing.api.dto.response.UserResponseDTO;
 import org.example.ticketing.domain.user.model.UserInfo;
 import org.springframework.stereotype.Repository;
 
@@ -32,5 +28,10 @@ public class UserRepositoryImpl implements UserRepository{
     @Override
     public UserInfo save(UserInfo userInfo) {
         return userJpaRepository.save(userInfo);
+    }
+
+    @Override
+    public void updatePointByUserId(Long userId, Long point) {
+        userJpaRepository.updatePointByUserId(userId, point);
     }
 }

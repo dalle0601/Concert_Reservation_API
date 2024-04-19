@@ -23,4 +23,8 @@ public class UserService {
     public UserInfo chargePoint(UserInfo userInfo){
         return userRepository.save(userInfo);
     }
+
+    public void paymentPoint(Long userId, Long point) {
+        userRepository.updatePointByUserId(userId, point);
+    }
 }

@@ -5,11 +5,9 @@ import org.example.ticketing.api.dto.response.ConcertResponseDTO;
 import org.example.ticketing.api.dto.response.TokenResponseDTO;
 import org.example.ticketing.api.usecase.user.CheckTokenUseCase;
 import org.example.ticketing.domain.concert.model.Concert;
-import org.example.ticketing.domain.concert.repository.ConcertRepository;
 import org.example.ticketing.domain.concert.service.ConcertService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
