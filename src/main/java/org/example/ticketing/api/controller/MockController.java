@@ -7,6 +7,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class MockController {
+    @GetMapping("/mock/cicd")
+    public String cicdTest() {
+        return """
+                {
+                    "message": "배포테스트!"
+                }
+                """;
+    }
     @PostMapping("/mock/user/queue/enter")
     public String enterQueue (@RequestBody UserRequestDTO userRequestDTO) {
         // {"userId": "test3"}
