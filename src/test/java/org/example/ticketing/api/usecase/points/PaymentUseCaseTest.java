@@ -56,7 +56,7 @@ public class PaymentUseCaseTest {
         when(reservationService.findById(paymentRequestDTO.reservationId()))
                 .thenReturn(Optional.of(new Reservation(reservationId, userId, concertId, seatId, status, cost, reservationTime, expirationTime)));
         when(userService.findUserInfo(any())).thenReturn(new UserInfo(1L, userId, 60000L, LocalDateTime.now()));
-        when(concertService.findByConcertId(any())).thenReturn(new Concert(concertId, "첫번째콘서트", LocalDateTime.now(), 50L, 25L, LocalDateTime.now()));
+        when(concertService.findByConcertId(any())).thenReturn(new Concert(concertId, "첫번째콘서트", LocalDateTime.now(), LocalDateTime.now()));
 
         PaymentResponseDTO actualValue = paymentUseCase.execute(paymentRequestDTO);
 
@@ -87,7 +87,7 @@ public class PaymentUseCaseTest {
         when(reservationService.findById(paymentRequestDTO.reservationId()))
                 .thenReturn(Optional.of(new Reservation(reservationId, userId, concertId, seatId, status, cost, reservationTime, expirationTime)));
         when(userService.findUserInfo(any())).thenReturn(new UserInfo(1L, userId, 40000L, LocalDateTime.now()));
-        when(concertService.findByConcertId(any())).thenReturn(new Concert(concertId, "첫번째콘서트", LocalDateTime.now(), 50L, 25L, LocalDateTime.now()));
+        when(concertService.findByConcertId(any())).thenReturn(new Concert(concertId, "첫번째콘서트", LocalDateTime.now(), LocalDateTime.now()));
 
         PaymentResponseDTO actualValue = paymentUseCase.execute(paymentRequestDTO);
 

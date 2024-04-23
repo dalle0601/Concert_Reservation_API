@@ -1,18 +1,20 @@
 package org.example.ticketing.domain.reservation.service;
 
+
+import jakarta.persistence.EntityManager;
 import org.example.ticketing.api.dto.request.PaymentReservationUpdateDTO;
 import org.example.ticketing.domain.reservation.model.Reservation;
 import org.example.ticketing.domain.reservation.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ReservationService {
     private final ReservationRepository reservationRepository;
-    public ReservationService(ReservationRepository reservationRepository) {
+
+    public ReservationService(ReservationRepository reservationRepository, EntityManager entityManager) {
         this.reservationRepository = reservationRepository;
     }
 

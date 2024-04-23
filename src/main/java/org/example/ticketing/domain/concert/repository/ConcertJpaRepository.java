@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ConcertJpaRepository extends JpaRepository<Concert, Long> {
-    @Query("SELECT c FROM Concert c WHERE c.concertDate >= :concertDate AND c.availableSeatCnt > 0")
+    @Query("SELECT c FROM Concert c WHERE c.concertDate >= :concertDate")
     List<Concert> findByAvailableStartDate(@Param("concertDate") LocalDateTime concertDate);
     Concert findByConcertId(@Param("concertId") Long concertId);
 }

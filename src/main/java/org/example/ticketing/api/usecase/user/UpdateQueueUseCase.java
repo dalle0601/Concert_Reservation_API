@@ -1,5 +1,6 @@
 package org.example.ticketing.api.usecase.user;
 
+import jakarta.transaction.Transactional;
 import org.example.ticketing.api.dto.request.UserRequestDTO;
 import org.example.ticketing.api.dto.response.QueueResponseDTO;
 import org.example.ticketing.domain.user.model.Queue;
@@ -20,7 +21,7 @@ public class UpdateQueueUseCase {
         this.tokenService = tokenService;
         this.queueService = queueService;
     }
-
+    @Transactional
     public QueueResponseDTO execute(UserRequestDTO userRequestDTO) throws Exception {
 
         Queue myQueue = queueService.findQueueInfo(userRequestDTO.userId());

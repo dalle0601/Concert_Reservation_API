@@ -48,9 +48,9 @@ public class ConcertControllerTest {
     @Test
     public void GetAvailableConcertDateTest() throws Exception {
         List<Concert> concerts = new ArrayList<>();
-        concerts.add(new Concert(1L, "첫번째 콘서트", LocalDateTime.of(2024, 5, 11, 17, 30), 50L, 14L, LocalDateTime.now()));
-        concerts.add(new Concert(2L, "22번째 콘서트", LocalDateTime.of(2024, 6, 6, 18, 30), 50L, 1L, LocalDateTime.now()));
-        concerts.add(new Concert(3L, "333번째 콘서트", LocalDateTime.of(2024, 7, 17, 17, 00), 50L, 4L, LocalDateTime.now()));
+        concerts.add(new Concert(1L, "첫번째 콘서트", LocalDateTime.of(2024, 5, 11, 17, 30), LocalDateTime.now()));
+        concerts.add(new Concert(2L, "22번째 콘서트", LocalDateTime.of(2024, 6, 6, 18, 30), LocalDateTime.now()));
+        concerts.add(new Concert(3L, "333번째 콘서트", LocalDateTime.of(2024, 7, 17, 17, 00), LocalDateTime.now()));
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("userId", "1");

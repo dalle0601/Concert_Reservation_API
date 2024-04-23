@@ -10,7 +10,6 @@ import java.util.Optional;
 @Repository
 public class ReservationRepositoryImpl implements ReservationRepository{
     private final ReservationJpaRepository reservationJpaRepository;
-
     public ReservationRepositoryImpl (ReservationJpaRepository reservationJpaRepository){
         this.reservationJpaRepository = reservationJpaRepository;
     }
@@ -25,7 +24,7 @@ public class ReservationRepositoryImpl implements ReservationRepository{
 
     @Override
     public Reservation findNonAvailableByConcertIdAndSeatId(Long concertId, Long seatId) {
-        return reservationJpaRepository.findNonAvailableByConcertIdAndSeatId(concertId, seatId);
+        return  reservationJpaRepository.findNonAvailableByConcertIdAndSeatId(concertId, seatId);
     }
 
     @Override
@@ -40,5 +39,6 @@ public class ReservationRepositoryImpl implements ReservationRepository{
                 paymentReservationUpdateDTO.status(),
                 paymentReservationUpdateDTO.reservationTime(),
                 paymentReservationUpdateDTO.expiredTime()
-        );    }
+        );
+    }
 }

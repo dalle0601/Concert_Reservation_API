@@ -1,5 +1,6 @@
 package org.example.ticketing.api.usecase.point;
 
+import jakarta.transaction.Transactional;
 import org.example.ticketing.api.dto.request.PointHistorySaveRequestDTO;
 import org.example.ticketing.api.dto.request.PointRequestDTO;
 import org.example.ticketing.api.dto.request.UserRequestDTO;
@@ -20,6 +21,7 @@ public class ChargePointUseCase {
         this.writePointHistoryUseCase = writePointHistoryUseCase;
     }
 
+    @Transactional
     public PointHistorySaveResponseDTO execute(PointRequestDTO pointRequestDTO){
         if(pointRequestDTO.point() <= 0) {
             return new PointHistorySaveResponseDTO("0 또는 마이너스 포인트는 충전 불가능합니다.", null);

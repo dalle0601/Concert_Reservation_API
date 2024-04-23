@@ -16,7 +16,6 @@ public class CheckTokenUseCase {
         this.tokenService = tokenService;
         this.updateQueueUseCase = updateQueueUseCase;
     }
-
     public TokenResponseDTO execute(UserRequestDTO userRequestDTO) throws Exception {
         Token token = tokenService.checkToken(userRequestDTO);
         if(token == null) {

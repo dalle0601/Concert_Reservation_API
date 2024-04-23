@@ -1,5 +1,6 @@
 package org.example.ticketing.api.usecase.point;
 
+import jakarta.transaction.Transactional;
 import org.example.ticketing.api.dto.request.PointHistorySaveRequestDTO;
 import org.example.ticketing.api.dto.response.PointHistorySaveResponseDTO;
 import org.example.ticketing.domain.point.model.PointHistory;
@@ -12,7 +13,7 @@ public class WritePointHistoryUseCase {
     public WritePointHistoryUseCase(PointService pointService) {
         this.pointService = pointService;
     }
-
+    @Transactional
     public PointHistorySaveResponseDTO execute(PointHistorySaveRequestDTO pointHistorySaveRequestDTO){
         try {
             PointHistory savePointHistory = pointService.save(new PointHistory(pointHistorySaveRequestDTO.userId(), pointHistorySaveRequestDTO.point(), pointHistorySaveRequestDTO.status()));
