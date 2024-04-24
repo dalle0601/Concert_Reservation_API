@@ -1,0 +1,6 @@
+version: '1'
+services:
+  app:
+    image: concert_reservation-app:latest
+    ports:
+      - "8081:8080"
