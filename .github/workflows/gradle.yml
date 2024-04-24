@@ -53,5 +53,5 @@ jobs:
     - name: Update Docker image
       run: |
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-        docker pull ${{ secrets.DOCKER_USERNAME }}/repository:latest
-        docker-compose up -d
+        docker-compose -f docker-compose.yml pull
+        docker-compose -f docker-compose.yml up -d
