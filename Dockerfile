@@ -1,4 +1,4 @@
-FROM openjdk:21
+FROM openjdk:17
 CMD ["./gradlew", "clean", "build"]
 VOLUME /tmp
 ARG JAR_FILE=build/libs/*.jar

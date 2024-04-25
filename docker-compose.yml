@@ -1,5 +1,8 @@
 services:
   app:
+    container_name: concert_reservation_app
     image: soondolbro/concert_reservation-app:latest
+    expose:
+      - "8080"
     ports:
-      - "8081:8080"
+      - "8080:8080"
