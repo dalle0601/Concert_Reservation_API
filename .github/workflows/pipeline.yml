@@ -40,7 +40,7 @@ jobs:
     # 테스트
     - name: Run Tests
       run: |
-        ./gradlew test
+          ./gradlew test
       
     - name: Docker build & push to docker repo
       run: |
