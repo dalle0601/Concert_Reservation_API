@@ -11,7 +11,7 @@ public class MockController {
     public String cicdTest() {
         return """
                 {
-                    "message": "배포테스트!"
+                    "message": "배포테스트!22222222222"
                 }
                 """;
     }
