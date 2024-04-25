@@ -51,7 +51,7 @@ jobs:
         docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:latest
 
     - name: Deploy to server
-      uses: dalle0601/Week3_Concert_Reservation@main
+      uses: appleboy/ssh-action@master
       id: deploy
       with:
         host: ${{ secrets.HOST }}
