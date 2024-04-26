@@ -10,12 +10,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
+      IMAGE_TAG: ${{ github.sha }}
       AWS_REGION: ap-northeast-2
       ECR_REPOSITORY: hhplus-main
       ECS_SERVICE: concert-main-service
       ECS_CLUSTER: main-cluster-hhplus-spring-main
       ECS_TASK_DEFINITION: task-definition-main.json
-
+      ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com/hhplus-main
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,12 +37,6 @@ jobs:
         run: |
           ./gradlew test
 
-      - name: Docker build & push to docker repo
-        run: |
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build --platform linux/amd64 -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/${{secrets.DOCKER_REPO}}:latest .
-          docker push ${{ secrets.DOCKER_USERNAME }}/${{secrets.DOCKER_REPO }}:latest
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -52,6 +47,11 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Docker build env
+        id: build-env
+        run: |
+          echo "::set-output name=image_tag_version::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
       - name: Push Docker image to ECR
         id: build-docker-image
