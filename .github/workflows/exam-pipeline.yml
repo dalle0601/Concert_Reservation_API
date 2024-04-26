@@ -60,7 +60,7 @@ jobs:
         run: |
           aws ecs register-task-definition \
             --region ${{ env.AWS_REGION }} \
-            --cli-input-json file://${{ env.ECS_TASK_DEFINITION }}
+            --cli-input-json file://${{ github.workspace }}/${{ env.ECS_TASK_DEFINITION }}
 
       - name: Update ECS Service
         run: |
