@@ -26,11 +26,6 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name : Make application.properties
-        run: |
-          touch ./src/main/resources/application.properties
-          echo "${{ secrets.PROPERTIES }}" > ./src/main/resources/application.properties
-
       - name: Build with Gradle
         run: |
           chmod +x ./gradlew
@@ -47,16 +42,25 @@ jobs:
           docker build --platform linux/amd64 -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/${{secrets.DOCKER_REPO}}:latest .
           docker push ${{ secrets.DOCKER_USERNAME }}/${{secrets.DOCKER_REPO }}:latest
 
-      - name: Configure AWS credentials with IAM role
-        uses: aws-actions/configure-aws-credentials@v3
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
 
       - name: Push Docker image to ECR
-        run: |
-          docker tag ${{ secrets.DOCKER_USERNAME }}/${{secrets.DOCKER_REPO }}:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{secrets.ECR_REPOSITORY }}:latest
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{secrets.ECR_REPOSITORY }}:latest
+        id: build-docker-image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/hhplus-main:latest
 
       - name: Render ECS task-definition
         id: render-task-definition
@@ -66,7 +70,7 @@ jobs:
           container-name: service-main
           image: ${{ secrets.DOCKER_USERNAME }}/hhplus-main:latest
 
-      - name: Deploy Amazon ECS task-definition
+      - name: Deploy Amazon ECS
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.render-task-definition.outputs.task-definition }}
