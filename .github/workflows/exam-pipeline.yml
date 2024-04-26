@@ -8,7 +8,6 @@ permissions:
 
 jobs:
   build:
-    # runs-on은 github action의 CI서버 runner가 어떤 환경을 갖출지
     runs-on: ubuntu-latest
     env:
       AWS_REGION: ap-northeast-2
@@ -16,7 +15,6 @@ jobs:
       ECS_SERVICE: concert-main-service
       ECS_CLUSTER: main-cluster-hhplus-spring-main
       ECS_TASK_DEFINITION: task-definition-main.json
-      CONTAINER_NAME: hhplus-main
 
     steps:
       - name: Checkout
@@ -46,14 +44,19 @@ jobs:
       - name: Docker build & push to docker repo
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/${{secrets.DOCKER_REPO}}:latest .
+          docker build platform linux/amd64 -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/${{secrets.DOCKER_REPO}}:latest .
           docker push ${{ secrets.DOCKER_USERNAME }}/${{secrets.DOCKER_REPO }}:latest
+
+      - name: Push Docker image to ECR
+        run: |
+          aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com
+          docker tag ${{ secrets.DOCKER_USERNAME }}/${{secrets.DOCKER_REPO }}:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{secrets.ECR_REPOSITORY }}:latest
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{secrets.ECR_REPOSITORY }}:latest
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Render ECS task-definition
@@ -71,4 +74,3 @@ jobs:
           cluster: ${{ env.ECS_CLUSTER }}
           service: ${{ env.ECS_SERVICE }}
           wait-for-service-stability: true
-
