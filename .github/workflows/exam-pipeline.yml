@@ -1,11 +1,8 @@
-name: github actions, dokcer, EC2
+name: Publish Docker Image and Deploy to Amazon ECS
 
-# 어떤 조건에서 workflow를 실행할것인가.
 on:
   push:
-    branches: [ "main", "dev" ]
-  pull_request:
-    branches: [ "main", "dev" ]
+    branches: [ "main" ]
 permissions:
   contents: read
 
@@ -14,9 +11,13 @@ jobs:
     # runs-on은 github action의 CI서버 runner가 어떤 환경을 갖출지
     runs-on: ubuntu-latest
     env:
-      ENVIRONMENT: ${{ github.ref == 'refs/heads/main' && 'main' || 'dev' }}
-    # name(옵션)이름을 적어주고 uses나 run으로 어떤일을 할지 적는다.
-    # uses는 이미 만들어져있는 것을 가져다쓰는 것, run은 직접 명령어를 적어주겠다
+      AWS_REGION: ap-northeast-2
+      ECR_REPOSITORY: hhplus-main
+      ECS_SERVICE: concert-main-service
+      ECS_CLUSTER: main-cluster-hhplus-spring-main
+      ECS_TASK_DEFINITION: task-definition-main.json
+      CONTAINER_NAME: hhplus-main
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -48,18 +49,23 @@ jobs:
           docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/${{ env.ENVIRONMENT == 'main' && secrets.DOCKER_REPO || secrets.DOCKER_REPO_DEV }}:latest .
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.ENVIRONMENT == 'main' && secrets.DOCKER_REPO || secrets.DOCKER_REPO_DEV }}:latest
 
-      - name: Deploy to server
-        uses: appleboy/ssh-action@master
-        id: deploy
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
         with:
-          host: ${{ secrets.HOST }}
-          username: ubuntu
-          key: ${{ secrets.KEY }}
-          envs: GITHUB_SHA
-          script: |
-            sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-            sudo docker rm -f $(sudo docker ps -qa)
-            cd ${{ secrets.DOCKER_COMPOSE_PATH }}
-            sudo docker-compose pull app
-            sudo docker-compose up -d
-            sudo docker image prune -f
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Update ECS Task Definition
+        run: |
+          aws ecs register-task-definition \
+            --region ${{ env.AWS_REGION }} \
+            --cli-input-json file://${{ env.ECS_TASK_DEFINITION }}
+
+      - name: Update ECS Service
+        run: |
+          aws ecs update-service \
+            --region ${{ env.AWS_REGION }} \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --service ${{ env.ECS_SERVICE }} \
+            --force-new-deployment
