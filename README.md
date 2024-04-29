@@ -1,5 +1,14 @@
 # 콘서트 예약 서비스 구현
 
+## > 동시성 문제가 발생할 수 있는 유즈케이스 분석 
+<details>
+<summary>유즈케이스 분석 자료</summary>
+<div markdown="1">
+  <br>
+- 
+</div>
+</details>
+
 ## > Git Branch
 <details>
 <summary>Git Branch 전략 수립 </summary>
