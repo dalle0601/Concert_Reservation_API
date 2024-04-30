@@ -1,12 +1,12 @@
 package org.example.ticketing.api.usecase.point;
 
 import jakarta.transaction.Transactional;
-import org.example.ticketing.api.dto.request.PaymentRequestDTO;
-import org.example.ticketing.api.dto.request.PaymentReservationUpdateDTO;
-import org.example.ticketing.api.dto.request.PointHistorySaveRequestDTO;
-import org.example.ticketing.api.dto.request.UserRequestDTO;
-import org.example.ticketing.api.dto.response.PaymentInfoDTO;
-import org.example.ticketing.api.dto.response.PaymentResponseDTO;
+import org.example.ticketing.api.dto.point.reqeust.PaymentRequestDTO;
+import org.example.ticketing.api.dto.point.reqeust.PaymentReservationUpdateDTO;
+import org.example.ticketing.api.dto.point.reqeust.PointHistorySaveRequestDTO;
+import org.example.ticketing.api.dto.user.request.UserRequestDTO;
+import org.example.ticketing.api.dto.point.response.PaymentInfoDTO;
+import org.example.ticketing.api.dto.point.response.PaymentResponseDTO;
 import org.example.ticketing.domain.concert.model.Concert;
 import org.example.ticketing.domain.concert.service.ConcertService;
 import org.example.ticketing.domain.reservation.model.Reservation;

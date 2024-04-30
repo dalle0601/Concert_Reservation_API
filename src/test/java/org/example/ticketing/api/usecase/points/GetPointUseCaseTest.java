@@ -1,6 +1,6 @@
 package org.example.ticketing.api.usecase.points;
 
-import org.example.ticketing.api.dto.response.PointResponseDTO;
+import org.example.ticketing.api.dto.point.response.PointResponseDTO;
 import org.example.ticketing.api.usecase.point.GetPointUseCase;
 import org.example.ticketing.domain.user.model.UserInfo;
 import org.example.ticketing.domain.user.service.UserService;

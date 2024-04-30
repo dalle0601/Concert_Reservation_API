@@ -1,9 +1,9 @@
 package org.example.ticketing.api.controller;
 
-import org.example.ticketing.api.dto.response.ReservationResponseDTO;
+import org.example.ticketing.api.controller.reservation.ReservationController;
+import org.example.ticketing.api.dto.reservation.response.ReservationResponseDTO;
 import org.example.ticketing.api.usecase.reservation.MakeReservationUseCase;
 import org.example.ticketing.domain.reservation.model.Reservation;
-import org.example.ticketing.domain.reservation.service.ReservationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

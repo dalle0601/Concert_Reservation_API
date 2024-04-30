@@ -1,4 +1,4 @@
-package org.example.ticketing.api.dto.request;
+package org.example.ticketing.api.dto.user.request;
 
 import java.time.LocalDateTime;
 

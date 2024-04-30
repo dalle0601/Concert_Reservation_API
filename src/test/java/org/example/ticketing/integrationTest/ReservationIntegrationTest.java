@@ -1,27 +1,13 @@
 package org.example.ticketing.integrationTest;
 
-import org.example.ticketing.api.dto.request.ReservationRequestDTO;
-import org.example.ticketing.api.dto.request.UserRequestDTO;
-import org.example.ticketing.api.dto.response.*;
 import org.example.ticketing.api.usecase.concert.GetConcertAvailableDateUseCase;
 import org.example.ticketing.api.usecase.concert.GetConcertAvailableSeatUseCase;
 import org.example.ticketing.api.usecase.reservation.MakeReservationUseCase;
 import org.example.ticketing.api.usecase.user.CheckTokenUseCase;
 import org.example.ticketing.api.usecase.user.EnterQueueUseCase;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 public class ReservationIntegrationTest {

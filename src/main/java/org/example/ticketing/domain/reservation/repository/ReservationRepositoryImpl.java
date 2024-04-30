@@ -1,6 +1,6 @@
 package org.example.ticketing.domain.reservation.repository;
 
-import org.example.ticketing.api.dto.request.PaymentReservationUpdateDTO;
+import org.example.ticketing.api.dto.point.reqeust.PaymentReservationUpdateDTO;
 import org.example.ticketing.domain.reservation.model.Reservation;
 import org.springframework.stereotype.Repository;
 

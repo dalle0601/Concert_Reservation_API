@@ -1,15 +1,11 @@
 package org.example.ticketing.api.usecase.users;
 
-import org.example.ticketing.api.dto.request.UserRequestDTO;
-import org.example.ticketing.api.dto.response.QueueResponseDTO;
-import org.example.ticketing.api.dto.response.TokenResponseDTO;
+import org.example.ticketing.api.dto.user.request.UserRequestDTO;
+import org.example.ticketing.api.dto.user.response.TokenResponseDTO;
 import org.example.ticketing.api.usecase.user.CheckTokenUseCase;
-import org.example.ticketing.api.usecase.user.EnterQueueUseCase;
 import org.example.ticketing.api.usecase.user.UpdateQueueUseCase;
 import org.example.ticketing.domain.user.model.Token;
-import org.example.ticketing.domain.user.service.QueueService;
 import org.example.ticketing.domain.user.service.TokenService;
-import org.example.ticketing.domain.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

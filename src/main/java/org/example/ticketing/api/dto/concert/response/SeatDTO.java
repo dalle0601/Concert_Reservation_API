@@ -1,4 +1,4 @@
-package org.example.ticketing.api.dto.response;
+package org.example.ticketing.api.dto.concert.response;
 
 public record SeatDTO (
         Long seat_id,

@@ -1,4 +1,4 @@
-package org.example.ticketing.api.dto.response;
+package org.example.ticketing.api.dto.point.response;
 
 public record PaymentResponseDTO (
         String message,

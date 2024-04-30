@@ -1,7 +1,7 @@
 package org.example.ticketing.api.usecase.point;
 
-import org.example.ticketing.api.dto.request.UserRequestDTO;
-import org.example.ticketing.api.dto.response.PointResponseDTO;
+import org.example.ticketing.api.dto.user.request.UserRequestDTO;
+import org.example.ticketing.api.dto.point.response.PointResponseDTO;
 import org.example.ticketing.domain.user.model.UserInfo;
 import org.example.ticketing.domain.user.service.UserService;
 import org.springframework.stereotype.Service;

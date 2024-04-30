@@ -1,10 +1,8 @@
 package org.example.ticketing.api.usecase.points;
 
-import org.example.ticketing.api.dto.request.PointRequestDTO;
-import org.example.ticketing.api.dto.response.PointHistorySaveResponseDTO;
-import org.example.ticketing.api.dto.response.PointResponseDTO;
+import org.example.ticketing.api.dto.point.reqeust.PointRequestDTO;
+import org.example.ticketing.api.dto.point.response.PointHistorySaveResponseDTO;
 import org.example.ticketing.api.usecase.point.ChargePointUseCase;
-import org.example.ticketing.api.usecase.point.GetPointUseCase;
 import org.example.ticketing.api.usecase.point.WritePointHistoryUseCase;
 import org.example.ticketing.domain.point.model.PointHistory;
 import org.example.ticketing.domain.user.model.UserInfo;

@@ -1,8 +1,8 @@
 package org.example.ticketing.api.usecase.user;
 
-import org.example.ticketing.api.dto.request.UserRequestDTO;
-import org.example.ticketing.api.dto.response.QueueResponseDTO;
-import org.example.ticketing.api.dto.response.TokenResponseDTO;
+import org.example.ticketing.api.dto.user.request.UserRequestDTO;
+import org.example.ticketing.api.dto.user.response.QueueResponseDTO;
+import org.example.ticketing.api.dto.user.response.TokenResponseDTO;
 import org.example.ticketing.domain.user.model.Token;
 import org.example.ticketing.domain.user.service.TokenService;
 import org.springframework.stereotype.Service;

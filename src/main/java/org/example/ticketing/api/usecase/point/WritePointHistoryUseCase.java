@@ -1,8 +1,8 @@
 package org.example.ticketing.api.usecase.point;
 
 import jakarta.transaction.Transactional;
-import org.example.ticketing.api.dto.request.PointHistorySaveRequestDTO;
-import org.example.ticketing.api.dto.response.PointHistorySaveResponseDTO;
+import org.example.ticketing.api.dto.point.reqeust.PointHistorySaveRequestDTO;
+import org.example.ticketing.api.dto.point.response.PointHistorySaveResponseDTO;
 import org.example.ticketing.domain.point.model.PointHistory;
 import org.example.ticketing.domain.point.service.PointService;
 import org.springframework.stereotype.Service;

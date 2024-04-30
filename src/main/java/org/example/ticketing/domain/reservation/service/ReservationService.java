@@ -2,7 +2,7 @@ package org.example.ticketing.domain.reservation.service;
 
 
 import jakarta.persistence.EntityManager;
-import org.example.ticketing.api.dto.request.PaymentReservationUpdateDTO;
+import org.example.ticketing.api.dto.point.reqeust.PaymentReservationUpdateDTO;
 import org.example.ticketing.domain.reservation.model.Reservation;
 import org.example.ticketing.domain.reservation.repository.ReservationRepository;
 import org.springframework.stereotype.Service;

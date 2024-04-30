@@ -1,4 +1,4 @@
-package org.example.ticketing.api.dto.response;
+package org.example.ticketing.api.dto.reservation.response;
 
 import org.example.ticketing.domain.reservation.model.Reservation;
 

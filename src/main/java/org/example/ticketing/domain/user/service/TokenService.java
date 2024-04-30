@@ -1,7 +1,7 @@
 package org.example.ticketing.domain.user.service;
 
 import jakarta.transaction.Transactional;
-import org.example.ticketing.api.dto.request.UserRequestDTO;
+import org.example.ticketing.api.dto.user.request.UserRequestDTO;
 import org.example.ticketing.domain.user.model.Token;
 import org.example.ticketing.domain.user.repository.TokenRepository;
 import org.springframework.stereotype.Service;

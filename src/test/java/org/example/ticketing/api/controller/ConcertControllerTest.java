@@ -1,8 +1,9 @@
 package org.example.ticketing.api.controller;
 
-import org.example.ticketing.api.dto.response.ConcertResponseDTO;
-import org.example.ticketing.api.dto.response.SeatDTO;
-import org.example.ticketing.api.dto.response.SeatResponseDTO;
+import org.example.ticketing.api.controller.concert.ConcertController;
+import org.example.ticketing.api.dto.concert.response.ConcertResponseDTO;
+import org.example.ticketing.api.dto.concert.response.SeatDTO;
+import org.example.ticketing.api.dto.concert.response.SeatResponseDTO;
 import org.example.ticketing.api.usecase.concert.GetConcertAvailableDateUseCase;
 import org.example.ticketing.api.usecase.concert.GetConcertAvailableSeatUseCase;
 import org.example.ticketing.domain.concert.model.Concert;

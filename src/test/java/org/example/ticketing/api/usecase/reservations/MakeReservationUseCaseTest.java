@@ -1,8 +1,8 @@
 package org.example.ticketing.api.usecase.reservations;
 
-import org.example.ticketing.api.dto.request.ReservationRequestDTO;
-import org.example.ticketing.api.dto.response.ReservationResponseDTO;
-import org.example.ticketing.api.dto.response.TokenResponseDTO;
+import org.example.ticketing.api.dto.reservation.request.ReservationRequestDTO;
+import org.example.ticketing.api.dto.reservation.response.ReservationResponseDTO;
+import org.example.ticketing.api.dto.user.response.TokenResponseDTO;
 import org.example.ticketing.api.usecase.reservation.MakeReservationUseCase;
 import org.example.ticketing.api.usecase.user.CheckTokenUseCase;
 import org.example.ticketing.domain.concert.model.Concert;

@@ -1,8 +1,8 @@
-package org.example.ticketing.api.controller;
+package org.example.ticketing.api.controller.reservation;
 
 import io.swagger.v3.oas.annotations.Operation;
-import org.example.ticketing.api.dto.request.ReservationRequestDTO;
-import org.example.ticketing.api.dto.response.ReservationResponseDTO;
+import org.example.ticketing.api.dto.reservation.request.ReservationRequestDTO;
+import org.example.ticketing.api.dto.reservation.response.ReservationResponseDTO;
 import org.example.ticketing.api.usecase.reservation.MakeReservationUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

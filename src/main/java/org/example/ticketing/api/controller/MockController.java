@@ -1,8 +1,8 @@
 package org.example.ticketing.api.controller;
 
-import org.example.ticketing.api.dto.request.PointRequestDTO;
-import org.example.ticketing.api.dto.request.ReservationRequestDTO;
-import org.example.ticketing.api.dto.request.UserRequestDTO;
+import org.example.ticketing.api.dto.point.reqeust.PointRequestDTO;
+import org.example.ticketing.api.dto.reservation.request.ReservationRequestDTO;
+import org.example.ticketing.api.dto.user.request.UserRequestDTO;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -43,25 +43,28 @@ public class MockController {
     public String getAvailableDate() {
         return """
                 {
-                    "message": "이용가능한 콘서트 날짜 조회 성공",
-                    "concertList": [
-                        {
-                            "concertId": 1,
-                            "concertTitle": "첫번재 콘서트",
-                            "concertDate": "2024-04-19T15:30:00",
-                            "maxSeatCnt": 50,
-                            "availableSeatCnt": 20,
-                            "createdAt": "2024-04-12T15:30:00"
-                        },
-                        {
-                            "concertId": 2,
-                            "concertTitle": "두번째 콘서트",
-                            "concertDate": "2024-04-22T17:30:00",
-                            "maxSeatCnt": 50,
-                            "availableSeatCnt": 11,
-                            "createdAt": "2024-04-10T15:30:00"
-                        }
-                    ]
+                    "code": "SUCCESS",
+                    "result": {
+                        "message": "이용가능한 콘서트 날짜 조회 성공",
+                        "concertList": [
+                            {
+                                "concertId": 1,
+                                "concertTitle": "첫번재 콘서트",
+                                "concertDate": "2024-04-19T15:30:00",
+                                "maxSeatCnt": 50,
+                                "availableSeatCnt": 20,
+                                "createdAt": "2024-04-12T15:30:00"
+                            },
+                            {
+                                "concertId": 2,
+                                "concertTitle": "두번째 콘서트",
+                                "concertDate": "2024-04-22T17:30:00",
+                                "maxSeatCnt": 50,
+                                "availableSeatCnt": 11,
+                                "createdAt": "2024-04-10T15:30:00"
+                            }
+                        ]
+                    }
                 }
                 """;
     }
@@ -70,45 +73,48 @@ public class MockController {
     public String getAvailableSeat(@PathVariable Long concertId) {
         return """
                 {
-                    "message": "이용가능한 콘서트 좌석 조회 성공",
-                    "seatList": [
-                        {
-                            "seat_id": 1,
-                            "seat_number": "A1",
-                            "cost": 50000,
-                            "seat_status": "available"
-                        },
-                        {
-                            "seat_id": 2,
-                            "seat_number": "A2",
-                            "cost": 50000,
-                            "seat_status": "available"
-                        },
-                        {
-                            "seat_id": 3,
-                            "seat_number": "A3",
-                            "cost": 50000,
-                            "seat_status": "available"
-                        },
-                        {
-                            "seat_id": 23,
-                            "seat_number": "A23",
-                            "cost": 50000,
-                            "seat_status": "available"
-                        },
-                        {
-                            "seat_id": 37,
-                            "seat_number": "B12",
-                            "cost": 45000,
-                            "seat_status": "available"
-                        },
-                        {
-                            "seat_id": 47,
-                            "seat_number": "B22",
-                            "cost": 45000,
-                            "seat_status": "available"
-                        },
-                    ]
+                    "code": "SUCCESS",
+                    "result": {
+                        "message": "이용가능한 콘서트 좌석 조회 성공",
+                        "seatList": [
+                            {
+                                "seat_id": 1,
+                                "seat_number": "A1",
+                                "cost": 50000,
+                                "seat_status": "available"
+                            },
+                            {
+                                "seat_id": 2,
+                                "seat_number": "A2",
+                                "cost": 50000,
+                                "seat_status": "available"
+                            },
+                            {
+                                "seat_id": 3,
+                                "seat_number": "A3",
+                                "cost": 50000,
+                                "seat_status": "available"
+                            },
+                            {
+                                "seat_id": 23,
+                                "seat_number": "A23",
+                                "cost": 50000,
+                                "seat_status": "available"
+                            },
+                            {
+                                "seat_id": 37,
+                                "seat_number": "B12",
+                                "cost": 45000,
+                                "seat_status": "available"
+                            },
+                            {
+                                "seat_id": 47,
+                                "seat_number": "B22",
+                                "cost": 45000,
+                                "seat_status": "available"
+                            },
+                        ]
+                    }
                 }
                 """;
     }

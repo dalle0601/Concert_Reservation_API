@@ -1,9 +1,10 @@
 package org.example.ticketing.api.controller;
 
-import org.example.ticketing.api.dto.response.PaymentInfoDTO;
-import org.example.ticketing.api.dto.response.PaymentResponseDTO;
-import org.example.ticketing.api.dto.response.PointHistorySaveResponseDTO;
-import org.example.ticketing.api.dto.response.PointResponseDTO;
+import org.example.ticketing.api.controller.point.PointController;
+import org.example.ticketing.api.dto.point.response.PaymentInfoDTO;
+import org.example.ticketing.api.dto.point.response.PaymentResponseDTO;
+import org.example.ticketing.api.dto.point.response.PointHistorySaveResponseDTO;
+import org.example.ticketing.api.dto.point.response.PointResponseDTO;
 import org.example.ticketing.api.usecase.point.ChargePointUseCase;
 import org.example.ticketing.api.usecase.point.GetPointUseCase;
 import org.example.ticketing.api.usecase.point.PaymentUseCase;

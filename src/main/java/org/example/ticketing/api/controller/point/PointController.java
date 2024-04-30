@@ -1,11 +1,11 @@
-package org.example.ticketing.api.controller;
+package org.example.ticketing.api.controller.point;
 
 import io.swagger.v3.oas.annotations.Operation;
-import org.example.ticketing.api.dto.request.PaymentRequestDTO;
-import org.example.ticketing.api.dto.request.PointRequestDTO;
-import org.example.ticketing.api.dto.response.PaymentResponseDTO;
-import org.example.ticketing.api.dto.response.PointHistorySaveResponseDTO;
-import org.example.ticketing.api.dto.response.PointResponseDTO;
+import org.example.ticketing.api.dto.point.reqeust.PaymentRequestDTO;
+import org.example.ticketing.api.dto.point.reqeust.PointRequestDTO;
+import org.example.ticketing.api.dto.point.response.PaymentResponseDTO;
+import org.example.ticketing.api.dto.point.response.PointHistorySaveResponseDTO;
+import org.example.ticketing.api.dto.point.response.PointResponseDTO;
 import org.example.ticketing.api.usecase.point.ChargePointUseCase;
 import org.example.ticketing.api.usecase.point.GetPointUseCase;
 import org.example.ticketing.api.usecase.point.PaymentUseCase;

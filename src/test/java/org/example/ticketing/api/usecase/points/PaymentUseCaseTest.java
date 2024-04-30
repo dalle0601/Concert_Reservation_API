@@ -1,7 +1,7 @@
 package org.example.ticketing.api.usecase.points;
 
-import org.example.ticketing.api.dto.request.PaymentRequestDTO;
-import org.example.ticketing.api.dto.response.PaymentResponseDTO;
+import org.example.ticketing.api.dto.point.reqeust.PaymentRequestDTO;
+import org.example.ticketing.api.dto.point.response.PaymentResponseDTO;
 import org.example.ticketing.api.usecase.point.PaymentUseCase;
 import org.example.ticketing.api.usecase.point.WritePointHistoryUseCase;
 import org.example.ticketing.domain.concert.model.Concert;

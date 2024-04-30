@@ -1,6 +1,6 @@
 package org.example.ticketing.api.usecase.common;
 
-import org.example.ticketing.api.dto.request.UserRequestDTO;
+import org.example.ticketing.api.dto.user.request.UserRequestDTO;
 import org.example.ticketing.domain.user.model.Queue;
 import org.example.ticketing.domain.user.model.Token;
 import org.example.ticketing.domain.user.service.QueueService;
