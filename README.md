@@ -1,15 +1,52 @@
 # 콘서트 예약 서비스 구현
 
-## > 동시성 문제가 발생할 수 있는 유즈케이스 분석 
-<details>
-<summary>유즈케이스 분석 자료</summary>
-<div markdown="1">
-  <br>
-- 
-</div>
-</details>
+## 🔎 동시성 문제가 발생할 수 있는 유즈케이스 분석 
 
-## > Git Branch
+  ### 1. MakeReservationUseCase (좌석 예약, 임시점유)
+  <details>
+    <summary>문제점</summary>
+    <div markdown="1">
+      여러 사용자가 동시에 같은 좌석을 예약할 때 같은 좌석에 대한 예약이 중복되거나, 예약 가능 여부를 확인하는 동안 다른 사용자가 이미 해당 좌석을 예약한 경우.<br />      
+    </div>
+  </details>
+   <details>
+    <summary>해결 방안</summary>
+    <div markdown="1">
+      .....
+    </div>
+  </details>
+  
+  ### 2. ChargePointUseCase (포인트 충전)
+  <details>
+    <summary>문제점</summary>
+    <div markdown="1">
+      같은 사용자의 포인트 잔액을 동시에 충전하는 동작이 발생할 경우.<br />      
+    </div>
+  </details>
+   <details>
+    <summary>해결 방안</summary>
+    <div markdown="1">
+      .....
+    </div>
+  </details>
+    
+  ### 3. PaymentUseCase (좌석 결제)
+  <details>
+    <summary>문제점</summary>
+    <div markdown="1">
+      같은 좌석에 대해 여러 결제가 발생하는 경우.<br />      
+    </div>
+  </details>
+   <details>
+    <summary>해결 방안</summary>
+    <div markdown="1">
+      .....
+    </div>
+  </details>
+  
+--- 
+
+## ⑆ Git Branch
 <details>
 <summary>Git Branch 전략 수립 </summary>
 <div markdown="1">
@@ -31,17 +68,19 @@
 </div>
 </details>
 
-## > [마일스톤](https://github.com/dalle0601/Week3_Concert_Reservation/milestones)
+---
 
-## > [요구사항분석](https://github.com/dalle0601/Week3_Concert_Reservation/issues/1)
+## [마일스톤](https://github.com/dalle0601/Week3_Concert_Reservation/milestones)
 
-## > [시퀀스 다이어그램](https://github.com/dalle0601/Week3_Concert_Reservation/issues/2)
+## [요구사항분석](https://github.com/dalle0601/Week3_Concert_Reservation/issues/1)
 
-## > [API 명세](https://github.com/dalle0601/Week3_Concert_Reservation/issues/4)
+## [시퀀스 다이어그램](https://github.com/dalle0601/Week3_Concert_Reservation/issues/2)
 
-## > [ERD / mock API 목록](https://github.com/dalle0601/Week3_Concert_Reservation/issues/3)
+## [API 명세](https://github.com/dalle0601/Week3_Concert_Reservation/issues/4)
 
-## > Swagger
+## [ERD / mock API 목록](https://github.com/dalle0601/Week3_Concert_Reservation/issues/3)
+
+## 📂 Swagger
 <details>
 <summary> Swagger 자세히보기 </summary>
 <div markdown="1">
