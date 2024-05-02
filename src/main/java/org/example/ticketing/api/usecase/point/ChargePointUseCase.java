@@ -1,10 +1,10 @@
 package org.example.ticketing.api.usecase.point;
 
-import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.example.ticketing.api.dto.point.reqeust.PointHistorySaveRequestDTO;
 import org.example.ticketing.api.dto.point.reqeust.PointRequestDTO;
-import org.example.ticketing.api.dto.user.request.UserRequestDTO;
 import org.example.ticketing.api.dto.point.response.PointHistorySaveResponseDTO;
+import org.example.ticketing.api.dto.user.request.UserRequestDTO;
 import org.example.ticketing.domain.user.model.UserInfo;
 import org.example.ticketing.domain.user.service.UserService;
 import org.springframework.stereotype.Service;
@@ -12,16 +12,12 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 @Service
+@RequiredArgsConstructor
+
 public class ChargePointUseCase {
     private final UserService userService;
     private final WritePointHistoryUseCase writePointHistoryUseCase;
 
-    public ChargePointUseCase(UserService userService, WritePointHistoryUseCase writePointHistoryUseCase) {
-        this.userService = userService;
-        this.writePointHistoryUseCase = writePointHistoryUseCase;
-    }
-
-    @Transactional
     public PointHistorySaveResponseDTO execute(PointRequestDTO pointRequestDTO){
         if(pointRequestDTO.point() <= 0) {
             return new PointHistorySaveResponseDTO("0 또는 마이너스 포인트는 충전 불가능합니다.", null);

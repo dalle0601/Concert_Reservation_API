@@ -1,19 +1,17 @@
 package org.example.ticketing.api.usecase.point;
 
-import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.example.ticketing.api.dto.point.reqeust.PointHistorySaveRequestDTO;
 import org.example.ticketing.api.dto.point.response.PointHistorySaveResponseDTO;
 import org.example.ticketing.domain.point.model.PointHistory;
 import org.example.ticketing.domain.point.service.PointService;
 import org.springframework.stereotype.Service;
 @Service
+@RequiredArgsConstructor
+
 public class WritePointHistoryUseCase {
     private final PointService pointService;
 
-    public WritePointHistoryUseCase(PointService pointService) {
-        this.pointService = pointService;
-    }
-    @Transactional
     public PointHistorySaveResponseDTO execute(PointHistorySaveRequestDTO pointHistorySaveRequestDTO){
         try {
             PointHistory savePointHistory = pointService.save(new PointHistory(pointHistorySaveRequestDTO.userId(), pointHistorySaveRequestDTO.point(), pointHistorySaveRequestDTO.status()));

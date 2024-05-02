@@ -1,5 +1,6 @@
 package org.example.ticketing.api.usecase.concert;
 
+import lombok.RequiredArgsConstructor;
 import org.example.ticketing.api.dto.user.request.UserRequestDTO;
 import org.example.ticketing.api.dto.concert.response.ConcertResponseDTO;
 import org.example.ticketing.api.dto.user.response.TokenResponseDTO;
@@ -12,14 +13,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class GetConcertAvailableDateUseCase {
 
     private final ConcertService concertService;
     private final CheckTokenUseCase checkTokenUseCase;
-    public GetConcertAvailableDateUseCase(ConcertService concertService, CheckTokenUseCase checkTokenUseCase) {
-        this.concertService = concertService;
-        this.checkTokenUseCase = checkTokenUseCase;
-    }
 
     public ConcertResponseDTO execute(UserRequestDTO userRequestDTO) throws Exception {
         try {

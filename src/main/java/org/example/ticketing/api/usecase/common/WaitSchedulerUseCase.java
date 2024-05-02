@@ -1,5 +1,6 @@
 package org.example.ticketing.api.usecase.common;
 
+import lombok.RequiredArgsConstructor;
 import org.example.ticketing.api.dto.user.request.UserRequestDTO;
 import org.example.ticketing.domain.user.model.Queue;
 import org.example.ticketing.domain.user.model.Token;
@@ -13,15 +14,10 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class WaitSchedulerUseCase {
-
     private final TokenService tokenService;
     private final QueueService queueService;
-
-    public WaitSchedulerUseCase(TokenService tokenService, QueueService queueService) {
-        this.tokenService = tokenService;
-        this.queueService = queueService;
-    }
 
     @Scheduled(fixedRate = 10000)
     public void execute() throws Exception {

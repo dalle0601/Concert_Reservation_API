@@ -1,6 +1,6 @@
 package org.example.ticketing.api.usecase.user;
 
-import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.example.ticketing.api.dto.user.request.UserRequestDTO;
 import org.example.ticketing.api.dto.user.response.QueueResponseDTO;
 import org.example.ticketing.domain.user.model.Queue;
@@ -13,15 +13,11 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class UpdateQueueUseCase {
     private final TokenService tokenService;
     private final QueueService queueService;
 
-    public UpdateQueueUseCase(TokenService tokenService, QueueService queueService) {
-        this.tokenService = tokenService;
-        this.queueService = queueService;
-    }
-    @Transactional
     public QueueResponseDTO execute(UserRequestDTO userRequestDTO) throws Exception {
 
         Queue myQueue = queueService.findQueueInfo(userRequestDTO.userId());

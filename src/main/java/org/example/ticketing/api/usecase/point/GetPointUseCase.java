@@ -1,5 +1,6 @@
 package org.example.ticketing.api.usecase.point;
 
+import lombok.RequiredArgsConstructor;
 import org.example.ticketing.api.dto.user.request.UserRequestDTO;
 import org.example.ticketing.api.dto.point.response.PointResponseDTO;
 import org.example.ticketing.domain.user.model.UserInfo;
@@ -7,12 +8,10 @@ import org.example.ticketing.domain.user.service.UserService;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class GetPointUseCase {
     private final UserService userService;
 
-    public GetPointUseCase(UserService userService) {
-        this.userService = userService;
-    }
     public PointResponseDTO execute(Long userId){
         try {
             UserInfo userInfo = userService.findUserInfo(new UserRequestDTO(userId));

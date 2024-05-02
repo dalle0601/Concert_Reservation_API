@@ -30,7 +30,7 @@ public class EnterQueueUseCaseTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        enterQueueUseCase = new EnterQueueUseCase(userService, queueService, updateQueueUseCase);
+        enterQueueUseCase = new EnterQueueUseCase(userService, updateQueueUseCase);
     }
 
     @DisplayName("유저 대기열 진입요청 > 새로운 유저")

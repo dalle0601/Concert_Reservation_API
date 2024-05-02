@@ -1,9 +1,9 @@
 package org.example.ticketing.api.usecase.reservation;
 
-import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.example.ticketing.api.dto.reservation.request.ReservationRequestDTO;
-import org.example.ticketing.api.dto.user.request.UserRequestDTO;
 import org.example.ticketing.api.dto.reservation.response.ReservationResponseDTO;
+import org.example.ticketing.api.dto.user.request.UserRequestDTO;
 import org.example.ticketing.api.dto.user.response.TokenResponseDTO;
 import org.example.ticketing.api.usecase.user.CheckTokenUseCase;
 import org.example.ticketing.domain.concert.model.Concert;
@@ -16,19 +16,14 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 @Service
+@RequiredArgsConstructor
+
 public class MakeReservationUseCase {
     private final ReservationService reservationService;
     private final TokenService tokenService;
     private final ConcertService concertService;
     private final CheckTokenUseCase checkTokenUseCase;
 
-    public MakeReservationUseCase(ReservationService reservationService, TokenService tokenService, ConcertService concertService, CheckTokenUseCase checkTokenUseCase) {
-        this.reservationService = reservationService;
-        this.tokenService = tokenService;
-        this.concertService = concertService;
-        this.checkTokenUseCase = checkTokenUseCase;
-    }
-    @Transactional
     public ReservationResponseDTO execute(ReservationRequestDTO reservationRequestDTO) {
         try {
             TokenResponseDTO tokenResponseDTO = checkTokenUseCase.execute(new UserRequestDTO(reservationRequestDTO.userId()));

@@ -1,5 +1,6 @@
 package org.example.ticketing.domain.user.repository;
 
+import lombok.RequiredArgsConstructor;
 import org.example.ticketing.domain.user.model.Token;
 import org.springframework.stereotype.Repository;
 
@@ -8,12 +9,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@RequiredArgsConstructor
 public class TokenRepositoryImpl implements TokenRepository{
     private final TokenJpaRepository tokenJpaRepository;
-    public TokenRepositoryImpl(TokenJpaRepository tokenJpaRepository) {
-        this.tokenJpaRepository = tokenJpaRepository;
-    }
-
     @Override
     public Token findByUserId(Long userId) {
         Optional<Token> tokenOptional = tokenJpaRepository.findByUserId(userId);

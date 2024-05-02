@@ -1,18 +1,16 @@
 package org.example.ticketing.domain.user.repository;
 
+import lombok.RequiredArgsConstructor;
 import org.example.ticketing.domain.user.model.UserInfo;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
+@RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepository{
 
     private final UserJpaRepository userJpaRepository;
-
-    public UserRepositoryImpl(UserJpaRepository userJpaRepository) {
-        this.userJpaRepository = userJpaRepository;
-    }
 
     @Override
     public UserInfo joinUser(Long userId) {

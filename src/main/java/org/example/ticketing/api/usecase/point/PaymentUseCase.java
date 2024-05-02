@@ -1,12 +1,12 @@
 package org.example.ticketing.api.usecase.point;
 
-import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.example.ticketing.api.dto.point.reqeust.PaymentRequestDTO;
 import org.example.ticketing.api.dto.point.reqeust.PaymentReservationUpdateDTO;
 import org.example.ticketing.api.dto.point.reqeust.PointHistorySaveRequestDTO;
-import org.example.ticketing.api.dto.user.request.UserRequestDTO;
 import org.example.ticketing.api.dto.point.response.PaymentInfoDTO;
 import org.example.ticketing.api.dto.point.response.PaymentResponseDTO;
+import org.example.ticketing.api.dto.user.request.UserRequestDTO;
 import org.example.ticketing.domain.concert.model.Concert;
 import org.example.ticketing.domain.concert.service.ConcertService;
 import org.example.ticketing.domain.reservation.model.Reservation;
@@ -19,25 +19,14 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class PaymentUseCase {
 
     private final ReservationService reservationService;
-
     private final UserService userService;
     private final ConcertService concertService;
-
     private final WritePointHistoryUseCase writePointHistoryUseCase;
 
-    public PaymentUseCase(ReservationService reservationService, UserService userService, ConcertService concertService, WritePointHistoryUseCase writePointHistoryUseCase) {
-        this.reservationService = reservationService;
-        this.userService = userService;
-        this.concertService = concertService;
-        this.writePointHistoryUseCase = writePointHistoryUseCase;
-    }
-
-    // response
-    // userInfo
-    @Transactional
     public PaymentResponseDTO execute(PaymentRequestDTO paymentRequestDTO){
         try {
             // reservation table 조회 한다. > reservationId

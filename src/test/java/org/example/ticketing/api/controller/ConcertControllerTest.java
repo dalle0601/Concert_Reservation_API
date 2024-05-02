@@ -61,8 +61,8 @@ public class ConcertControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/concert/date").headers(headers))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value(actualValue.message()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.concertList", hasSize(3)));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.message").value(actualValue.message()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.concertList", hasSize(3)));
     }
 
     @DisplayName("예약 가능 콘서트의 좌석 조회")
@@ -85,8 +85,8 @@ public class ConcertControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/concert/1/seat").headers(headers))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value(actualValue.message()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.seatList", hasSize(25)));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.message").value(actualValue.message()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.seatList", hasSize(25)));
     }
 
 }

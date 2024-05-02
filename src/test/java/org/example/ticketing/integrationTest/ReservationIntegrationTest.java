@@ -69,7 +69,12 @@ public class ReservationIntegrationTest {
 //        final List<ReservationResponseDTO> result = new ArrayList<>();
 //
 //
+//        // ExecutorService
+//        // ThreadPool 구성, Task 실행, 관리의 역할
+//        // ExecutorService 객체를 생성하며, 쓰레드풀의 개수 및 종류를 지정 가능
 //        final ExecutorService executorService = Executors.newFixedThreadPool(30);
+//        // CountDownLatch
+//        // 어떤 쓰레드가 다른 쓰레드에서 작업이 완료될 때까지 기다릴 수 있도록 해주는 클래스
 //        final CountDownLatch countDownLatch = new CountDownLatch(threadCount);
 //
 //        for (int i = 0; i < threadCount; i++) {

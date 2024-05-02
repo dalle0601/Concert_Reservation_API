@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface UserJpaRepository extends JpaRepository<UserInfo, Long> {
     Optional<UserInfo> findByUserId(Long userId);
-    @Transactional
+
     @Modifying
     @Query("UPDATE UserInfo u SET u.point = :point WHERE u.userId = :userId")
     void updatePointByUserId(@Param("userId") Long userId, @Param("point") Long point);

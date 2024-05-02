@@ -1,7 +1,7 @@
 package org.example.ticketing.domain.reservation.service;
 
 
-import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 import org.example.ticketing.api.dto.point.reqeust.PaymentReservationUpdateDTO;
 import org.example.ticketing.domain.reservation.model.Reservation;
 import org.example.ticketing.domain.reservation.repository.ReservationRepository;
@@ -11,12 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ReservationService {
     private final ReservationRepository reservationRepository;
-
-    public ReservationService(ReservationRepository reservationRepository, EntityManager entityManager) {
-        this.reservationRepository = reservationRepository;
-    }
 
     public List<Reservation> findReservedOrTempSeat(String[] statuses, Long concertId) {
         return reservationRepository.findReservedOrTempSeat(statuses, concertId);

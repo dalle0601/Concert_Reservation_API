@@ -18,11 +18,11 @@ public interface TokenJpaRepository extends JpaRepository<Token, Long> {
     Long findTokenCount();
     @Query("SELECT t FROM Token t WHERE t.expiredAt < :currentTime AND t.use = true")
     List<Token> findByExpiredAtBefore(@Param("currentTime") LocalDateTime currentTime);
-    @Transactional
+
     @Modifying
     @Query("UPDATE Token t SET t.use = false WHERE t IN :tokens")
     void deleteToken(List<Token> tokens);
-    @Transactional
+
     @Modifying
     @Query("UPDATE Token t SET t.use = :use WHERE t.tokenValue = :tokenValue")
     void updateUseByTokenValue(String tokenValue, boolean use);
