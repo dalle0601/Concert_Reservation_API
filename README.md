@@ -12,7 +12,11 @@
    <details>
     <summary>해결 방안</summary>
     <div markdown="1">
-      .....
+      - Redisson의 분산 락을 이용<br /> 
+      - 특정 콘서트의 특정 좌석을 여러인원이 한번에 신청하는 경우이므로 lockKey(concertId + seatId)로 해당 키에 대해 분산 락 시도<br /> 
+      - RedissonClient를 사용하여 지정된 키로 RLock 객체를 가져옴, tryLock 메소드를 호출하여 락을 시도. <br /> 
+      - 지정된 waitTime 동안 락을 획득할 수 없으면 false를 반환. <br /> 
+      - leaseTime 동안 락을 유지한 후에는 자동으로 락이 해제<br /> 
     </div>
   </details>
   
@@ -26,21 +30,24 @@
    <details>
     <summary>해결 방안</summary>
     <div markdown="1">
-      .....
+      - 한 유저의 포인트충전이 다양한 곳에서 시도된다는 전제의 동시성 이슈<br /> 
+      - 아주 드물게 일어날것, 동시요청 중 한건만 성공해야하는 케이스라 생각이 되어 DataBase의 Optimistic Lock ( 낙관적 락 )을 이용<br /> 
     </div>
   </details>
     
-  ### 3. PaymentUseCase (좌석 결제)
+  ### 3. EnterQueueUseCase (대기열 입장)
   <details>
     <summary>문제점</summary>
     <div markdown="1">
-      같은 좌석에 대해 여러 결제가 발생하는 경우.<br />      
+      - 현재는 대기열을 데이터베이스에 실질적 유효토큰을 가진 사람들 (Token Table), 대기중인 사람들의 대기열정보 확인 (Queue Table)로 나뉘어있음.<br /> 
+      - 지속적인 DB lock과 많은 데이터가 쌓일경우 대기열 몇번째인지 등의 정보를 가져오는데 성능적 이슈가 생길것<br /> 
     </div>
   </details>
    <details>
     <summary>해결 방안</summary>
     <div markdown="1">
-      .....
+      - Redis의 Pub/Sub 모델 사용<br /> 
+      - Spin Lock은 대기중인 쓰레드가 lock을 획득할때 까지 반복적으로 검사하기에 대기시간이 짧지않은 대기열의 경우 적절하지 않다고 생각<br /> 
     </div>
   </details>
   
