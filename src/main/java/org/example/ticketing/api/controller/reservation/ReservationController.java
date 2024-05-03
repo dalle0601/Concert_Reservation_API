@@ -23,7 +23,7 @@ public class ReservationController {
 
     @Operation(summary = "좌석 예약")
     @PostMapping("/reservation")
-    public ResponseEntity<ReservationResponseDTO> reserve(@RequestHeader("userId") Long userId, @RequestBody ReservationRequestDTO reservationRequestDTO) {
+    public ResponseEntity<ReservationResponseDTO> reserve(@RequestHeader("userId") Long userId, @RequestBody ReservationRequestDTO reservationRequestDTO) throws InterruptedException {
         return ResponseEntity.status(HttpStatus.OK).body(makeReservationUseCase.execute(reservationRequestDTO));
     }
 }

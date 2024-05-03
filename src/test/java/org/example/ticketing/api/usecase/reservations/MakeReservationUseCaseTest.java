@@ -10,6 +10,7 @@ import org.example.ticketing.domain.concert.service.ConcertService;
 import org.example.ticketing.domain.reservation.model.Reservation;
 import org.example.ticketing.domain.reservation.service.ReservationService;
 import org.example.ticketing.domain.user.service.TokenService;
+import org.example.ticketing.infrastructure.lock.DistributedLock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,7 @@ import org.mockito.MockitoAnnotations;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 public class MakeReservationUseCaseTest {
@@ -33,11 +34,14 @@ public class MakeReservationUseCaseTest {
     private ConcertService concertService;
     @Mock
     private TokenService tokenService;
+    @Mock
+    private DistributedLock distributedLock;
+
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        makeReservationUseCase = new MakeReservationUseCase(reservationService, tokenService, concertService, checkTokenUseCase);
+        makeReservationUseCase = new MakeReservationUseCase(reservationService, tokenService, concertService, checkTokenUseCase, distributedLock);
     }
 
     @DisplayName("토큰 확인 후 성공하면 콘서트 ID, 좌석으로 예약신청 한다")
@@ -53,6 +57,7 @@ public class MakeReservationUseCaseTest {
         when(checkTokenUseCase.execute(any())).thenReturn(new TokenResponseDTO("유효한 토큰입니다.", "abcd-efgh-ijkl", LocalDateTime.now().plusMinutes(5)));
         when(concertService.findByConcertId(any())).thenReturn(new Concert(1L, "첫번째콘서트", LocalDateTime.now(), LocalDateTime.now()));
         when(reservationService.save(any())).thenReturn(new Reservation(userId, concertId, seatId, "temporary", cost, reservation_time, reservation_time.plusMinutes(5)));
+        when(distributedLock.tryLock(anyString(),anyLong(),anyLong(),any())).thenReturn(true);
 
         ReservationResponseDTO actualValue = makeReservationUseCase.execute(new ReservationRequestDTO(concertId, seatId, userId, cost));
         assertEquals("좌석 예약 성공", actualValue.message());
