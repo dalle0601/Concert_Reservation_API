@@ -1,7 +1,11 @@
 # 콘서트 예약 서비스 구현
 
-## 🔎 동시성 문제가 발생할 수 있는 유즈케이스 분석 
+---
 
+## 🔎 동시성 문제가 발생할 수 있는 유즈케이스 분석 
+<details>
+  <summary>분석</summary>
+  
   ### 1. MakeReservationUseCase (좌석 예약, 임시점유)
   <details>
     <summary>문제점</summary>
@@ -50,7 +54,8 @@
       - Spin Lock은 대기중인 쓰레드가 lock을 획득할때 까지 반복적으로 검사하기에 대기시간이 짧지않은 대기열의 경우 적절하지 않다고 생각<br /> 
     </div>
   </details>
-  
+</details>
+
 --- 
 
 ## ⑆ Git Branch
@@ -77,16 +82,6 @@
 
 ---
 
-## [마일스톤](https://github.com/dalle0601/Week3_Concert_Reservation/milestones)
-
-## [요구사항분석](https://github.com/dalle0601/Week3_Concert_Reservation/issues/1)
-
-## [시퀀스 다이어그램](https://github.com/dalle0601/Week3_Concert_Reservation/issues/2)
-
-## [API 명세](https://github.com/dalle0601/Week3_Concert_Reservation/issues/4)
-
-## [ERD / mock API 목록](https://github.com/dalle0601/Week3_Concert_Reservation/issues/3)
-
 ## 📂 Swagger
 <details>
 <summary> Swagger 자세히보기 </summary>
@@ -96,3 +91,16 @@
 
 </div>
 </details>
+
+--- 
+
+## 🚩 [마일스톤](https://github.com/dalle0601/Week3_Concert_Reservation/milestones)
+
+## 📑 [요구사항분석](https://github.com/dalle0601/Week3_Concert_Reservation/issues/1)
+
+## 🧭 [시퀀스 다이어그램](https://github.com/dalle0601/Week3_Concert_Reservation/issues/2)
+
+## 🛎️ [API 명세](https://github.com/dalle0601/Week3_Concert_Reservation/issues/4)
+
+## 📀 [ERD / mock API 목록](https://github.com/dalle0601/Week3_Concert_Reservation/issues/3)
+
