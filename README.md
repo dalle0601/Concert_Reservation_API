@@ -2,6 +2,18 @@
 
 ---
 
+## Query 분석 및 DB Index 설계
+<details>
+  <summary>Query 분석</summary>
+   ...
+  
+</details>
+<details>
+  <summary>Index 설계</summary>
+   ...
+  
+</details>
+
 ## 🔎 동시성 문제가 발생할 수 있는 유즈케이스 분석 
 <details>
   <summary>분석</summary>
