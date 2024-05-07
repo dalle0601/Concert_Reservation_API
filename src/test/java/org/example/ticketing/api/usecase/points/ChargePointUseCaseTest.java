@@ -4,7 +4,7 @@ import org.example.ticketing.api.dto.point.reqeust.PointRequestDTO;
 import org.example.ticketing.api.dto.point.response.PointHistorySaveResponseDTO;
 import org.example.ticketing.api.usecase.point.ChargePointUseCase;
 import org.example.ticketing.api.usecase.point.WritePointHistoryUseCase;
-import org.example.ticketing.domain.point.model.PointHistory;
+import org.example.ticketing.domain.pointHistory.model.PointHistory;
 import org.example.ticketing.domain.user.model.UserInfo;
 import org.example.ticketing.domain.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;

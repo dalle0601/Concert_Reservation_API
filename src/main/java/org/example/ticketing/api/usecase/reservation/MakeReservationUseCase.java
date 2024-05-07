@@ -21,7 +21,6 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
-
 public class MakeReservationUseCase {
     private final ReservationService reservationService;
     private final TokenService tokenService;

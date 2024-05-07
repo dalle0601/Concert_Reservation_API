@@ -3,18 +3,18 @@ package org.example.ticketing.api.usecase.point;
 import lombok.RequiredArgsConstructor;
 import org.example.ticketing.api.dto.point.reqeust.PointHistorySaveRequestDTO;
 import org.example.ticketing.api.dto.point.response.PointHistorySaveResponseDTO;
-import org.example.ticketing.domain.point.model.PointHistory;
-import org.example.ticketing.domain.point.service.PointService;
+import org.example.ticketing.domain.pointHistory.model.PointHistory;
+import org.example.ticketing.domain.pointHistory.service.PointHistoryService;
 import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 
 public class WritePointHistoryUseCase {
-    private final PointService pointService;
+    private final PointHistoryService pointHistoryService;
 
     public PointHistorySaveResponseDTO execute(PointHistorySaveRequestDTO pointHistorySaveRequestDTO){
         try {
-            PointHistory savePointHistory = pointService.save(new PointHistory(pointHistorySaveRequestDTO.userId(), pointHistorySaveRequestDTO.point(), pointHistorySaveRequestDTO.status()));
+            PointHistory savePointHistory = pointHistoryService.save(new PointHistory(pointHistorySaveRequestDTO.userId(), pointHistorySaveRequestDTO.point(), pointHistorySaveRequestDTO.status()));
             if (savePointHistory != null) {
                 return new PointHistorySaveResponseDTO("포인트 내역 저장 성공", savePointHistory);
             } else {

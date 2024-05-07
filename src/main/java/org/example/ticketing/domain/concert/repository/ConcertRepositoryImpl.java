@@ -1,6 +1,7 @@
 package org.example.ticketing.domain.concert.repository;
 
 import lombok.RequiredArgsConstructor;
+import org.example.ticketing.api.dto.concert.response.ConcertWithSeatCountDTO;
 import org.example.ticketing.domain.concert.model.Concert;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +14,7 @@ public class ConcertRepositoryImpl implements ConcertRepository{
     private final ConcertJpaRepository concertJpaRepository;
 
     @Override
-    public List<Concert> getConcertDateByToday(LocalDateTime today) {
+    public List<ConcertWithSeatCountDTO> getConcertDateByToday(LocalDateTime today) {
         return concertJpaRepository.findByAvailableStartDate(LocalDateTime.now());
     }
 

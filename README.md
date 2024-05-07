@@ -5,12 +5,41 @@
 ## Query 분석 및 DB Index 설계
 <details>
   <summary>Query 분석</summary>
-   ...
+
+  1. concert
+     - findByAvailableStartDate
+       - 현재시간을 기준으로 콘서트 시작 시간보다 이전이며, 잔여 콘서트좌석이 남아있는  
+         콘서트의 리스트를 가져옵니다.
+     - findByConcertId
+       - concertId로 해당 콘서트의 정보를 가져옵니다.
+  2. pointHistory
+     - save
+     - findByUserId
+  3. reservation
+     - findByStatusInAndConcertId
+  4. user
+     - findByUserId
+     - updatePointByUserId
   
 </details>
 <details>
   <summary>Index 설계</summary>
-   ...
+
+1. concert
+    - findByAvailableStartDate
+    - findByConcertId
+      - concertId는 기본키(PK)로 현재 사용중인 H2 데이터베이스 및 MySQL등에서<br />
+        PK에 대해 자동으로 Index를 생성하므로 추가적인 Index 처리는 하지 않겠습니다.
+2. pointHistory
+    - save
+    - findByUserId
+3. reservation
+    - findByStatusInAndConcertId
+4. user
+    - findByUserId
+    - updatePointByUserId
+    - 
+concertId"는 고유 식별자일 가능성이 높습니다. 대부분의 데이터베이스 시스템에서는 기본 키(primary key)에 자동으로 인덱스를 생성합니다. 만약 "concertId"가 기본 키가 아니라면, 이 필드에 인덱스를 추가하는 것이 좋습니다.
   
 </details>
 

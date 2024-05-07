@@ -2,6 +2,7 @@ package org.example.ticketing.api.controller;
 
 import org.example.ticketing.api.controller.concert.ConcertController;
 import org.example.ticketing.api.dto.concert.response.ConcertResponseDTO;
+import org.example.ticketing.api.dto.concert.response.ConcertWithSeatCountDTO;
 import org.example.ticketing.api.dto.concert.response.SeatDTO;
 import org.example.ticketing.api.dto.concert.response.SeatResponseDTO;
 import org.example.ticketing.api.usecase.concert.GetConcertAvailableDateUseCase;
@@ -48,10 +49,10 @@ public class ConcertControllerTest {
     @DisplayName("예약 가능 콘서트 날짜 조회")
     @Test
     public void GetAvailableConcertDateTest() throws Exception {
-        List<Concert> concerts = new ArrayList<>();
-        concerts.add(new Concert(1L, "첫번째 콘서트", LocalDateTime.of(2024, 5, 11, 17, 30), LocalDateTime.now()));
-        concerts.add(new Concert(2L, "22번째 콘서트", LocalDateTime.of(2024, 6, 6, 18, 30), LocalDateTime.now()));
-        concerts.add(new Concert(3L, "333번째 콘서트", LocalDateTime.of(2024, 7, 17, 17, 00), LocalDateTime.now()));
+        List<ConcertWithSeatCountDTO> concerts = new ArrayList<>();
+        concerts.add(new ConcertWithSeatCountDTO(new Concert(1L, "첫번째 콘서트", LocalDateTime.of(2024, 5, 11, 17, 30), LocalDateTime.now()), 50L));
+        concerts.add(new ConcertWithSeatCountDTO(new Concert(2L, "22번째 콘서트", LocalDateTime.of(2024, 6, 6, 18, 30), LocalDateTime.now()), 50L));
+        concerts.add(new ConcertWithSeatCountDTO(new Concert(3L, "첫번째 333번째", LocalDateTime.of(2024, 7, 17, 17, 00), LocalDateTime.now()), 50L));
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("userId", "1");

@@ -3,8 +3,8 @@ package org.example.ticketing.api.usecase.points;
 import org.example.ticketing.api.dto.point.reqeust.PointHistorySaveRequestDTO;
 import org.example.ticketing.api.dto.point.response.PointHistorySaveResponseDTO;
 import org.example.ticketing.api.usecase.point.WritePointHistoryUseCase;
-import org.example.ticketing.domain.point.model.PointHistory;
-import org.example.ticketing.domain.point.service.PointService;
+import org.example.ticketing.domain.pointHistory.model.PointHistory;
+import org.example.ticketing.domain.pointHistory.service.PointHistoryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,12 +20,12 @@ import static org.mockito.Mockito.when;
 public class WritePointHistoryUseCaseTest {
     private WritePointHistoryUseCase writePointHistoryUseCase;
     @Mock
-    private PointService pointService;
+    private PointHistoryService pointHistoryService;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        writePointHistoryUseCase = new WritePointHistoryUseCase(pointService);
+        writePointHistoryUseCase = new WritePointHistoryUseCase(pointHistoryService);
     }
 
     @Test
@@ -36,7 +36,7 @@ public class WritePointHistoryUseCaseTest {
         String status = "charge";
 
         PointHistory pointHistory = new PointHistory(1L, userId, point, status, LocalDateTime.now());
-        when(pointService.save(any())).thenReturn(pointHistory);
+        when(pointHistoryService.save(any())).thenReturn(pointHistory);
 
         PointHistorySaveResponseDTO actualValue = writePointHistoryUseCase.execute(new PointHistorySaveRequestDTO(userId, point, status));
 

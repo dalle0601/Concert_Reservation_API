@@ -1,5 +1,6 @@
 package org.example.ticketing.api.usecase.concert;
 
+import org.example.ticketing.api.dto.concert.response.ConcertWithSeatCountDTO;
 import org.example.ticketing.api.dto.user.request.UserRequestDTO;
 import org.example.ticketing.api.dto.concert.response.ConcertResponseDTO;
 import org.example.ticketing.api.dto.user.response.TokenResponseDTO;
@@ -51,10 +52,10 @@ public class GetConcertAvailableDateUseCaseTest {
     @DisplayName("예약가능한 날짜를 호출했고 대기상태가 onGoing 경우")
     void getAvailableDateTestOnGoing() throws Exception {
         Long userId = 1L;
-        List<Concert> concerts = new ArrayList<>();
-        concerts.add(new Concert(1L, "첫번째 콘서트", LocalDateTime.of(2024, 5, 11, 17, 30), LocalDateTime.now()));
-        concerts.add(new Concert(2L, "22번째 콘서트", LocalDateTime.of(2024, 6, 6, 18, 30), LocalDateTime.now()));
-        concerts.add(new Concert(3L, "333번째 콘서트", LocalDateTime.of(2024, 7, 17, 17, 00), LocalDateTime.now()));
+        List<ConcertWithSeatCountDTO> concerts = new ArrayList<>();
+        concerts.add(new ConcertWithSeatCountDTO(new Concert(1L, "첫번째 콘서트", LocalDateTime.of(2024, 5, 11, 17, 30), LocalDateTime.now()), 50L));
+        concerts.add(new ConcertWithSeatCountDTO(new Concert(2L, "22번째 콘서트", LocalDateTime.of(2024, 6, 6, 18, 30), LocalDateTime.now()), 50L));
+        concerts.add(new ConcertWithSeatCountDTO(new Concert(3L, "첫번째 333번째", LocalDateTime.of(2024, 7, 17, 17, 00), LocalDateTime.now()), 50L));
 
         when(checkTokenUseCase.execute(any())).thenReturn(new TokenResponseDTO("유효한 토큰입니다.", "abcd-efgh-ijkl", LocalDateTime.now().plusMinutes(10)));
         when(concertService.getConcertDate(any())).thenReturn(concerts);

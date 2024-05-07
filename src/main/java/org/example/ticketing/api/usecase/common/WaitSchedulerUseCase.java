@@ -1,5 +1,6 @@
 package org.example.ticketing.api.usecase.common;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.ticketing.api.dto.user.request.UserRequestDTO;
 import org.example.ticketing.domain.user.model.Queue;
@@ -20,6 +21,7 @@ public class WaitSchedulerUseCase {
     private final QueueService queueService;
 
     @Scheduled(fixedRate = 10000)
+    @Transactional
     public void execute() throws Exception {
         LocalDateTime currentTime = LocalDateTime.now();
         List<Token> expiredRows = tokenService.findByExpiredAtBefore(currentTime);
