@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class PointHistoryHistoryRepositoryImpl implements PointHistoryRepository {
+public class PointHistoryRepositoryImpl implements PointHistoryRepository {
     private final PointHistoryJpaRepository pointHistoryJpaRepository;
 
     @Override

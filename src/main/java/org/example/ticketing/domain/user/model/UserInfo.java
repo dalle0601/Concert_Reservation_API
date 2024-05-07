@@ -9,7 +9,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Table(name="USER_INFO")
+@Table(name="USER_INFO", indexes = {
+        @Index(name ="idx_user_info_user_id", columnList = "USER_ID"),
+})
 public class UserInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

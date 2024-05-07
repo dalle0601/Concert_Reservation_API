@@ -8,11 +8,10 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Table(name="RESERVATION"
-//        , uniqueConstraints = {
-//        @UniqueConstraint(columnNames = {"CONCERT_ID", "SEAT_ID"})
-//        }
-)
+@Table(name="RESERVATION", indexes = {
+        @Index(name ="idx_reservation_concert_id", columnList = "CONCERT_ID"),
+        @Index(name = "idx_reservation_concertId_seatId", columnList = "CONCERT_ID, SEAT_ID")
+})
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

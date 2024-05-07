@@ -14,12 +14,23 @@
        - concertId로 해당 콘서트의 정보를 가져옵니다.
   2. pointHistory
      - save
+       - 포인트 사용, 추가 등의 동작 시 내역이 저장됩니다.
      - findByUserId
+       - userId로 pointHistory의 내역을 가져옵니다.
   3. reservation
      - findByStatusInAndConcertId
+       - 해당 콘서트의 reserved, temporary 상태의 좌석을 가져옵니다. 
+     - findNonAvailableByConcertIdAndSeatId
+       - concertId, seatId로 해당 콘서트의 좌석이 available 상태가 아닌지 확인합니다. 
+     - updateStateAndExpirationTime
+       - 해당 예약번호의 status, 만료시간, 예약시간을 수정합니다.
+     - save
+       - 예약정보를 저장합니다.
   4. user
      - findByUserId
+       - userId로 해당 유저의 정보(id, point)를 가져옵니다.
      - updatePointByUserId
+       - 포인트 충전, 사용시에 해당 user의 포인트를 수정합니다.
   
 </details>
 <details>
@@ -27,20 +38,56 @@
 
 1. concert
     - findByAvailableStartDate
-    - findByConcertId
+      - concert 테이블에 reservation 테이블을 join해서 가져오는데
+        reservation에서 해당 concertId의 status가 available이 아닌 컬럼의 갯수를 조회하기에 
+        Reservation 테이블의 concertId를 Index로 사용해보기로했습니다.  
+        ```
+        SELECT c.*, (50 - COUNT(r.ID)) AS seat
+        FROM Concert c
+        LEFT JOIN Reservation r ON c.Id = r.concert_Id AND r.status <> 'available'
+        WHERE c.concert_Date >= '2024-05-01 19:00:00'
+        GROUP BY c.Id;
+        ```
+        <img width="1380" alt="스크린샷 2024-05-07 오후 6 09 16" src="https://github.com/dalle0601/Concert_Reservation_API/assets/33375877/9a29196b-fb84-4e54-9b46-5dc0235edbd8">
+        <br/>reservation테이블에는 총 105row가 존재하며,
+        <br/>concertId를 인덱스로 추가하지 않은경우에 join의 스캔은 954회,
+        <br/>concertId를 인덱스로 추가한 경우에 join의 스캔은 114회로 줄일 수 있었습니다.
+        
+     - findByConcertId
       - concertId는 기본키(PK)로 현재 사용중인 H2 데이터베이스 및 MySQL등에서<br />
         PK에 대해 자동으로 Index를 생성하므로 추가적인 Index 처리는 하지 않겠습니다.
 2. pointHistory
     - save
+      - insert 작업에 대해서는 인덱스 추가로 직접적인 성능 개선이 어렵고, 오히려 인덱스가 많을수록 쓰기 작업이 느려질것이라 판단했습니다.
     - findByUserId
+      - userId로 포인트 이력을 조회하는 쿼리이므로 userId를 Index로 사용해보았습니다.
+      <img width="461" alt="스크린샷 2024-05-07 오후 6 33 32" src="https://github.com/dalle0601/Concert_Reservation_API/assets/33375877/62e02ab6-671b-4220-82d5-de83c805bec3">
+        <br/>point 테이블에는 총 45개의 row가 존재하며,
+        <br/>userId로 인덱스를 추가하지 않은경우에 해당 쿼리의 스캔은 46회,
+        <br/>userId로 인덱스를 추가한 경우에 해당 쿼리의 스캔은 10회로 줄일 수 있었습니다.
+        <br/>* 하지만 포인트 이력을 조회하는 경우보다 데이터 삽입의 작업이 잦을것이라 생각이 들었고, 포인트 이력의 데이터 수도 많지 않을거라 판단되어 point 테이블에는 인덱스를 추가하지 않았습니다. 
 3. reservation
+    - findNonAvailableByConcertIdAndSeatId
+      - concertId와 seatId를 포함하는 복합 Index로 구성하여 사용해보았습니다.
+      <img width="822" alt="스크린샷 2024-05-07 오후 7 07 08" src="https://github.com/dalle0601/Concert_Reservation_API/assets/33375877/ba1caf8a-fe82-4d00-844a-0ad1032fd149">
+      <br/> reservation 테이블에는 총 105 row가 존재하며,
+      <br/>아무런 인덱스를 적용하지 않았을 경우에는 총 106회 스캔,
+      <br/>concertId 로만 인덱스를 사용했을 경우에는 총 51회 스캔,
+      <br/>concertId, seatId 복합 인덱스를 사용했을 경우에는 2회 스캔의 결과를 확인했습니다.
     - findByStatusInAndConcertId
+      - 이용가능한 콘서트 리스트를 가져오는 쿼리에서 join에 작성된 idx_reservation_concert_id 인덱스를 이용해 concertId를 기준으로 데이터를 필터링 하기에 조회 성능에 도움이 될것이라 판단됩니다.
+        <img width="896" alt="스크린샷 2024-05-07 오후 7 18 46" src="https://github.com/dalle0601/Concert_Reservation_API/assets/33375877/144422c7-58cf-43db-83c8-288f3970ca65">
+    - updateStateAndExpirationTime
+      - Where 조건에 reservaion 테이블의 기본키(PK)로 사용중이라 추가적인 Index 처리는 하지 않았습니다.
+      - 실제로 reservationId를 인덱스로 추가하고 테스트해봐도 스캔 결과는 동일했습니다.
 4. user
     - findByUserId
     - updatePointByUserId
-    - 
-concertId"는 고유 식별자일 가능성이 높습니다. 대부분의 데이터베이스 시스템에서는 기본 키(primary key)에 자동으로 인덱스를 생성합니다. 만약 "concertId"가 기본 키가 아니라면, 이 필드에 인덱스를 추가하는 것이 좋습니다.
-  
+      - 2개 모두 userId 를 기준으로 데이터를 검색, 갱신 하고있습니다.
+        <br /> userId를 index로 사용하여 두 쿼리를 실행시켜본 결과
+        <img width="537" alt="스크린샷 2024-05-07 오후 7 39 24" src="https://github.com/dalle0601/Concert_Reservation_API/assets/33375877/2fe5a800-d992-4896-b231-18d81d76f465">
+        위와같은 결과를 얻을 수 있었습니다.
+   
 </details>
 
 ## 🔎 동시성 문제가 발생할 수 있는 유즈케이스 분석 
