@@ -48,10 +48,11 @@
         WHERE c.concert_Date >= '2024-05-01 19:00:00'
         GROUP BY c.Id;
         ```
-        <img width="1380" alt="스크린샷 2024-05-07 오후 6 09 16" src="https://github.com/dalle0601/Concert_Reservation_API/assets/33375877/9a29196b-fb84-4e54-9b46-5dc0235edbd8">
-        <br/>reservation테이블에는 총 105row가 존재하며,
-        <br/>concertId를 인덱스로 추가하지 않은경우에 join의 스캔은 954회,
-        <br/>concertId를 인덱스로 추가한 경우에 join의 스캔은 114회로 줄일 수 있었습니다.
+        <img width="1357" alt="스크린샷 2024-05-10 오전 12 36 55" src="https://github.com/dalle0601/Concert_Reservation_API/assets/33375877/a7cd39f0-615a-4da1-882a-628b35b74b25">
+        <br/>reservation테이블에는 총 1229row가 존재하며,
+        <br/>concertId를 인덱스로 추가하지 않은경우에 join의 스캔은 50430회, 대략 55ms,
+        <br/>concertId를 인덱스로 추가한 경우에 join의 스캔은 1270회, 대략 28ms의 결과가 나왔습니다.
+        <br/>로컬환경에서의 테스트결과값이지만 인덱스를 추가했을경우 인덱스를 추가하지 않은경우보다 실행속도 측면에서 약 49% 감소하는 결과를 얻었습니다.
         
      - findByConcertId
       - concertId는 기본키(PK)로 현재 사용중인 H2 데이터베이스 및 MySQL등에서<br />
@@ -74,6 +75,7 @@
       <br/>아무런 인덱스를 적용하지 않았을 경우에는 총 106회 스캔,
       <br/>concertId 로만 인덱스를 사용했을 경우에는 총 51회 스캔,
       <br/>concertId, seatId 복합 인덱스를 사용했을 경우에는 2회 스캔의 결과를 확인했습니다.
+      <br/>concertId, seatId를 인덱스로 둘 경우 카디널리티가 너무 높아져 인덱스 유지관리비용이 커질것으로 판단됩니다.
     - findByStatusInAndConcertId
       - 이용가능한 콘서트 리스트를 가져오는 쿼리에서 join에 작성된 idx_reservation_concert_id 인덱스를 이용해 concertId를 기준으로 데이터를 필터링 하기에 조회 성능에 도움이 될것이라 판단됩니다.
         <img width="896" alt="스크린샷 2024-05-07 오후 7 18 46" src="https://github.com/dalle0601/Concert_Reservation_API/assets/33375877/144422c7-58cf-43db-83c8-288f3970ca65">
