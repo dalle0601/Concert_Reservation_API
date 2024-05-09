@@ -29,7 +29,7 @@ public class UpdateQueueUseCase {
         Long queueCount = queueService.findQueueCount(myQueue != null ? myQueue.getUpdatedAt() : LocalDateTime.now());
 
         if(myToken != null) {
-            return new QueueResponseDTO("이미 유효토큰이 발급되어있습니다.", null, myToken.getTokenValue(), myToken.getExpiredAt());
+            return new QueueResponseDTO("이미 유효토큰이 발급되어있습니다.", null, myToken.getExpiredAt());
         }
 
         // # 1.1 token table 10명 미만
@@ -41,13 +41,13 @@ public class UpdateQueueUseCase {
             Token tokenValue = new Token(userRequestDTO.userId(), userUUID, tokenExpiredTime, true);
             tokenService.enterToken(tokenValue);
             if(myQueue == null) {
-                return new QueueResponseDTO("유효토큰이 발급되었습니다.", null, tokenValue.getTokenValue(), tokenValue.getExpiredAt());
+                return new QueueResponseDTO("유효토큰이 발급되었습니다.", null, tokenValue.getExpiredAt());
             }
         } else {
             if(myQueue == null){
                 queueService.enterQueue(userRequestDTO.userId());
             }
         }
-        return new QueueResponseDTO("대기중입니다.", queueCount, null,null);
+        return new QueueResponseDTO("대기중입니다.", queueCount,null);
     }
 }

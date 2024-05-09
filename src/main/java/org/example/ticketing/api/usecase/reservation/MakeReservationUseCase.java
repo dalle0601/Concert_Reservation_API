@@ -37,6 +37,8 @@ public class MakeReservationUseCase {
             return null;
         }
 
+        // 내부 메소드에 transaction걸면
+        // 트랜잭션을 인지하지 못함.
         try {
             TokenResponseDTO tokenResponseDTO = checkTokenUseCase.execute(new UserRequestDTO(reservationRequestDTO.userId()));
             String isValidToken = tokenResponseDTO.token();

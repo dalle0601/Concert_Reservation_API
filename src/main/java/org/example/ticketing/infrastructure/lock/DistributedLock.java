@@ -10,7 +10,6 @@ import java.util.concurrent.TimeUnit;
 @Repository
 @RequiredArgsConstructor
 public class DistributedLock implements DistributedLockInterface {
-
     private final RedissonClient redissonClient;
 
     @Override

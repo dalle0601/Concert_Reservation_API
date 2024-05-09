@@ -25,12 +25,12 @@ public class UserController {
         this.tokenService = tokenService;
     }
     @Operation(summary = "유저 대기열 진입 요청")
-    @PostMapping("/user/queue/enter")
+    @PostMapping("/user/token")
     public ResponseEntity<QueueResponseDTO> enterQueue (@RequestBody UserRequestDTO userRequestDTO) throws Exception {
         return ResponseEntity.status(HttpStatus.OK).body(enterQueueUseCase.execute(userRequestDTO));
     }
     @Operation(summary = "유저 토큰 확인 요청")
-    @GetMapping("/user/token/check/{userId}")
+    @GetMapping("/user/token/{userId}")
     public ResponseEntity<TokenResponseDTO> checkUserToken (@PathVariable Long userId) throws Exception {
         return ResponseEntity.status(HttpStatus.OK).body(checkTokenUseCase.execute(new UserRequestDTO(userId)));
     }
