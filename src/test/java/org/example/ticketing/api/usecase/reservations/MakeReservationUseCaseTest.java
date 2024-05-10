@@ -4,6 +4,7 @@ import org.example.ticketing.api.dto.reservation.request.ReservationRequestDTO;
 import org.example.ticketing.api.dto.reservation.response.ReservationResponseDTO;
 import org.example.ticketing.api.dto.user.response.TokenResponseDTO;
 import org.example.ticketing.api.usecase.reservation.MakeReservationUseCase;
+import org.example.ticketing.api.usecase.reservation.ReserveUseCase;
 import org.example.ticketing.api.usecase.user.CheckTokenUseCase;
 import org.example.ticketing.domain.concert.model.Concert;
 import org.example.ticketing.domain.concert.service.ConcertService;
@@ -37,11 +38,12 @@ public class MakeReservationUseCaseTest {
     @Mock
     private DistributedLock distributedLock;
 
-
+    @Mock
+    private ReserveUseCase reserveUseCase;
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        makeReservationUseCase = new MakeReservationUseCase(reservationService, tokenService, concertService, checkTokenUseCase, distributedLock);
+        makeReservationUseCase = new MakeReservationUseCase(distributedLock, reserveUseCase);
     }
 
     @DisplayName("토큰 확인 후 성공하면 콘서트 ID, 좌석으로 예약신청 한다")
