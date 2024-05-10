@@ -7,9 +7,6 @@ import org.example.ticketing.infrastructure.queue.QueueManager;
 import org.example.ticketing.infrastructure.token.TokenManager;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 @Service
@@ -21,21 +18,26 @@ public class EnterQueueUseCase {
     public QueueResponseDTO execute(UserRequestDTO userRequestDTO) throws Exception {
         long validTokenCount = tokenManager.getValidTokenCount();
 
-        if(validTokenCount < 3) {
-            Map<String, String> tokenValue = tokenManager.issueToken(userRequestDTO.userId());
-
-            LocalDateTime expirationTime = timeFormatter(tokenValue.get("expirationTime"));
-            return new QueueResponseDTO("유효토큰이 발급되었습니다.", 0L, expirationTime.atZone(ZoneId.of("Asia/Seoul")).toLocalDateTime());
+        long userId = userRequestDTO.userId();
+        if (validTokenCount < 3) {
+            Map<String, String> checkToken = tokenManager.getCheckTokenInfo(userId);
+            if (checkToken.get("token") == null) {
+                Map<String, String> tokenValue = tokenManager.issueToken(userId);
+                return new QueueResponseDTO("유효토큰이 발급되었습니다.", 0L, tokenValue.get("expirationTime"));
+            } else {
+                // 시스템 기본 타임존을 사용하여 LocalDateTime으로 변환
+                return new QueueResponseDTO("이미 유효토큰이 발급되었습니다.", 0L, checkToken.get("expirationTime"));
+            }
         } else {
             queueManager.addToQueue(userRequestDTO.userId());
             long waitInfo = queueManager.getQueuePosition(userRequestDTO.userId());
-            return new QueueResponseDTO("대기정보 조회 성공", waitInfo, null);
+            if(waitInfo == -1){
+                return new QueueResponseDTO("대기중이지 않습니다.", waitInfo, null);
+            } else {
+                return new QueueResponseDTO("대기정보 조회 성공", waitInfo, null);
+            }
+
 
         }
-    }
-
-    public LocalDateTime timeFormatter(String stringTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        return LocalDateTime.parse(stringTime, formatter);
     }
 }

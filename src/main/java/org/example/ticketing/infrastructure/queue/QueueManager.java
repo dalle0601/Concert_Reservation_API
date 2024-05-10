@@ -1,8 +1,7 @@
 package org.example.ticketing.infrastructure.queue;
 
 import lombok.RequiredArgsConstructor;
-import org.redisson.api.RList;
-import org.redisson.api.RQueue;
+import org.redisson.api.RScoredSortedSet;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Component;
 
@@ -11,22 +10,33 @@ import org.springframework.stereotype.Component;
 public class QueueManager {
 
     private final RedissonClient redissonClient;
+    private final String queueName = "waitingQueue";
 
     public void addToQueue(Long userId) {
-        RQueue<String> queue = redissonClient.getQueue("waitingQueue");
-        queue.offer(userId.toString());
+        RScoredSortedSet<Long> queue = redissonClient.getScoredSortedSet(queueName);
+        double score = System.currentTimeMillis(); // 현재 시간을 점수로 사용하여 대기열에 추가
+        queue.add(score, userId);
     }
 
-    public String getNextInQueue() {
-        RQueue<String> queue = redissonClient.getQueue("waitingQueue");
-        return queue.poll(); // 대기열에서 다음 사용자를 반환하고 대기열에서 제거
+    public Long getNextInQueue() {
+        RScoredSortedSet<Long> queue = redissonClient.getScoredSortedSet(queueName);
+        return queue.first();
     }
 
     public int getQueuePosition(Long userId) {
-        RList<String> queue = redissonClient.getList("waitingQueue");
-        // 대기열에서 사용자의 인덱스를 찾습니다.
-        int position = queue.indexOf(userId.toString());
-        // Redis 리스트는 0부터 인덱싱하므로, 사용자가 대기열에 있을 경우 실제 위치는 인덱스 + 1입니다.
-        return position >= 0 ? position + 1 : -1;
+        RScoredSortedSet<Long> queue = redissonClient.getScoredSortedSet(queueName);
+        Integer position = queue.rank(userId);
+        if (position != null) {
+            // 순위는 0부터 시작하므로 실제 대기열 위치를 얻기 위해 1을 더함
+            return position + 1;
+        } else {
+            // 사용자가 대기열에 없는 경우
+            return -1;
+        }
+    }
+
+    public void removeUserFromQueue(Long userId) {
+        RScoredSortedSet<Long> queue = redissonClient.getScoredSortedSet(queueName);
+        queue.remove(userId); // 대기열에서 사용자 제거
     }
 }

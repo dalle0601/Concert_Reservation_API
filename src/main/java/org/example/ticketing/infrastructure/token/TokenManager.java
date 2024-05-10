@@ -6,7 +6,6 @@ import org.redisson.api.RKeys;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -22,22 +21,36 @@ public class TokenManager {
         String tokenKey = "token:" + userId;
         RBucket<String> tokenBucket = redissonClient.getBucket(tokenKey);
         String token = UUID.randomUUID().toString();
-        tokenBucket.set(token, 1, TimeUnit.MINUTES); // 토큰을 5분간 유효하도록 저장
-
+        tokenBucket.set(token, 1, TimeUnit.MINUTES); // 토큰을 1분간 유효하도록 저장
         Map<String, String> tokenInfo = new HashMap<>();
         tokenInfo.put("token", token);
-        long expirationTimeMillis = System.currentTimeMillis() + tokenBucket.remainTimeToLive();
-        tokenInfo.put("expirationTime", Instant.ofEpochMilli(expirationTimeMillis).toString());
+        long expirationTimeMillis = tokenBucket.remainTimeToLive() / 1000;
+        tokenInfo.put("expirationTime", String.valueOf(expirationTimeMillis));
+        return tokenInfo;
+    }
+
+    public Map<String, String> getCheckTokenInfo(Long userId) {
+        String tokenKey = "token:" + userId;
+        RBucket<String> tokenBucket = redissonClient.getBucket(tokenKey);
+        Map<String, String> tokenInfo = new HashMap<>();
+        if (tokenBucket.isExists()) { // 토큰이 존재하면
+            String token = tokenBucket.get(); // 토큰 값 가져오기
+            long expirationTimeMillis = tokenBucket.remainTimeToLive() / 1000;
+            tokenInfo.put("token", token);
+            tokenInfo.put("expirationTime", String.valueOf(expirationTimeMillis));
+        } else {
+            tokenInfo.put("token", null);
+        }
 
         return tokenInfo;
     }
+
 
     public Long getValidTokenCount() {
         RKeys keys = redissonClient.getKeys();
         Iterable<String> allTokens = keys.getKeysByPattern("token:*");
         long count = 0;
         for (String token : allTokens) {
-            // 여기에서 추가적인 유효성 검사를 할 수 있습니다. 예를 들어, 특정 조건에 맞는 토큰만 카운트.
             count++;
         }
         return count;
