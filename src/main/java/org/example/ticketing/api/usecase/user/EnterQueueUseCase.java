@@ -15,23 +15,6 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class EnterQueueUseCase {
-//    private final UserService userService;
-//    private final UpdateQueueUseCase updateQueueUseCase;
-
-//    @Transactional
-//    public QueueResponseDTO execute(UserRequestDTO userRequestDTO) throws Exception {
-//        UserInfo userInfo = findUser(userRequestDTO.userId());
-//        if(userInfo == null) {
-//            userService.joinUser(userRequestDTO);
-//        }
-//        return updateQueueUseCase.execute(userRequestDTO);
-//    }
-//
-//    private UserInfo findUser(Long userId) {
-//        UserRequestDTO userRequestDTO = new UserRequestDTO(userId);
-//        return userService.findUserInfo(userRequestDTO);
-//    }
-
     private final TokenManager tokenManager;
     private final QueueManager queueManager;
 
@@ -40,15 +23,19 @@ public class EnterQueueUseCase {
 
         if(validTokenCount < 3) {
             Map<String, String> tokenValue = tokenManager.issueToken(userRequestDTO.userId());
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-            LocalDateTime expireationTime =  LocalDateTime.parse(tokenValue.get("expirationTime"), formatter);
 
-            return new QueueResponseDTO("유효토큰이 발급되었습니다.", 0L, expireationTime.atZone(ZoneId.of("Asia/Seoul")).toLocalDateTime());
+            LocalDateTime expirationTime = timeFormatter(tokenValue.get("expirationTime"));
+            return new QueueResponseDTO("유효토큰이 발급되었습니다.", 0L, expirationTime.atZone(ZoneId.of("Asia/Seoul")).toLocalDateTime());
         } else {
             queueManager.addToQueue(userRequestDTO.userId());
             long waitInfo = queueManager.getQueuePosition(userRequestDTO.userId());
             return new QueueResponseDTO("대기정보 조회 성공", waitInfo, null);
 
         }
+    }
+
+    public LocalDateTime timeFormatter(String stringTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        return LocalDateTime.parse(stringTime, formatter);
     }
 }

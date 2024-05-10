@@ -43,7 +43,7 @@ public class UserControllerTest {
     @DisplayName("유저 대기열 진입 요청 테스트")
     @Test
     public void enterQueueTest() throws Exception {
-        QueueResponseDTO queueResponseDTO = new QueueResponseDTO("대기중입니다.", 19L, null, null);
+        QueueResponseDTO queueResponseDTO = new QueueResponseDTO("대기중입니다.", 19L, null);
         when(enterQueueUseCase.execute(any())).thenReturn(queueResponseDTO);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/user/queue/enter")
