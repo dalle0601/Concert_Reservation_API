@@ -5,7 +5,7 @@ import org.example.ticketing.api.dto.concert.response.ConcertResponseDTO;
 import org.example.ticketing.api.dto.concert.response.ConcertWithSeatCountDTO;
 import org.example.ticketing.api.dto.user.request.UserRequestDTO;
 import org.example.ticketing.api.dto.user.response.TokenResponseDTO;
-import org.example.ticketing.api.usecase.user.CheckTokenUseCase;
+import org.example.ticketing.api.usecase.user.UpdateTokenUseCase;
 import org.example.ticketing.domain.concert.service.ConcertService;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,7 @@ import java.util.List;
 public class GetConcertAvailableDateUseCase {
 
     private final ConcertService concertService;
-    private final CheckTokenUseCase checkTokenUseCase;
+    private final UpdateTokenUseCase checkTokenUseCase;
 
     public ConcertResponseDTO execute(UserRequestDTO userRequestDTO) throws Exception {
         try {

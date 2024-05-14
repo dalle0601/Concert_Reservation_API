@@ -18,8 +18,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.time.LocalDateTime;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -46,7 +44,7 @@ public class UserControllerTest {
         QueueResponseDTO queueResponseDTO = new QueueResponseDTO("대기중입니다.", 19L, null);
         when(enterQueueUseCase.execute(any())).thenReturn(queueResponseDTO);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/user/queue/enter")
+        mockMvc.perform(MockMvcRequestBuilders.post("/user/token")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{ \"userId\": 1}"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -57,11 +55,11 @@ public class UserControllerTest {
     @DisplayName("유저 토큰 확인 요청")
     @Test
     public void confirmTokenTest() throws Exception {
-        TokenResponseDTO tokenResponseDTO = new TokenResponseDTO("유효한 토큰입니다.", "abcd-efgh-ijkl", LocalDateTime.now().plusMinutes(5));
+        TokenResponseDTO tokenResponseDTO = new TokenResponseDTO("유효한 토큰입니다.", "abcd-efgh-ijkl", "30");
 
         when(checkTokenUseCase.execute(any())).thenReturn(tokenResponseDTO);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/user/token/check/1"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/user/token/1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("유효한 토큰입니다."))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.token").value("abcd-efgh-ijkl"));

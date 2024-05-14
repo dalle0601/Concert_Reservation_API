@@ -4,7 +4,7 @@ import org.example.ticketing.api.dto.concert.response.ConcertWithSeatCountDTO;
 import org.example.ticketing.api.dto.user.request.UserRequestDTO;
 import org.example.ticketing.api.dto.concert.response.ConcertResponseDTO;
 import org.example.ticketing.api.dto.user.response.TokenResponseDTO;
-import org.example.ticketing.api.usecase.user.CheckTokenUseCase;
+import org.example.ticketing.api.usecase.user.UpdateTokenUseCase;
 import org.example.ticketing.domain.concert.model.Concert;
 import org.example.ticketing.domain.concert.service.ConcertService;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +28,7 @@ public class GetConcertAvailableDateUseCaseTest {
     private ConcertService concertService;
 
     @Mock
-    private CheckTokenUseCase checkTokenUseCase;
+    private UpdateTokenUseCase checkTokenUseCase;
 
     @BeforeEach
     public void setup() {
@@ -57,7 +57,7 @@ public class GetConcertAvailableDateUseCaseTest {
         concerts.add(new ConcertWithSeatCountDTO(new Concert(2L, "22번째 콘서트", LocalDateTime.of(2024, 6, 6, 18, 30), LocalDateTime.now()), 50L));
         concerts.add(new ConcertWithSeatCountDTO(new Concert(3L, "첫번째 333번째", LocalDateTime.of(2024, 7, 17, 17, 00), LocalDateTime.now()), 50L));
 
-        when(checkTokenUseCase.execute(any())).thenReturn(new TokenResponseDTO("유효한 토큰입니다.", "abcd-efgh-ijkl", LocalDateTime.now().plusMinutes(10)));
+        when(checkTokenUseCase.execute(any())).thenReturn(new TokenResponseDTO("유효한 토큰입니다.", "abcd-efgh-ijkl", "30"));
         when(concertService.getConcertDate(any())).thenReturn(concerts);
 
         ConcertResponseDTO actureValue = getConcertAvailableDateUseCase.execute(new UserRequestDTO(userId));

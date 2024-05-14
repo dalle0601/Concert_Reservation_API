@@ -29,15 +29,13 @@ public class EnterQueueUseCase {
                 return new QueueResponseDTO("이미 유효토큰이 발급되었습니다.", 0L, checkToken.get("expirationTime"));
             }
         } else {
-            queueManager.addToQueue(userRequestDTO.userId());
-            long waitInfo = queueManager.getQueuePosition(userRequestDTO.userId());
-            if(waitInfo == -1){
-                return new QueueResponseDTO("대기중이지 않습니다.", waitInfo, null);
-            } else {
-                return new QueueResponseDTO("대기정보 조회 성공", waitInfo, null);
+            try{
+                queueManager.addToQueue(userRequestDTO.userId());
+                long waitInfo = queueManager.getQueuePosition(userRequestDTO.userId());
+                return new QueueResponseDTO("대기열에 포함되었습니다.", waitInfo, null);
+            } catch (Exception e){
+                return new QueueResponseDTO("대기열 진입 과정에서 에러가 발생했습니다.", null, null);
             }
-
-
         }
     }
 }

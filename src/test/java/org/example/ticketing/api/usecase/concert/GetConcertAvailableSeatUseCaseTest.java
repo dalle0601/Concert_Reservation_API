@@ -3,7 +3,7 @@ package org.example.ticketing.api.usecase.concert;
 import org.example.ticketing.api.dto.user.request.UserRequestDTO;
 import org.example.ticketing.api.dto.concert.response.SeatResponseDTO;
 import org.example.ticketing.api.dto.user.response.TokenResponseDTO;
-import org.example.ticketing.api.usecase.user.CheckTokenUseCase;
+import org.example.ticketing.api.usecase.user.UpdateTokenUseCase;
 import org.example.ticketing.domain.concert.model.Concert;
 import org.example.ticketing.domain.concert.service.ConcertService;
 import org.example.ticketing.domain.reservation.model.Reservation;
@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
 public class GetConcertAvailableSeatUseCaseTest {
     private GetConcertAvailableSeatUseCase getConcertAvailableSeatUseCase;
     @Mock
-    private CheckTokenUseCase checkTokenUseCase;
+    private UpdateTokenUseCase checkTokenUseCase;
     @Mock
     private ReservationService reservationService;
     @Mock
@@ -60,7 +60,7 @@ public class GetConcertAvailableSeatUseCaseTest {
         Concert concert = new Concert(1L, "첫번째콘서트", LocalDateTime.now(),LocalDateTime.now());
 
         when(concertService.findByConcertId(any())).thenReturn(concert);
-        when(checkTokenUseCase.execute(any())).thenReturn(new TokenResponseDTO("유효한 토큰입니다.", "abcd-efgh-ijkl", LocalDateTime.now().plusMinutes(5)));
+        when(checkTokenUseCase.execute(any())).thenReturn(new TokenResponseDTO("유효한 토큰입니다.", "abcd-efgh-ijkl", "30"));
         when(reservationService.findReservedOrTempSeat(any(), any())).thenReturn(seatList);
         SeatResponseDTO actureValue = getConcertAvailableSeatUseCase.execute(new UserRequestDTO(userId), concertId);
 

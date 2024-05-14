@@ -5,7 +5,7 @@ import org.example.ticketing.api.dto.user.request.UserRequestDTO;
 import org.example.ticketing.api.dto.concert.response.SeatDTO;
 import org.example.ticketing.api.dto.concert.response.SeatResponseDTO;
 import org.example.ticketing.api.dto.user.response.TokenResponseDTO;
-import org.example.ticketing.api.usecase.user.CheckTokenUseCase;
+import org.example.ticketing.api.usecase.user.UpdateTokenUseCase;
 import org.example.ticketing.domain.concert.model.Concert;
 import org.example.ticketing.domain.concert.service.ConcertService;
 import org.example.ticketing.domain.reservation.model.Reservation;
@@ -20,7 +20,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 
 public class GetConcertAvailableSeatUseCase {
-    private final CheckTokenUseCase checkTokenUseCase;
+    private final UpdateTokenUseCase checkTokenUseCase;
     private final ReservationService reservationService;
     private final ConcertService concertService;
 
