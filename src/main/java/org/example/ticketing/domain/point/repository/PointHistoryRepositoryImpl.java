@@ -1,7 +1,7 @@
-package org.example.ticketing.domain.pointHistory.repository;
+package org.example.ticketing.domain.point.repository;
 
 import lombok.RequiredArgsConstructor;
-import org.example.ticketing.domain.pointHistory.model.PointHistory;
+import org.example.ticketing.domain.point.model.PointHistory;
 import org.springframework.stereotype.Repository;
 
 @Repository

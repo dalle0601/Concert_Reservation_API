@@ -8,7 +8,7 @@ import org.example.ticketing.api.dto.point.response.PointResponseDTO;
 import org.example.ticketing.api.usecase.point.ChargePointUseCase;
 import org.example.ticketing.api.usecase.point.GetPointUseCase;
 import org.example.ticketing.api.usecase.point.PaymentUseCase;
-import org.example.ticketing.domain.pointHistory.model.PointHistory;
+import org.example.ticketing.domain.point.model.PointHistory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package org.example.ticketing.domain.pointHistory.model;
+package org.example.ticketing.domain.point.model;
 
 import jakarta.persistence.*;
 import lombok.Builder;

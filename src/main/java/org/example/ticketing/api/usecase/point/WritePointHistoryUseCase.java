@@ -3,8 +3,8 @@ package org.example.ticketing.api.usecase.point;
 import lombok.RequiredArgsConstructor;
 import org.example.ticketing.api.dto.point.reqeust.PointHistorySaveRequestDTO;
 import org.example.ticketing.api.dto.point.response.PointHistorySaveResponseDTO;
-import org.example.ticketing.domain.pointHistory.model.PointHistory;
-import org.example.ticketing.domain.pointHistory.service.PointHistoryService;
+import org.example.ticketing.domain.point.model.PointHistory;
+import org.example.ticketing.domain.point.service.PointHistoryService;
 import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
