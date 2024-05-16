@@ -2,6 +2,43 @@
 
 ---
 
+## 🧩 트랜잭션 범위 이해 및 서비스 확장에 따른 분리와 트랜잭션 처리의 한계 및 해결방안
+  <details>
+    <summary>기존 결제(Payment) 로직 및 서비스 확장 및 분리</summary>
+    
+      - 예약 정보 조회 (reservationService.findById)<br/>
+      - 사용자 정보 조회 (userService.findUserInfo)<br/>
+      - 사용자 포인트를 차감 (userService.paymentPoint)<br/>
+      - 예약 상태 변경 (reserved) 및 만료 시간 제거 (reservationService.updateStateAndExpirationTime)<br/>
+      - 포인트 히스토리 기록 삽입 (writePointHistoryUseCase.execute)<br/>
+
+      예약, User 관리, Point 관리 측면의 분리
+
+      문제점
+      - 서비스를 분리함에따라 분산 트랜잭션으로 이루어지며 각각의 트랜잭션 관리가 복잡해짐
+
+      해결방안
+      - 상태 변화를 이벤트로 기록, 처리
+      - SAGA 패턴? (더 자세히 알아보자..)
+  </details>
+  <details>
+    <summary>실시간 정보를 데이터 플랫폼에 전달 요구사항에 대한 문제, 해결방안</summary>
+
+    문제점
+    - 실시간 데이터를 데이터 플랫폼에 전송하는 과정에서 실패할 경우 전체 트랜잭션이 롤백될 수 있습니다.
+    - 실시간 데이터 전송 과정이 지연되면, 사용자 응답 시간이 길어집니다.
+
+    해결방안
+    - 비동기 이벤트 기반 처리
+      - 결제 완료 후 실시간 데이터를 전송하는 작업을 비동기 이벤트로 처리하여 메인 트랜잭션에서 분리
+      - ApplicationEventPublisher를 통해 이벤트를 발행하고, 별도의 이벤트 리스너에서 실시간 데이터를 전송
+    - Kafka 도입
+      - 결제 완료 이벤트를 Kafka 토픽으로 발행하고, 데이터 플랫폼이 해당 토픽을 구독하여 실시간 데이터를 처리
+      
+  </details>
+
+---
+
 ## ☛ Query 분석 및 DB Index 설계
 <details>
   <summary>Query 분석</summary>
