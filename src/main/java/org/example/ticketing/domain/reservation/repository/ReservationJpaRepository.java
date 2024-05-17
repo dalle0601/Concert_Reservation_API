@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+
 public interface ReservationJpaRepository extends JpaRepository<Reservation, Long> {
     List<Reservation> findByStatusInAndConcertId(String[] statuses, Long concertId);
 
@@ -16,6 +18,6 @@ public interface ReservationJpaRepository extends JpaRepository<Reservation, Lon
     @Modifying
     @Query("UPDATE Reservation r SET r.status = :status, r.reservationTime = :reservationTime, r.expirationTime = :expirationTime WHERE r.reservationId = :reservationId")
     void updateStateAndExpirationTime(@Param("reservationId") Long reservationId, @Param("status") String status, @Param("reservationTime") LocalDateTime reservationTime, @Param("expirationTime") LocalDateTime expirationTime);
-
+    Optional<Reservation> findByConcertIdAndSeatId(Long concertId, Long seatId);
     Reservation save(Reservation reservation);
 }

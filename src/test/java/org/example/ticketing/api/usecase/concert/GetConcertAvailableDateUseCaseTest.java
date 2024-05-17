@@ -1,10 +1,10 @@
 package org.example.ticketing.api.usecase.concert;
 
+import org.example.ticketing.api.dto.concert.response.ConcertResponseDTO;
 import org.example.ticketing.api.dto.concert.response.ConcertWithSeatCountDTO;
 import org.example.ticketing.api.dto.user.request.UserRequestDTO;
-import org.example.ticketing.api.dto.concert.response.ConcertResponseDTO;
 import org.example.ticketing.api.dto.user.response.TokenResponseDTO;
-import org.example.ticketing.api.usecase.user.UpdateTokenUseCase;
+import org.example.ticketing.api.usecase.user.CheckTokenUseCase;
 import org.example.ticketing.domain.concert.model.Concert;
 import org.example.ticketing.domain.concert.service.ConcertService;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +28,7 @@ public class GetConcertAvailableDateUseCaseTest {
     private ConcertService concertService;
 
     @Mock
-    private UpdateTokenUseCase checkTokenUseCase;
+    private CheckTokenUseCase checkTokenUseCase;
 
     @BeforeEach
     public void setup() {

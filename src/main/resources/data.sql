@@ -57,7 +57,7 @@ VALUES (NOW(), 1000, 1, 'charge'),
        (NOW(), 1000, 5, 'charge');
 
 INSERT INTO RESERVATION (CONCERT_ID, COST, EXPIRATION_TIME, RESERVATION_TIME, SEAT_ID, USER_ID, STATUS)
-VALUES (1, 55000, DATEADD(MINUTE, 5, NOW()), NOW(), 1, 1, 'reserved'),
+VALUES (1, 55000, DATEADD(MINUTE, 5, NOW()), NOW(), 1, 1, 'temporary'),
        (1, 55000, DATEADD(MINUTE, 5, NOW()), NOW(), 2, 118, 'temporary'),
        (1, 55000, DATEADD(MINUTE, 5, NOW()), NOW(), 3, 12, 'temporary'),
        (1, 55000, DATEADD(MINUTE, 5, NOW()), NOW(), 4, 22, 'reserved'),

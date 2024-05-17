@@ -1,6 +1,7 @@
 package org.example.ticketing.domain.reservation.service;
 
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.ticketing.api.dto.point.reqeust.PaymentReservationUpdateDTO;
 import org.example.ticketing.domain.reservation.model.Reservation;
@@ -33,5 +34,22 @@ public class ReservationService {
 
     public void updateStateAndExpirationTime(PaymentReservationUpdateDTO paymentReservationUpdateDTO) {
         reservationRepository.updateStateAndExpirationTime(paymentReservationUpdateDTO);
+    }
+
+    @Transactional
+    public Reservation saveOrUpdate(Reservation reservation) {
+        Optional<Reservation> existingReservation = reservationRepository.findByConcertIdAndSeatId(
+                reservation.getConcertId(), reservation.getSeatId());
+
+        if (existingReservation.isPresent()) {
+            Reservation existing = existingReservation.get();
+            existing.setStatus(reservation.getStatus());
+            existing.setCost(reservation.getCost());
+            existing.setReservationTime(reservation.getReservationTime());
+            existing.setExpirationTime(reservation.getExpirationTime());
+            return reservationRepository.save(existing);
+        } else {
+            return reservationRepository.save(reservation);
+        }
     }
 }

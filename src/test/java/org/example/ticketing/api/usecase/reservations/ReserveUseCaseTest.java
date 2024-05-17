@@ -4,12 +4,11 @@ import org.example.ticketing.api.dto.reservation.request.ReservationRequestDTO;
 import org.example.ticketing.api.dto.reservation.response.ReservationResponseDTO;
 import org.example.ticketing.api.dto.user.response.TokenResponseDTO;
 import org.example.ticketing.api.usecase.reservation.ReserveUseCase;
-import org.example.ticketing.api.usecase.user.UpdateTokenUseCase;
+import org.example.ticketing.api.usecase.user.CheckTokenUseCase;
 import org.example.ticketing.domain.concert.model.Concert;
 import org.example.ticketing.domain.concert.service.ConcertService;
 import org.example.ticketing.domain.reservation.model.Reservation;
 import org.example.ticketing.domain.reservation.service.ReservationService;
-import org.example.ticketing.domain.user.service.TokenService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,13 +29,10 @@ public class ReserveUseCaseTest {
     private ReservationService reservationService;
 
     @Mock
-    private TokenService tokenService;
-
-    @Mock
     private ConcertService concertService;
 
     @Mock
-    private UpdateTokenUseCase updateTokenUseCase;
+    private CheckTokenUseCase checkTokenUseCase;
 
     @InjectMocks
     private ReserveUseCase reserveUseCase;
@@ -51,7 +47,7 @@ public class ReserveUseCaseTest {
     void execute_test_token_not_valid() {
         ReservationRequestDTO reservationRequestDTO = new ReservationRequestDTO(1L, 1L, 1L, 100L);
 
-        when(updateTokenUseCase.execute(any())).thenReturn(new TokenResponseDTO("유효하지 않은 토큰입니다.", null, null));
+        when(checkTokenUseCase.execute(any())).thenReturn(new TokenResponseDTO("유효하지 않은 토큰입니다.", null, null));
 
         ReservationResponseDTO response = reserveUseCase.reserve(reservationRequestDTO);
 
@@ -64,7 +60,7 @@ public class ReserveUseCaseTest {
     void execute_test_no_concert_reservation() {
         ReservationRequestDTO reservationRequestDTO = new ReservationRequestDTO(1L, 1L, 1L, 100L);
 
-        when(updateTokenUseCase.execute(any())).thenReturn(new TokenResponseDTO("유효한 토큰입니다.", "valid-token", "2024-12-31T23:59:59"));
+        when(checkTokenUseCase.execute(any())).thenReturn(new TokenResponseDTO("유효한 토큰입니다.", "valid-token", "2024-12-31T23:59:59"));
         when(concertService.findByConcertId(anyLong())).thenReturn(null);
 
         ReservationResponseDTO response = reserveUseCase.reserve(reservationRequestDTO);
@@ -79,7 +75,7 @@ public class ReserveUseCaseTest {
         ReservationRequestDTO reservationRequestDTO = new ReservationRequestDTO(1L, 1L, 1L, 100L);
         Concert concert = new Concert();
 
-        when(updateTokenUseCase.execute(any())).thenReturn(new TokenResponseDTO("유효한 토큰입니다.", "valid-token", "2024-12-31T23:59:59"));
+        when(checkTokenUseCase.execute(any())).thenReturn(new TokenResponseDTO("유효한 토큰입니다.", "valid-token", "2024-12-31T23:59:59"));
         when(concertService.findByConcertId(anyLong())).thenReturn(concert);
         when(reservationService.findNonAvailableByConcertIdAndSeatId(anyLong(), anyLong())).thenReturn(null);
 
@@ -96,7 +92,7 @@ public class ReserveUseCaseTest {
         Concert concert = new Concert();
         Reservation reservation = new Reservation(1L, 1L, 1L, "temporary", 100L, LocalDateTime.now(), LocalDateTime.now().plusMinutes(5));
 
-        when(updateTokenUseCase.execute(any())).thenReturn(new TokenResponseDTO("유효한 토큰입니다.", "valid-token", "2024-12-31T23:59:59"));
+        when(checkTokenUseCase.execute(any())).thenReturn(new TokenResponseDTO("유효한 토큰입니다.", "valid-token", "2024-12-31T23:59:59"));
         when(concertService.findByConcertId(anyLong())).thenReturn(concert);
         when(reservationService.findNonAvailableByConcertIdAndSeatId(anyLong(), anyLong())).thenReturn(null);
         when(reservationService.save(any(Reservation.class))).thenReturn(reservation);

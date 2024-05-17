@@ -6,6 +6,7 @@ import org.example.ticketing.api.usecase.point.PaymentUseCase;
 import org.example.ticketing.api.usecase.point.WritePointHistoryUseCase;
 import org.example.ticketing.domain.concert.model.Concert;
 import org.example.ticketing.domain.concert.service.ConcertService;
+import org.example.ticketing.infrastructure.event.PaymentEventProducer;
 import org.example.ticketing.domain.reservation.model.Reservation;
 import org.example.ticketing.domain.reservation.service.ReservationService;
 import org.example.ticketing.domain.user.model.UserInfo;
@@ -21,7 +22,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class PaymentUseCaseTest {
     private PaymentUseCase paymentUseCase;
@@ -33,14 +34,15 @@ public class PaymentUseCaseTest {
     private ConcertService concertService;
     @Mock
     private WritePointHistoryUseCase writePointHistoryUseCase;
-
+    @Mock
+    private PaymentEventProducer paymentEventProducer;
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        paymentUseCase = new PaymentUseCase(reservationService, userService, concertService, writePointHistoryUseCase);
+        paymentUseCase = new PaymentUseCase(reservationService, userService, concertService, writePointHistoryUseCase, paymentEventProducer);
     }
     @Test
-    @DisplayName("결제 테스트 > 성공")
+    @DisplayName("결제 테스트 > 성공 (이벤트 send 1회) ")
     void noneUserSearchPointTest() {
         Long userId = 1L;
         Long reservationId = 1L;
@@ -68,6 +70,7 @@ public class PaymentUseCaseTest {
         assertEquals(cost, actualValue.paymentInfoDTO().cost());
         assertEquals("reserved", actualValue.paymentInfoDTO().status());
 
+        verify(paymentEventProducer, times(1)).send(anyString(), any());
     }
 
     @Test

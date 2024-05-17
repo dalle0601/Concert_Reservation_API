@@ -6,7 +6,7 @@ import org.example.ticketing.api.dto.reservation.request.ReservationRequestDTO;
 import org.example.ticketing.api.dto.reservation.response.ReservationResponseDTO;
 import org.example.ticketing.api.dto.user.request.UserRequestDTO;
 import org.example.ticketing.api.dto.user.response.TokenResponseDTO;
-import org.example.ticketing.api.usecase.user.UpdateTokenUseCase;
+import org.example.ticketing.api.usecase.user.CheckTokenUseCase;
 import org.example.ticketing.domain.concert.model.Concert;
 import org.example.ticketing.domain.concert.service.ConcertService;
 import org.example.ticketing.domain.reservation.model.Reservation;
@@ -21,7 +21,7 @@ public class ReserveUseCase {
     private final ReservationService reservationService;
     private final TokenService tokenService;
     private final ConcertService concertService;
-    private final UpdateTokenUseCase checkTokenUseCase;
+    private final CheckTokenUseCase checkTokenUseCase;
 
     @Transactional
     public ReservationResponseDTO reserve(ReservationRequestDTO reservationRequestDTO) {
@@ -38,7 +38,7 @@ public class ReserveUseCase {
                 if (checkReservation != null) {
                     return new ReservationResponseDTO("해당 좌석은 예약할 수 없습니다.", null);
                 }
-                Reservation reservation = reservationService.save(new Reservation(reservationRequestDTO.userId(), reservationRequestDTO.concertId(), reservationRequestDTO.seatId(), "temporary", reservationRequestDTO.cost(), LocalDateTime.now(), LocalDateTime.now().plusMinutes(5)));
+                Reservation reservation = reservationService.saveOrUpdate(new Reservation(reservationRequestDTO.userId(), reservationRequestDTO.concertId(), reservationRequestDTO.seatId(), "temporary", reservationRequestDTO.cost(), LocalDateTime.now(), LocalDateTime.now().plusMinutes(5)));
                 if (reservation == null) {
                     return new ReservationResponseDTO("해당 좌석은 예약할 수 없습니다.", null);
                 }

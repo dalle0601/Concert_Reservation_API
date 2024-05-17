@@ -3,11 +3,13 @@ package org.example.ticketing.domain.reservation.model;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Setter
 @Table(name="RESERVATION", indexes = {
         @Index(name ="idx_reservation_concert_id", columnList = "CONCERT_ID"),
         @Index(name = "idx_reservation_concertId_seatId", columnList = "CONCERT_ID, SEAT_ID")

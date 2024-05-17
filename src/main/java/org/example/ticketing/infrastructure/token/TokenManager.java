@@ -55,4 +55,12 @@ public class TokenManager {
         }
         return count;
     }
+
+    public void deleteToken(Long userId) {
+        String tokenKey = "token:" + userId;
+        RBucket<String> tokenBucket = redissonClient.getBucket(tokenKey);
+        if (tokenBucket.isExists()) {
+            tokenBucket.delete();
+        }
+    }
 }

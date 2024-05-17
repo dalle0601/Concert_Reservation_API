@@ -18,10 +18,14 @@ public class ReservationRepositoryImpl implements ReservationRepository{
         return reservationJpaRepository.findByStatusInAndConcertId(statuses, concertId);
     }
     @Override
+    public Optional<Reservation> findByConcertIdAndSeatId(Long concertId, Long seatId) {
+        return reservationJpaRepository.findByConcertIdAndSeatId(concertId, seatId);
+    }
+
+    @Override
     public Reservation save(Reservation reservation) {
         return reservationJpaRepository.save(reservation);
     }
-
     @Override
     public Reservation findNonAvailableByConcertIdAndSeatId(Long concertId, Long seatId) {
         return  reservationJpaRepository.findNonAvailableByConcertIdAndSeatId(concertId, seatId);
