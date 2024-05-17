@@ -88,9 +88,7 @@ public class ReservationIntegrationTest {
             });
         }
         countDownLatch.await();
-        for (ReservationResponseDTO responseDTO : result) {
-            System.out.println(responseDTO.message());
-        }
+
         assert result.get(0).message().equals("좌석 예약 성공");
         assert result.get(1).message().equals("해당 좌석은 예약할 수 없습니다.");
         assert result.get(2).message().equals("해당 좌석은 예약할 수 없습니다.");

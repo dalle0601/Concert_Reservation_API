@@ -1,5 +1,6 @@
 package org.example.ticketing.api.usecase.point;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.ticketing.api.dto.point.reqeust.PaymentRequestDTO;
 import org.example.ticketing.api.dto.point.reqeust.PaymentReservationUpdateDTO;
@@ -9,6 +10,7 @@ import org.example.ticketing.api.dto.point.response.PaymentResponseDTO;
 import org.example.ticketing.api.dto.user.request.UserRequestDTO;
 import org.example.ticketing.domain.concert.model.Concert;
 import org.example.ticketing.domain.concert.service.ConcertService;
+import org.example.ticketing.infrastructure.event.PaymentEventProducer;
 import org.example.ticketing.domain.reservation.model.Reservation;
 import org.example.ticketing.domain.reservation.service.ReservationService;
 import org.example.ticketing.domain.user.model.UserInfo;
@@ -26,7 +28,14 @@ public class PaymentUseCase {
     private final UserService userService;
     private final ConcertService concertService;
     private final WritePointHistoryUseCase writePointHistoryUseCase;
+    private final PaymentEventProducer paymentEventProducer;
 
+
+    /*
+        4단계: 결제 로직에서 윗단계 구현에 대한 로직 구현의 관심사를 분리하기 위해 이벤트를 활용할 것
+            - PaymentUseCase에서 이벤트를 발행하고, 이벤트 리스너에서 외부 API 호출을 처리하여 관심사 분리
+     */
+    @Transactional
     public PaymentResponseDTO execute(PaymentRequestDTO paymentRequestDTO){
         try {
             // reservation table 조회 한다. > reservationId
@@ -60,8 +69,11 @@ public class PaymentUseCase {
                     "reserved",
                     reservationTime);
 
+            paymentEventProducer.send("payment", reservationInfo.getReservationId());
+
             return new PaymentResponseDTO("결제 완료", paymentInfoDTO);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return new PaymentResponseDTO("결제 중 오류가 발생했습니다.", null);
         }
     }
