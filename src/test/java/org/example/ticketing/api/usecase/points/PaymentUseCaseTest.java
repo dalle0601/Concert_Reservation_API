@@ -6,23 +6,26 @@ import org.example.ticketing.api.usecase.point.PaymentUseCase;
 import org.example.ticketing.api.usecase.point.WritePointHistoryUseCase;
 import org.example.ticketing.domain.concert.model.Concert;
 import org.example.ticketing.domain.concert.service.ConcertService;
-import org.example.ticketing.infrastructure.event.PaymentEventProducer;
 import org.example.ticketing.domain.reservation.model.Reservation;
 import org.example.ticketing.domain.reservation.service.ReservationService;
 import org.example.ticketing.domain.user.model.UserInfo;
 import org.example.ticketing.domain.user.service.UserService;
+import org.example.ticketing.infrastructure.event.PaymentCompletedEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class PaymentUseCaseTest {
     private PaymentUseCase paymentUseCase;
@@ -35,11 +38,12 @@ public class PaymentUseCaseTest {
     @Mock
     private WritePointHistoryUseCase writePointHistoryUseCase;
     @Mock
-    private PaymentEventProducer paymentEventProducer;
+    private ApplicationEventPublisher eventPublisher;
+
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        paymentUseCase = new PaymentUseCase(reservationService, userService, concertService, writePointHistoryUseCase, paymentEventProducer);
+        paymentUseCase = new PaymentUseCase(reservationService, userService, concertService, writePointHistoryUseCase, eventPublisher);
     }
     @Test
     @DisplayName("결제 테스트 > 성공 (이벤트 send 1회) ")
@@ -70,7 +74,10 @@ public class PaymentUseCaseTest {
         assertEquals(cost, actualValue.paymentInfoDTO().cost());
         assertEquals("reserved", actualValue.paymentInfoDTO().status());
 
-        verify(paymentEventProducer, times(1)).send(anyString(), any());
+        ArgumentCaptor<PaymentCompletedEvent> eventCaptor = ArgumentCaptor.forClass(PaymentCompletedEvent.class);
+        verify(eventPublisher).publishEvent(eventCaptor.capture());
+        PaymentCompletedEvent event = eventCaptor.getValue();
+        assertEquals(1L, event.reservationId());
     }
 
     @Test

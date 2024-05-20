@@ -10,11 +10,12 @@ import org.example.ticketing.api.dto.point.response.PaymentResponseDTO;
 import org.example.ticketing.api.dto.user.request.UserRequestDTO;
 import org.example.ticketing.domain.concert.model.Concert;
 import org.example.ticketing.domain.concert.service.ConcertService;
-import org.example.ticketing.infrastructure.event.PaymentEventProducer;
 import org.example.ticketing.domain.reservation.model.Reservation;
 import org.example.ticketing.domain.reservation.service.ReservationService;
 import org.example.ticketing.domain.user.model.UserInfo;
 import org.example.ticketing.domain.user.service.UserService;
+import org.example.ticketing.infrastructure.event.PaymentCompletedEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -28,7 +29,7 @@ public class PaymentUseCase {
     private final UserService userService;
     private final ConcertService concertService;
     private final WritePointHistoryUseCase writePointHistoryUseCase;
-    private final PaymentEventProducer paymentEventProducer;
+    private final ApplicationEventPublisher eventPublisher;
 
 
     /*
@@ -69,7 +70,8 @@ public class PaymentUseCase {
                     "reserved",
                     reservationTime);
 
-            paymentEventProducer.send("payment", reservationInfo.getReservationId());
+            eventPublisher.publishEvent(new PaymentCompletedEvent(reservationInfo.getReservationId()));
+//            paymentEventProducer.send("payment", reservationInfo.getReservationId());
 
             return new PaymentResponseDTO("결제 완료", paymentInfoDTO);
         } catch (Exception e) {
