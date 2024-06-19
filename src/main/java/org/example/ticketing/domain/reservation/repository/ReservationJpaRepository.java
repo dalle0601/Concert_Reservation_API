@@ -20,4 +20,6 @@ public interface ReservationJpaRepository extends JpaRepository<Reservation, Lon
     void updateStateAndExpirationTime(@Param("reservationId") Long reservationId, @Param("status") String status, @Param("reservationTime") LocalDateTime reservationTime, @Param("expirationTime") LocalDateTime expirationTime);
     Optional<Reservation> findByConcertIdAndSeatId(Long concertId, Long seatId);
     Reservation save(Reservation reservation);
+
+    List<Reservation> findByUserId(Long userId);
 }

@@ -45,4 +45,8 @@ public class ReservationRepositoryImpl implements ReservationRepository{
                 paymentReservationUpdateDTO.expiredTime()
         );
     }
+    @Override
+    public List<Reservation> findByUserId(Long userId) {
+        return reservationJpaRepository.findByUserId(userId);
+    }
 }

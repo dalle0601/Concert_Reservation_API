@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final EnterQueueUseCase enterQueueUseCase;
     private final CheckTokenUseCase checkTokenUseCase;
-
     @Autowired
     public UserController (EnterQueueUseCase enterQueueUseCase, CheckTokenUseCase checkTokenUseCase) {
         this.enterQueueUseCase = enterQueueUseCase;
@@ -27,7 +26,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(enterQueueUseCase.execute(userRequestDTO));
     }
     @Operation(summary = "유저 토큰 확인 요청")
-    @GetMapping("/user/token/{userId}")
+    @GetMapping("/user/{userId}/token")
     public ResponseEntity<TokenResponseDTO> checkUserToken (@PathVariable Long userId) throws Exception {
         return ResponseEntity.status(HttpStatus.OK).body(checkTokenUseCase.execute(new UserRequestDTO(userId)));
     }

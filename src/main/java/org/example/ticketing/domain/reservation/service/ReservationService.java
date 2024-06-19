@@ -52,4 +52,8 @@ public class ReservationService {
             return reservationRepository.save(reservation);
         }
     }
+
+    public List<Reservation> findByUserId(Long userId) {
+        return reservationRepository.findByUserId(userId);
+    }
 }

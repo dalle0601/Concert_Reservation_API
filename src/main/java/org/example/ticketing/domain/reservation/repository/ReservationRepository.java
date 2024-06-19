@@ -13,4 +13,5 @@ public interface ReservationRepository {
     Optional<Reservation> findById(Long reservationId);
     Optional<Reservation> findByConcertIdAndSeatId(Long concertId, Long seatId);
     void updateStateAndExpirationTime(PaymentReservationUpdateDTO paymentReservationUpdateDTO);
+    List<Reservation> findByUserId(Long userId);
 }

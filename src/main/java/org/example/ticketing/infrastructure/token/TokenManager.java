@@ -21,7 +21,7 @@ public class TokenManager {
         String tokenKey = "token:" + userId;
         RBucket<String> tokenBucket = redissonClient.getBucket(tokenKey);
         String token = UUID.randomUUID().toString();
-        tokenBucket.set(token, 1, TimeUnit.MINUTES); // 토큰을 1분간 유효하도록 저장
+        tokenBucket.set(token, 3, TimeUnit.MINUTES); // 토큰을 1분간 유효하도록 저장
         Map<String, String> tokenInfo = new HashMap<>();
         tokenInfo.put("token", token);
         long expirationTimeMillis = tokenBucket.remainTimeToLive() / 1000;
