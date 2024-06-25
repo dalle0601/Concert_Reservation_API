@@ -1,13 +1,13 @@
-INSERT INTO CONCERT (CONCERT_TITLE, CONCERT_DATE, CREATED_AT)
-VALUES ('콘서트 제목 1', '2024-05-01 19:00:00', CURRENT_TIMESTAMP),
-       ('콘서트 제목 2', '2024-06-15 20:00:00', CURRENT_TIMESTAMP),
-       ('콘서트 제목 3', '2024-07-30 18:30:00', CURRENT_TIMESTAMP),
-       ('콘서트 제목 4', '2024-12-01 19:00:00', CURRENT_TIMESTAMP),
-       ('콘서트 제목 5', '2024-08-15 20:00:00', CURRENT_TIMESTAMP),
-       ('콘서트 제목 6', '2024-06-22 18:30:00', CURRENT_TIMESTAMP),
-       ('콘서트 제목 7', '2024-05-07 19:00:00', CURRENT_TIMESTAMP),
-       ('콘서트 제목 8', '2024-06-12 20:00:00', CURRENT_TIMESTAMP),
-       ('콘서트 제목 9', '2024-07-13 18:30:00', CURRENT_TIMESTAMP);
+INSERT INTO CONCERT (CONCERT_TITLE, CONCERT_DATE, IMAGE_PATH, CREATED_AT)
+VALUES ('콘서트 제목 1', '2025-05-01 19:00:00', '/image/1.webp',CURRENT_TIMESTAMP),
+       ('콘서트 제목 2', '2025-06-15 20:00:00', '/image/1.webp',CURRENT_TIMESTAMP),
+       ('콘서트 제목 3', '2025-07-30 18:30:00', '/image/1.webp',CURRENT_TIMESTAMP),
+       ('콘서트 제목 4', '2025-12-01 19:00:00', '/image/2.webp',CURRENT_TIMESTAMP),
+       ('콘서트 제목 5', '2025-08-15 20:00:00', '/image/3.webp',CURRENT_TIMESTAMP),
+       ('콘서트 제목 6', '2025-06-22 18:30:00', '/image/1.webp',CURRENT_TIMESTAMP),
+       ('콘서트 제목 7', '2025-05-07 19:00:00', '/image/1.webp',CURRENT_TIMESTAMP),
+       ('콘서트 제목 8', '2025-06-12 20:00:00', '/image/1.webp',CURRENT_TIMESTAMP),
+       ('콘서트 제목 9', '2025-07-13 18:30:00', '/image/4.webp',CURRENT_TIMESTAMP);
 
 INSERT INTO POINT(CREATED_AT, POINT, USER_ID, STATUS)
 VALUES (NOW(), 1000, 1, 'charge'),
