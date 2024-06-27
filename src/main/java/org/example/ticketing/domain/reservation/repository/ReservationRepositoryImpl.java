@@ -49,4 +49,14 @@ public class ReservationRepositoryImpl implements ReservationRepository{
     public List<Reservation> findByUserId(Long userId) {
         return reservationJpaRepository.findByUserId(userId);
     }
+
+    @Override
+    public List<Reservation> findByUserIdAndStatusNotLike(Long userId, String status) {
+        return reservationJpaRepository.findByUserIdAndStatusNotLike(userId, status);
+    }
+
+    @Override
+    public void updateStatusToAvailable(Long concertId, Long seatId) {
+        reservationJpaRepository.updateStatusToAvailable(concertId, seatId);
+    }
 }

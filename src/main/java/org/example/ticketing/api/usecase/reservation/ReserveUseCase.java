@@ -42,6 +42,7 @@ public class ReserveUseCase {
                 if (reservation == null) {
                     return new ReservationResponseDTO("해당 좌석은 예약할 수 없습니다.", null);
                 }
+                reservationService.createTemporaryReservation(reservationRequestDTO);   // redis에 5분임시점유 저장
                 tokenService.deleteByUserIdAndUseTrue(isValidToken, false);
                 return new ReservationResponseDTO("좌석 예약 성공", reservation);
                 // 좌석 예약 후 토큰 만료처리

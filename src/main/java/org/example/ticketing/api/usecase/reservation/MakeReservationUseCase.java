@@ -3,6 +3,7 @@ package org.example.ticketing.api.usecase.reservation;
 import lombok.RequiredArgsConstructor;
 import org.example.ticketing.api.dto.reservation.request.ReservationRequestDTO;
 import org.example.ticketing.api.dto.reservation.response.ReservationResponseDTO;
+import org.example.ticketing.domain.reservation.service.ReservationService;
 import org.example.ticketing.infrastructure.lock.DistributedLock;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -15,13 +16,14 @@ public class MakeReservationUseCase {
 
     private final DistributedLock distributedLock;
     private final ReserveUseCase reserveUseCase;
+    private final ReservationService reservationService;
 
     public ReservationResponseDTO execute(ReservationRequestDTO reservationRequestDTO) throws InterruptedException {
         String lockKey = reservationRequestDTO.concertId().toString() + reservationRequestDTO.seatId().toString();
 
         boolean acquireLock = distributedLock.tryLock(lockKey, 5, 1, TimeUnit.SECONDS);
         if (!acquireLock) {
-            return null;
+            return new ReservationResponseDTO("잠시 후 다시 시도해 주세요.", null);
         }
 
         try {
@@ -34,6 +36,4 @@ public class MakeReservationUseCase {
             distributedLock.unlock(lockKey); // 락 해제
         }
     }
-
-
 }
