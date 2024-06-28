@@ -4,6 +4,6 @@ import java.util.List;
 
 public record ConcertResponseDTO (
         String message,
-        List<ConcertWithSeatCountDTO> concertList
+        List<ConcertWithSeatCountDTO> list
 ){
 }

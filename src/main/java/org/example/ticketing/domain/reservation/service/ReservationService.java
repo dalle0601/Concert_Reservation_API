@@ -71,7 +71,7 @@ public class ReservationService {
         return reservationRepository.findByUserId(userId);
     }
 
-    public List<Reservation> findByUserIdAndStatusNotLike(Long userId, String status) {
+    public List<Object[]> findByUserIdAndStatusNotLike(Long userId, String status) {
         return reservationRepository.findByUserIdAndStatusNotLike(userId, status);
     }
 

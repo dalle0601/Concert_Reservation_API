@@ -4,6 +4,6 @@ import java.util.List;
 
 public record SeatResponseDTO (
         String message,
-        List<SeatDTO> seatList
+        List<SeatDTO> list
 ){
 }
