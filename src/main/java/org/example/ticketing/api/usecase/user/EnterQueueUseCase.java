@@ -29,11 +29,12 @@ public class EnterQueueUseCase {
                 return new QueueResponseDTO("이미 유효토큰이 발급되었습니다.", 0L, checkToken.get("expirationTime"));
             }
         } else {
-            try{
+            try {
+                // 사용자 추가 전에 대기열에 있는지 확인
                 queueManager.addToQueue(userRequestDTO.userId());
                 long waitInfo = queueManager.getQueuePosition(userRequestDTO.userId());
                 return new QueueResponseDTO("대기열에 포함되었습니다.", waitInfo, null);
-            } catch (Exception e){
+            } catch (Exception e) {
                 return new QueueResponseDTO("대기열 진입 과정에서 에러가 발생했습니다.", null, null);
             }
         }

@@ -14,8 +14,11 @@ public class QueueManager {
 
     public void addToQueue(Long userId) {
         RScoredSortedSet<Long> queue = redissonClient.getScoredSortedSet(queueName);
-        double score = System.currentTimeMillis(); // 현재 시간을 점수로 사용하여 대기열에 추가
-        queue.add(score, userId);
+        // 이미 대기열에 있는지 확인
+        if (!queue.contains(userId)) {
+            double score = System.currentTimeMillis(); // 현재 시간을 점수로 사용하여 대기열에 추가
+            queue.add(score, userId);
+        }
     }
 
     public Long getNextInQueue() {
