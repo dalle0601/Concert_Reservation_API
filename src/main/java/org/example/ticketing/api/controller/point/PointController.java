@@ -1,6 +1,7 @@
 package org.example.ticketing.api.controller.point;
 
 import io.swagger.v3.oas.annotations.Operation;
+import org.example.ticketing.api.dto.common.Response;
 import org.example.ticketing.api.dto.point.reqeust.PaymentRequestDTO;
 import org.example.ticketing.api.dto.point.reqeust.PointRequestDTO;
 import org.example.ticketing.api.dto.point.response.PaymentResponseDTO;
@@ -9,8 +10,6 @@ import org.example.ticketing.api.dto.point.response.PointResponseDTO;
 import org.example.ticketing.api.usecase.point.ChargePointUseCase;
 import org.example.ticketing.api.usecase.point.GetPointUseCase;
 import org.example.ticketing.api.usecase.point.PaymentUseCase;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,22 +27,19 @@ public class PointController {
 
     @Operation(summary = "포인트 잔액 조회")
     @GetMapping("/point/{userId}")
-    public ResponseEntity<PointResponseDTO> getUserPoint(@PathVariable Long userId) {
-        PointResponseDTO pointResponseDTO = getPointUseCase.execute(userId);
-        return new ResponseEntity<>(pointResponseDTO, HttpStatus.OK);
+    public Response<PointResponseDTO> getUserPoint(@PathVariable Long userId) {
+        return Response.success(getPointUseCase.execute(userId));
     }
 
     @Operation(summary = "포인트 충전")
     @PatchMapping("/point/charge")
-    public ResponseEntity<PointHistorySaveResponseDTO> userPointCharge(@RequestBody PointRequestDTO pointRequestDTO) {
-        PointHistorySaveResponseDTO pointHistorySaveResponseDTO = chargePointUseCase.execute(pointRequestDTO);
-        return new ResponseEntity<>(pointHistorySaveResponseDTO, HttpStatus.OK);
+    public Response<PointHistorySaveResponseDTO> userPointCharge(@RequestBody PointRequestDTO pointRequestDTO) {
+        return Response.success(chargePointUseCase.execute(pointRequestDTO));
     }
 
     @Operation(summary = "결제")
     @PostMapping("/point/payment")
-    public ResponseEntity<PaymentResponseDTO> pointPayment(@RequestBody PaymentRequestDTO paymentRequestDTO) {
-        PaymentResponseDTO paymentResponseDTO = paymentUseCase.execute(paymentRequestDTO);
-        return new ResponseEntity<>(paymentResponseDTO, HttpStatus.OK);
+    public Response<PaymentResponseDTO> pointPayment(@RequestBody PaymentRequestDTO paymentRequestDTO) {
+        return Response.success(paymentUseCase.execute(paymentRequestDTO));
     }
 }
