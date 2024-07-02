@@ -1,5 +1,24 @@
 # 콘서트 예약 서비스 구현
 
+본 프로젝트는 콘서트 예약 서비스로, 사용자가 콘서트를 예약할 수 있는 기능을 제공하는 웹 애플리케이션입니다. 
+이 시스템은 두 가지 주요 부분으로 구성됩니다
+- [Concert_Reservation_UI, 프론트엔드](https://github.com/dalle0601/Concert_Reservation_UI)
+- [Concert_Reservation_API. 백엔드](https://github.com/dalle0601/Concert_Reservation_API)
+
+이 두 부분은 각각 독립적으로 개발되어 상호 작용합니다.
+
+---
+
+## 🚩 [마일스톤](https://github.com/dalle0601/Week3_Concert_Reservation/milestones)
+
+## 📑 [요구사항분석](https://github.com/dalle0601/Week3_Concert_Reservation/issues/1)
+
+## 🧭 [시퀀스 다이어그램](https://github.com/dalle0601/Week3_Concert_Reservation/issues/2)
+
+## 🛎️ [API 명세](https://github.com/dalle0601/Week3_Concert_Reservation/issues/4)
+
+## 📀 [ERD / mock API 목록](https://github.com/dalle0601/Week3_Concert_Reservation/issues/3)
+
 ---
 
 ## 🧩 트랜잭션 범위 이해 및 서비스 확장에 따른 분리와 트랜잭션 처리의 한계 및 해결방안
@@ -136,19 +155,19 @@
     API
     - 유저 토큰 발급 요청 (POST /user/token)
         - Request : userId
-        - Response : message, token : { token, 만료까지 남은시간 (초), 대기순번 }
+        - Response : Code, {message, waitCount, expireTime}
         - 유효토큰 발급요청을 합니다. 
         - 유효토큰은 3명만 받을 수 있으며 각 토큰의 만료시간은 발급시간 + 1분입니다.
         - 만약 유효토큰을 가진 사람이 3명이면 대기열에 포함됩니다.
-    - 유저 대기열 상태 조회 (GET /user/token/{userID})
-        - Response : message, token : {token, 만료까지 남은시간 (초), 대기순번 }
-        - 클라이언트에서 일정기간 (3초)마다 해당 API를 호출합니다. (이 소스코드에서는 스케줄링으로 호출하게끔 구현했습니다.)
+    - 유저 대기열 상태 조회 (GET /user/{userID}/token)
+        - Response : Code, {message, token, expiredTime, queuePosition(대기열 순번) }
+        - 클라이언트에서 일정기간 (3초)마다 해당 API를 호출합니다. (UI에서 WebWorker로 구현)
         - 대기열에 포함되어있는 user가 내 앞에 몇명이 대기중인지 확인 요청합니다.
         - 만약 유효토큰을 가진 사람이 3명 미만이면 바로 유효토큰을 발급하고 대기열에서 삭제됩니다.
     - 클라이언트에서 일정기간 (3초)마다 해당 API를 호출을 스케줄링으로 임시 구현
         - WaitSchedulerUseCase
         - 유효토큰의 갯수가 3개 미만일경우 
-        - 대기열에서 다음유저를 가져온다음 해당 유저에게 유효토큰 발급 및 대기열에서 삭제 로직 진행
+        - 대기열(Redis)에서 다음유저를 가져온다음 해당 유저에게 유효토큰 발급 및 대기열에서 삭제 로직 진행
 ---
     대기열관련하여 Token(유효토큰)과 waitingQueue(대기열) 2가지로 나눴습니다.
     유효토큰
@@ -255,14 +274,3 @@
 </details>
 
 --- 
-
-## 🚩 [마일스톤](https://github.com/dalle0601/Week3_Concert_Reservation/milestones)
-
-## 📑 [요구사항분석](https://github.com/dalle0601/Week3_Concert_Reservation/issues/1)
-
-## 🧭 [시퀀스 다이어그램](https://github.com/dalle0601/Week3_Concert_Reservation/issues/2)
-
-## 🛎️ [API 명세](https://github.com/dalle0601/Week3_Concert_Reservation/issues/4)
-
-## 📀 [ERD / mock API 목록](https://github.com/dalle0601/Week3_Concert_Reservation/issues/3)
-
