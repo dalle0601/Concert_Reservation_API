@@ -16,7 +16,7 @@ public class Token {
     private Long tokenId;
 
     @Column(name = "USER_ID")
-    private Long userId;
+    private String userId;
 
     @Column(name = "TOKEN_VALUE")
     private String tokenValue;
@@ -30,13 +30,13 @@ public class Token {
     public Token() {}
 
     @Builder
-    public Token( Long userId, String token_value, LocalDateTime expiredAt, boolean useState) {
+    public Token( String userId, String token_value, LocalDateTime expiredAt, boolean useState) {
         this.userId = userId;
         this.tokenValue = token_value;
         this.expiredAt = expiredAt;
         this.useState = useState;
     }
-    public Token(Long token_id, Long userId, String token_value, LocalDateTime expiredAt, boolean useState) {
+    public Token(Long token_id, String userId, String token_value, LocalDateTime expiredAt, boolean useState) {
         this.tokenId = token_id;
         this.userId = userId;
         this.tokenValue = token_value;

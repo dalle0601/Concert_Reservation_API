@@ -3,7 +3,7 @@ package org.example.ticketing.api.dto.point.response;
 import java.time.LocalDateTime;
 
 public record PaymentInfoDTO (
-        Long userId,
+        String userId,
         Long reservationId,
         Long concertId,
         Long seatId,

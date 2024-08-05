@@ -13,12 +13,12 @@ public class UserRepositoryImpl implements UserRepository{
     private final UserJpaRepository userJpaRepository;
 
     @Override
-    public UserInfo joinUser(Long userId) {
+    public UserInfo joinUser(String userId) {
         return userJpaRepository.save(UserInfo.builder()
                 .userId(userId).build());
     }
     @Override
-    public UserInfo findUserByUserId(Long userId) {
+    public UserInfo findUserByUserId(String userId) {
         Optional<UserInfo> userOptional = userJpaRepository.findByUserId(userId);
         return userOptional.orElse(null);
     }
@@ -29,7 +29,12 @@ public class UserRepositoryImpl implements UserRepository{
     }
 
     @Override
-    public void updatePointByUserId(Long userId, Long point) {
+    public void updatePointByUserId(String userId, Long point) {
         userJpaRepository.updatePointByUserId(userId, point);
+    }
+
+    @Override
+    public boolean existsByUserId(String userId) {
+        return userJpaRepository.existsByUserId(userId);
     }
 }

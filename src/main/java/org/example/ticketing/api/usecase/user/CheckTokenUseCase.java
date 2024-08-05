@@ -16,7 +16,7 @@ public class CheckTokenUseCase {
     private final QueueManager queueManager; // QueueManager 주입
 
     public TokenResponseDTO execute(UserRequestDTO userRequestDTO) {
-        long userId = userRequestDTO.userId();
+        String userId = userRequestDTO.userId();
         Map<String, String> token = tokenManager.getCheckTokenInfo(userId);
         if (token.get("token") != null) {
             return new TokenResponseDTO("유효한 토큰입니다.", token.get("token"), token.get("expirationTime"), null);

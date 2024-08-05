@@ -42,7 +42,7 @@ public class WaitSchedulerUseCase {
 //        }
         Long validTokenCount = tokenManager.getValidTokenCount();
         if (validTokenCount < 3) { // 토큰의 수가 3개 미만일 경우
-            Long userId = queueManager.getNextInQueue(); // 큐에서 다음 유저 가져오기
+            String userId = String.valueOf(queueManager.getNextInQueue()); // 큐에서 다음 유저 가져오기
             if (userId != null) { // 큐가 비어있지 않다면
                 tokenManager.issueToken(userId); // 해당 유저에게 토큰 발급
                 queueManager.removeUserFromQueue(userId); // 대기열에서 사용자 삭제

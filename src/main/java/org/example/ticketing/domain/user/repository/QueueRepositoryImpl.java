@@ -14,18 +14,18 @@ public class QueueRepositoryImpl implements QueueRepository{
     private final QueueJpaRepository queueJpaRepository;
 
     @Override
-    public Optional<Queue> findByUserId(Long userId) {
+    public Optional<Queue> findByUserId(String userId) {
         return queueJpaRepository.findByUserId(userId);
     }
 
     @Override
-    public Queue enterQueue(Long userId) {
+    public Queue enterQueue(String userId) {
         Queue queue = new Queue(userId, LocalDateTime.now());
         return queueJpaRepository.save(queue);
     }
 
 //    @Override
-//    public Queue queueInsertOrUpdate(Long userId, String status) {
+//    public Queue queueInsertOrUpdate(String userId, String status) {
 //        Optional<Queue> existingQueueOptional = queueJpaRepository.findByUserId(userId);
 //
 //        if (existingQueueOptional.isPresent()) {
@@ -45,7 +45,7 @@ public class QueueRepositoryImpl implements QueueRepository{
     }
 
     @Override
-    public void deleteQueue(Long userId) throws Exception {
+    public void deleteQueue(String userId) throws Exception {
         Optional<Queue> deleteValue = queueJpaRepository.findByUserId(userId);
         if(deleteValue.isPresent()) {
             queueJpaRepository.delete(deleteValue.get());

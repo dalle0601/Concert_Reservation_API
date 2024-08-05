@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface QueueJpaRepository extends JpaRepository<Queue, Long> {
 
     @Query("SELECT q FROM Queue q WHERE q.userId = :userId")
-    Optional<Queue> findByUserId(@Param("userId") Long userId);
+    Optional<Queue> findByUserId(@Param("userId") String userId);
     @Query("SELECT COUNT(q) FROM Queue q WHERE q.updatedAt < :myTime")
     Long findQueueCount(@Param("myTime") LocalDateTime myTime);
     @Query("SELECT q FROM Queue q ORDER BY q.updatedAt ASC limit 10")

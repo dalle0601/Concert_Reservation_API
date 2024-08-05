@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public record UserReservationResponseDTO(
         Long reservationId,
-        Long userId,
+        String userId,
         Long concertId,
         Long seatId,
         String seatName,

@@ -24,14 +24,14 @@ public class ConcertController {
 
     @Operation(summary = "예약가능한 콘서트 날짜 조회")
     @GetMapping("/concert/date")
-    public Response<ConcertResponseDTO> getConcertDate(@RequestHeader("userId") Long userId) throws Exception {
+    public Response<ConcertResponseDTO> getConcertDate(@RequestHeader("userId") String userId) throws Exception {
         return Response.success(getConcertAvailableDateUseCase.execute(new UserRequestDTO(userId)));
 
     }
 
     @Operation(summary = "예약가능한 콘서트 좌석 조회")
     @GetMapping("/concert/{concertId}/seat")
-    public Response<SeatResponseDTO> getConcertSeat(@RequestHeader("userId") Long userId, @PathVariable("concertId") Long concertId) throws Exception {
+    public Response<SeatResponseDTO> getConcertSeat(@RequestHeader("userId") String userId, @PathVariable("concertId") Long concertId) throws Exception {
         UserRequestDTO userRequestDTO = new UserRequestDTO(userId);
         return Response.success(getConcertAvailableSeatUseCase.execute(userRequestDTO, concertId));
     }

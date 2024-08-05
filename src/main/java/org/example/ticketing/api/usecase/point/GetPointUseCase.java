@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class GetPointUseCase {
     private final UserService userService;
 
-    public PointResponseDTO execute(Long userId){
+    public PointResponseDTO execute(String userId){
         try {
             UserInfo userInfo = userService.findUserInfo(new UserRequestDTO(userId));
             if (userInfo != null) {

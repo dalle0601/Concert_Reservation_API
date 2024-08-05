@@ -13,16 +13,16 @@ import java.util.List;
 public class QueueService {
     private final QueueRepository queueRepository;
 
-    public Queue findQueueInfo(Long userId) {
+    public Queue findQueueInfo(String userId) {
         return queueRepository.findByUserId(userId).orElse(null);
     }
-    public Queue enterQueue(Long userId) {
+    public Queue enterQueue(String userId) {
         return queueRepository.enterQueue(userId);
     }
     public Long findQueueCount(LocalDateTime myTime) {
         return queueRepository.findQueueCount(myTime);
     }
-    public void deleteQueue(Long userId) throws Exception {
+    public void deleteQueue(String userId) throws Exception {
         queueRepository.deleteQueue(userId);
     }
     public List<Queue> getUsersToRemove(int count) {

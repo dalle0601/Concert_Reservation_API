@@ -17,7 +17,7 @@ public class TokenManager {
 
     private final RedissonClient redissonClient;
 
-    public Map<String, String> issueToken(Long userId) {
+    public Map<String, String> issueToken(String userId) {
         String tokenKey = "token:" + userId;
         RBucket<String> tokenBucket = redissonClient.getBucket(tokenKey);
         String token = UUID.randomUUID().toString();
@@ -29,7 +29,7 @@ public class TokenManager {
         return tokenInfo;
     }
 
-    public Map<String, String> getCheckTokenInfo(Long userId) {
+    public Map<String, String> getCheckTokenInfo(String userId) {
         String tokenKey = "token:" + userId;
         RBucket<String> tokenBucket = redissonClient.getBucket(tokenKey);
         Map<String, String> tokenInfo = new HashMap<>();
@@ -56,7 +56,7 @@ public class TokenManager {
         return count;
     }
 
-    public void deleteToken(Long userId) {
+    public void deleteToken(String userId) {
         String tokenKey = "token:" + userId;
         RBucket<String> tokenBucket = redissonClient.getBucket(tokenKey);
         if (tokenBucket.isExists()) {

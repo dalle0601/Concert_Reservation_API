@@ -19,7 +19,9 @@ public class UserService {
     public UserInfo chargePoint(UserInfo userInfo){
         return userRepository.save(userInfo);
     }
-    public void paymentPoint(Long userId, Long point) {
+    public void paymentPoint(String userId, Long point) {
         userRepository.updatePointByUserId(userId, point);
     }
+    public boolean existByUserId(String userId) { return userRepository.existsByUserId(userId);}
+    public void save(UserInfo userInfo) { userRepository.save(userInfo); }
 }

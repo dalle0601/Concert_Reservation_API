@@ -29,7 +29,7 @@ public class MockController {
     }
 
     @GetMapping("/mock/user/token/check/{userId}")
-    public String checkUserToken (@PathVariable Long userId) {
+    public String checkUserToken (@PathVariable String userId) {
         return """
                 {
                     "message": "유효한 토큰입니다.",
@@ -139,7 +139,7 @@ public class MockController {
     }
 
     @GetMapping("/mock/point/{userId}")
-    public String getUserPoint(@PathVariable Long userId) {
+    public String getUserPoint(@PathVariable String userId) {
         return """
                 {
                     "message": "유저 정보 조회 성공",

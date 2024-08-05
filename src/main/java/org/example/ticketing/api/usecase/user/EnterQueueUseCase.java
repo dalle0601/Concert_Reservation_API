@@ -18,7 +18,7 @@ public class EnterQueueUseCase {
     public QueueResponseDTO execute(UserRequestDTO userRequestDTO) throws Exception {
         long validTokenCount = tokenManager.getValidTokenCount();
 
-        long userId = userRequestDTO.userId();
+        String userId = userRequestDTO.userId();
         if (validTokenCount < 3) {
             Map<String, String> checkToken = tokenManager.getCheckTokenInfo(userId);
             if (checkToken.get("token") == null) {

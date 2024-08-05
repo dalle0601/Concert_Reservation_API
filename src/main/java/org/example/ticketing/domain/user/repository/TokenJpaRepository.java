@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface TokenJpaRepository extends JpaRepository<Token, Long> {
     @Query("SELECT t FROM Token t WHERE t.userId = :userId AND t.useState = true")
-    Optional<Token> findByUserId(@Param("userId") Long userId);
+    Optional<Token> findByUserId(@Param("userId") String userId);
     @Query("SELECT COUNT(*) as tokenCount FROM Token WHERE useState = true")
     Long findTokenCount();
     @Query("SELECT t FROM Token t WHERE t.expiredAt < :currentTime AND t.useState = true")

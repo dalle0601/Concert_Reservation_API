@@ -16,18 +16,18 @@ public class Queue {
     private Long queueId;
 
     @Column(name = "USER_ID")
-    private Long userId;
+    private String userId;
 
     @Column(name = "UPDATED_AT")
     private LocalDateTime updatedAt;
 
     public Queue() {}
     @Builder
-    public Queue(Long userId, LocalDateTime updated_at) {
+    public Queue(String userId, LocalDateTime updated_at) {
         this.userId = userId;
         this.updatedAt = updated_at;
     }
-    public Queue(Long queue_id, Long userId, LocalDateTime updated_at) {
+    public Queue(Long queue_id, String userId, LocalDateTime updated_at) {
         this.queueId = queue_id;
         this.userId = userId;
         this.updatedAt = updated_at;

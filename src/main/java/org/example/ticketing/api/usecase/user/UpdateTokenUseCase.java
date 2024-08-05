@@ -16,10 +16,10 @@ public class UpdateTokenUseCase {
     private final QueueManager queueManager;
 
     public TokenResponseDTO execute(UserRequestDTO userRequestDTO) {
-        Long firstUserInQueue = queueManager.getNextInQueue();
-        long userId = userRequestDTO.userId();
+        String firstUserInQueue = String.valueOf(queueManager.getNextInQueue());
+        String userId = userRequestDTO.userId();
         if(firstUserInQueue != null) {
-            if (userId == firstUserInQueue) {
+            if (userId.equals(firstUserInQueue)) {
                 long validTokenCount = tokenManager.getValidTokenCount();
                 if (validTokenCount < 3) {
                     // 유효 토큰 발급

@@ -13,7 +13,7 @@ import java.util.Optional;
 public class TokenRepositoryImpl implements TokenRepository{
     private final TokenJpaRepository tokenJpaRepository;
     @Override
-    public Token findByUserId(Long userId) {
+    public Token findByUserId(String userId) {
         Optional<Token> tokenOptional = tokenJpaRepository.findByUserId(userId);
         return tokenOptional.orElse(null);
     }

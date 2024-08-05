@@ -19,10 +19,16 @@ public class UserInfo {
     private Long id;
 
     @Column(name = "USER_ID", updatable = false)
-    private Long userId;
+    private String userId;
+
+    @Column(name = "USER_PASSWORD")
+    private String userPassword;
 
     @Column(name = "POINT")
     private Long point = 0L;
+
+    @Column(name = "ROLE")
+    private String role;
 
     @Column(name = "UPDATED_AT")
     private LocalDateTime updatedAt;
@@ -35,16 +41,27 @@ public class UserInfo {
     public UserInfo() {}
 
     @Builder
-    public UserInfo(Long userId) {
+    public UserInfo(String userId) {
         this.userId = userId;
     }
 
-    public UserInfo(Long userId, Long point) {
+    public UserInfo(String userId, Long point) {
         this.userId = userId;
         this.point = point;
     }
 
-    public UserInfo(Long id, Long userId, Long point, LocalDateTime currentTime) {
+    public UserInfo(String userId, String userPassword, Long point) {
+        this.userId = userId;
+        this.userPassword = userPassword;
+        this.point = point;
+    }
+
+    public UserInfo(String userId, String userPassword, String role) {
+        this.userId = userId;
+        this.userPassword = userPassword;
+        this.role = role;
+    }
+    public UserInfo(Long id, String userId, Long point, LocalDateTime currentTime) {
         this.id = id;
         this.userId = userId;
         this.point = point;

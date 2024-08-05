@@ -46,12 +46,12 @@ public class ReservationRepositoryImpl implements ReservationRepository{
         );
     }
     @Override
-    public List<Reservation> findByUserId(Long userId) {
+    public List<Reservation> findByUserId(String userId) {
         return reservationJpaRepository.findByUserId(userId);
     }
 
     @Override
-    public List<Object[]> findByUserIdAndStatusNotLike(Long userId, String status) {
+    public List<Object[]> findByUserIdAndStatusNotLike(String userId, String status) {
         return reservationJpaRepository.findByUserIdAndStatusNotLike(userId, status);
     }
 

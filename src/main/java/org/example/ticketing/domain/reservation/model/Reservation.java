@@ -21,7 +21,7 @@ public class Reservation {
     private Long reservationId;
 
     @Column(name = "USER_ID")
-    private Long userId;
+    private String userId;
 
     @Column(name = "CONCERT_ID")
     private Long concertId;
@@ -43,7 +43,7 @@ public class Reservation {
 
     public Reservation() {}
     @Builder
-    public Reservation( Long reservation_id, Long userId, Long concertId, Long seatId, String status, Long cost, LocalDateTime reservationTime, LocalDateTime expirationTime) {
+    public Reservation( Long reservation_id, String userId, Long concertId, Long seatId, String status, Long cost, LocalDateTime reservationTime, LocalDateTime expirationTime) {
         this.reservationId = reservation_id;
         this.userId = userId;
         this.concertId = concertId;
@@ -54,7 +54,7 @@ public class Reservation {
         this.expirationTime = expirationTime;
     }
 
-    public Reservation(Long userId, Long concertId, Long seatId, String status, Long cost, LocalDateTime reservationTime, LocalDateTime expirationTime) {
+    public Reservation(String userId, Long concertId, Long seatId, String status, Long cost, LocalDateTime reservationTime, LocalDateTime expirationTime) {
         this.userId = userId;
         this.concertId = concertId;
         this.seatId = seatId;

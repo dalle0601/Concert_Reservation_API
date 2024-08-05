@@ -17,7 +17,7 @@ public class PointHistory {
     private Long pointId;
 
     @Column(name = "USER_ID")
-    private Long userId;
+    private String userId;
 
     @Column(name = "POINT")
     private Long point;
@@ -31,14 +31,14 @@ public class PointHistory {
     private LocalDateTime createdAt;
 
     @Builder
-    public PointHistory(Long pointId, Long userId, Long point, String status, LocalDateTime createdAt) {
+    public PointHistory(Long pointId, String userId, Long point, String status, LocalDateTime createdAt) {
         this.pointId = pointId;
         this.userId = userId;
         this.point = point;
         this.status = status;
         this.createdAt = createdAt;
     }
-    public PointHistory(Long userId, Long point, String status) {
+    public PointHistory(String userId, Long point, String status) {
         this.userId = userId;
         this.point = point;
         this.status = status;

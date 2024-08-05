@@ -9,8 +9,11 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface UserJpaRepository extends JpaRepository<UserInfo, Long> {
-    Optional<UserInfo> findByUserId(Long userId);
+    Optional<UserInfo> findByUserId(String userId);
     @Modifying
     @Query("UPDATE UserInfo u SET u.point = :point WHERE u.userId = :userId")
-    void updatePointByUserId(@Param("userId") Long userId, @Param("point") Long point);
+    void updatePointByUserId(@Param("userId") String userId, @Param("point") Long point);
+
+    @Query("SELECT COUNT(u) > 0 FROM UserInfo u WHERE u.userId = :userId")
+    boolean existsByUserId(@Param("userId") String UserId);
 }

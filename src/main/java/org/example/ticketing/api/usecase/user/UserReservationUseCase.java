@@ -25,7 +25,7 @@ public class UserReservationUseCase {
                     .stream()
                     .map(r -> new UserReservationResponseDTO(
                             (Long) r[0],
-                            (Long) r[1],
+                            (String) r[1],
                             (Long) r[2],
                             (Long) r[3],
                             getSeatName((Long) r[3]),

@@ -67,11 +67,11 @@ public class ReservationService {
         }
     }
 
-    public List<Reservation> findByUserId(Long userId) {
+    public List<Reservation> findByUserId(String userId) {
         return reservationRepository.findByUserId(userId);
     }
 
-    public List<Object[]> findByUserIdAndStatusNotLike(Long userId, String status) {
+    public List<Object[]> findByUserIdAndStatusNotLike(String userId, String status) {
         return reservationRepository.findByUserIdAndStatusNotLike(userId, status);
     }
 
