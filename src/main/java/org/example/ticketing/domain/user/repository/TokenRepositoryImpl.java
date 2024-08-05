@@ -39,7 +39,7 @@ public class TokenRepositoryImpl implements TokenRepository{
     }
 
     @Override
-    public void deleteByUserIdAndUseTrue(String tokenValue, boolean use) {
-        tokenJpaRepository.updateUseByTokenValue(tokenValue, use);
+    public void deleteByUserIdAndUseTrue(String tokenValue, boolean useState) {
+        tokenJpaRepository.updateUseByTokenValue(tokenValue, useState);
     }
 }

@@ -24,24 +24,24 @@ public class Token {
     @Column(name = "EXPIRED_AT")
     private LocalDateTime expiredAt;
 
-    @Column(name = "USE")
-    private boolean use;
+    @Column(name = "USE_STATE")
+    private boolean useState;
 
     public Token() {}
 
     @Builder
-    public Token( Long userId, String token_value, LocalDateTime expiredAt, boolean use) {
+    public Token( Long userId, String token_value, LocalDateTime expiredAt, boolean useState) {
         this.userId = userId;
         this.tokenValue = token_value;
         this.expiredAt = expiredAt;
-        this.use = use;
+        this.useState = useState;
     }
-    public Token(Long token_id, Long userId, String token_value, LocalDateTime expiredAt, boolean use) {
+    public Token(Long token_id, Long userId, String token_value, LocalDateTime expiredAt, boolean useState) {
         this.tokenId = token_id;
         this.userId = userId;
         this.tokenValue = token_value;
         this.expiredAt = expiredAt;
-        this.use = use;
+        this.useState = useState;
     }
 }
 

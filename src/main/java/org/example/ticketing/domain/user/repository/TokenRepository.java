@@ -11,5 +11,5 @@ public interface TokenRepository {
     Token enterToken(Token tokenValue);
     List<Token> findByExpiredAtBefore(LocalDateTime currentTime);
     void deleteToken(List<Token> tokens);
-    void deleteByUserIdAndUseTrue(String tokenValue, boolean use);
+    void deleteByUserIdAndUseTrue(String tokenValue, boolean useState);
 }

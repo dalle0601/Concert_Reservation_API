@@ -28,7 +28,7 @@ public class TokenService {
     public void deleteExpiredTokens(List<Token> expiredTokens){
         tokenRepository.deleteToken(expiredTokens);
     }
-    public void deleteByUserIdAndUseTrue(String tokenValue, boolean use) {
-        tokenRepository.deleteByUserIdAndUseTrue(tokenValue, use);
+    public void deleteByUserIdAndUseTrue(String tokenValue, boolean useState) {
+        tokenRepository.deleteByUserIdAndUseTrue(tokenValue, useState);
     }
 }
