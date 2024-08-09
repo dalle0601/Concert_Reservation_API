@@ -61,6 +61,12 @@ public class UserInfo {
         this.userPassword = userPassword;
         this.role = role;
     }
+
+    public UserInfo(String userId, String role){
+        this.userId = userId;
+        this.role = role;
+    }
+
     public UserInfo(Long id, String userId, Long point, LocalDateTime currentTime) {
         this.id = id;
         this.userId = userId;
