@@ -8,7 +8,7 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.ticketing.domain.user.repository.RefreshTokenRepository;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
@@ -16,12 +16,13 @@ import java.io.IOException;
 public class CustomLogoutFilter extends GenericFilterBean {
 
     private final JwtUtil jwtUtil;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final RedisTemplate<String, Object> redisTemplate;
 
-    public CustomLogoutFilter(JwtUtil jwtUtil, RefreshTokenRepository refreshTokenRepository) {
+
+    public CustomLogoutFilter(JwtUtil jwtUtil, RedisTemplate<String, Object> redisTemplate) {
 
         this.jwtUtil = jwtUtil;
-        this.refreshTokenRepository = refreshTokenRepository;
+        this.redisTemplate = redisTemplate;
     }
 
     @Override
@@ -65,12 +66,13 @@ public class CustomLogoutFilter extends GenericFilterBean {
             return;
         }
 
-        if (!refreshTokenRepository.existsById(refreshToken)) {
+        String key = "refreshToken:" + refreshToken;
+        if (Boolean.FALSE.equals(redisTemplate.hasKey(key))) {
             httpResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
 
-        refreshTokenRepository.deleteById(refreshToken);
+        redisTemplate.delete(key);
 
         Cookie deleteCookie = new Cookie("refresh", null);
         deleteCookie.setMaxAge(0);
