@@ -4,6 +4,8 @@ import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.ticketing.domain.user.model.RefreshToken;
+import org.example.ticketing.domain.user.repository.RefreshTokenRepository;
 import org.example.ticketing.infrastructure.jwt.JwtUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +17,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @ResponseBody
 public class ReissueController {
     private final JwtUtil jwtUtil;
+    private final RefreshTokenRepository refreshTokenRepository;
 
-    public ReissueController(JwtUtil jwtUtil) {
+    public ReissueController(JwtUtil jwtUtil, RefreshTokenRepository refreshTokenRepository) {
 
         this.jwtUtil = jwtUtil;
+        this.refreshTokenRepository = refreshTokenRepository;
     }
 
     @PostMapping("/reissue")
@@ -59,12 +63,24 @@ public class ReissueController {
             return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
         }
 
+        //REDIS 에 저장되어 있는지 확인
+        RefreshToken savedToken = refreshTokenRepository.findById(refresh).orElse(null);
+        if (savedToken == null) {
+            return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
+        }
+
         String username = jwtUtil.getUsername(refresh);
         String role = jwtUtil.getRole(refresh);
-
         //make new JWT
         String newAccess = jwtUtil.createJwt("access", username, role, 600000L);
         String newRefresh = jwtUtil.createJwt("refresh", username, role, 86400000L);
+
+        // 기존의 Refresh 토큰 삭제
+        refreshTokenRepository.deleteById(refresh);
+
+        // 새로운 Refresh 토큰 저장
+        RefreshToken newRedisToken = new RefreshToken(newRefresh, username);
+        refreshTokenRepository.save(newRedisToken);
 
         //response
         response.setHeader("access", newAccess);
