@@ -20,6 +20,10 @@
 ## 📀 [ERD / mock API 목록](https://github.com/dalle0601/Week3_Concert_Reservation/issues/3)
 
 ---
+## 📊 어느정도의 트래픽을 예상하고 구현하고자 하는지?
+  <details>
+    <summary>콜드플레이 </summary>
+  </details>
 
 ## 🧩 트랜잭션 범위 이해 및 서비스 확장에 따른 분리와 트랜잭션 처리의 한계 및 해결방안
   <details>
