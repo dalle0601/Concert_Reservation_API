@@ -51,11 +51,145 @@
     - 캐싱: AWS ElastiCache(Redis)를 사용해 자주 요청되는 데이터를 캐싱하여 DB 부하를 줄임
     - 메세징 시스템 : Kafka를 사용해 결제 기능 등에서의 이벤트 처리
 
+---
+
     > 실제 도전해볼 과제!
     - 로드밸런서: Nginx를 사용해 로컬 환경에서 트래픽을 분산.
     - 확장 서버: 여러 애플리케이션 서버를 Docker 컨테이너로 구현하여 스케일 아웃
     - 캐싱: Redis를 사용해 캐싱 시스템 구성
     - 메시징: Kafka를 통해 메시징 시스템 구축
+
+---
+    > docker compose 이용해 nginx, app1, app2, redis 등등 띄우기
+    ```
+      version: '3.8'
+      
+      services:
+        # 로드 밸런서
+        load_balancer:
+          image: nginx:latest
+          ports:
+            - "80:80"
+          volumes:
+            - ./config/nginx.conf:/etc/nginx/nginx.conf:ro
+          depends_on:
+            - app1
+            - app2
+      
+        # app 서버 1
+        app1:
+          build:
+            context: .
+            dockerfile: Dockerfile
+          ports:
+            - "8081:8080"
+          environment:
+            - SPRING_PROFILES_ACTIVE=dev
+          depends_on:
+            - redis
+            - kafka
+      
+        # app 서버 2
+        app2:
+          build:
+            context: .
+            dockerfile: Dockerfile
+          ports:
+            - "8082:8080"
+          environment:
+            - SPRING_PROFILES_ACTIVE=dev
+          depends_on:
+            - redis
+            - kafka
+      
+        redis:
+          image: redis:latest
+          ports:
+            - "6379:6379"
+      
+        zookeeper:
+          image: confluentinc/cp-zookeeper:latest
+          container_name: zookeeper
+          environment:
+            ZOOKEEPER_SERVER_ID: 1
+            ZOOKEEPER_CLIENT_PORT: 2181
+            ZOOKEEPER_TICK_TIME: 2000
+            ZOOKEEPER_INIT_LIMIT: 5
+            ZOOKEEPER_SYNC_LIMIT: 2
+          ports:
+            - "2181:2181"
+      
+        kafka:
+          image: confluentinc/cp-kafka:latest
+          container_name: kafka
+          depends_on:
+            - zookeeper
+          ports:
+            - "9092:9092"
+          environment:
+            KAFKA_BROKER_ID: 1
+            KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:29092,PLAINTEXT_HOST://localhost:9092
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+            KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+            KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      
+        mysql:
+          container_name: mysql_local
+          image: mysql:8.0
+          volumes:
+            - ./db/conf.d:/etc/mysql/conf.d
+            - ./db/initdb.d:/docker-entrypoint-initdb.d
+          ports:
+            - "3307:3306"
+          environment:
+            - MYSQL_DATABASE=concert_local
+            - MYSQL_USER=
+            - MYSQL_PASSWORD=
+            - MYSQL_ROOT_PASSWORD=
+            - TZ=Asia/Seoul
+    ```
+
+---
+
+    > nginx.conf
+    ```
+      events {
+        worker_connections 1024;
+      }
+      
+      http {
+        upstream backend {
+          server app1:8080;
+          server app2:8080;
+        }
+      
+        server {
+          listen 80;
+      
+          location / {
+            proxy_pass http://backend;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+          }
+        }
+      }
+    ```
+---
+  <details>
+    <summary>트러블슈팅..</summary>
+    <br/>
+    위와같이 실행 후 각 메소드를 postman으로 호출 시도했으나 404 에러<br/>
+    <br/>
+      <details>
+        <summary>해결</summary>
+        <br/>아직못했지롱 !
+      </details>
+  </details>
+    
   </details>
 
 ## 🧩 트랜잭션 범위 이해 및 서비스 확장에 따른 분리와 트랜잭션 처리의 한계 및 해결방안
