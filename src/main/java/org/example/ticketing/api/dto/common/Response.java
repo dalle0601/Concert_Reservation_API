@@ -4,7 +4,7 @@ public record Response<T> (
     String code,
     T result
 ) {
-    public static Response<Void> error(String errorCode) {
+    public static <T> Response<T> error(String errorCode) {
         return new Response<>(errorCode, null);
     }
 

@@ -27,7 +27,7 @@ public class PointController {
 
     @Operation(summary = "포인트 잔액 조회")
     @GetMapping("/point/{userId}")
-    public Response<PointResponseDTO> getUserPoint(@PathVariable String userId) {
+    public Response<PointResponseDTO> getUserPoint(@PathVariable(value="userId") String userId) {
         return Response.success(getPointUseCase.execute(userId));
     }
 

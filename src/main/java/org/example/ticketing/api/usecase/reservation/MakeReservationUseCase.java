@@ -23,15 +23,15 @@ public class MakeReservationUseCase {
 
         boolean acquireLock = distributedLock.tryLock(lockKey, 5, 1, TimeUnit.SECONDS);
         if (!acquireLock) {
-            return new ReservationResponseDTO("잠시 후 다시 시도해 주세요.", null);
+            throw new RuntimeException("LOCK_FAILED");
         }
 
         try {
             return reserveUseCase.reserve(reservationRequestDTO);
         } catch (DataAccessException e) {
-            return new ReservationResponseDTO("예약 중 데이터베이스 오류가 발생했습니다.", null);
+            throw new RuntimeException("DATABASE_ERROR");
         } catch (Exception e) {
-            return new ReservationResponseDTO("예약 중 오류가 발생했습니다.", null);
+            throw new RuntimeException("GENERAL_ERROR");
         } finally {
             distributedLock.unlock(lockKey); // 락 해제
         }

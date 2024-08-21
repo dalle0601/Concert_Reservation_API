@@ -50,7 +50,7 @@ public class UserController {
 
     @Operation(summary = "유저 예약 내역 요청")
     @GetMapping("/{userId}/reservations")
-    public Response<ReservationListResponseDTO> getUserReservation (@PathVariable String userId) throws Exception {
+    public Response<ReservationListResponseDTO> getUserReservation (@PathVariable(value="userId") String userId) throws Exception {
         return Response.success(userReservationUseCase.execute(new UserRequestDTO(userId)));
     }
 }

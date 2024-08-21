@@ -31,5 +31,5 @@ public interface ReservationJpaRepository extends JpaRepository<Reservation, Lon
 
     @Modifying
     @Query("UPDATE Reservation r SET r.status = 'available' WHERE r.concertId = :concertId AND r.seatId = :seatId AND r.status = 'temporary'")
-    void updateStatusToAvailable(Long concertId, Long seatId);
+    void updateStatusToAvailable(@Param("concertId") Long concertId, @Param("seatId") Long seatId);
 }

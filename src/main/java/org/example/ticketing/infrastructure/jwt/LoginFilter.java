@@ -6,6 +6,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.ticketing.api.dto.user.request.UserJoinRequestDTO;
+import org.example.ticketing.api.dto.user.response.LoginResponseDTO;
 import org.example.ticketing.domain.user.model.RefreshToken;
 import org.example.ticketing.domain.user.repository.RefreshTokenRepository;
 import org.springframework.http.HttpStatus;
@@ -78,10 +79,22 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         RefreshToken redis = new RefreshToken(refresh, username);
         refreshTokenRepository.save(redis);
+
+        // 응답 객체 생성
+        LoginResponseDTO loginResponse = new LoginResponseDTO(username, access, refresh);
+
         //응답 설정
         response.setHeader("access", access);
         response.addCookie(createCookie("refresh", refresh));
         response.setStatus(HttpStatus.OK.value());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            response.setContentType("application/json");
+            response.getWriter().write(objectMapper.writeValueAsString(loginResponse));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     //로그인 실패시 실행하는 메소드

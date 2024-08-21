@@ -38,7 +38,7 @@ public class ReserveUseCase {
                 if (checkReservation != null) {
                     return new ReservationResponseDTO("해당 좌석은 예약할 수 없습니다.", null);
                 }
-                Reservation reservation = reservationService.saveOrUpdate(new Reservation(reservationRequestDTO.userId(), reservationRequestDTO.concertId(), reservationRequestDTO.seatId(), "temporary", reservationRequestDTO.cost(), LocalDateTime.now(), LocalDateTime.now().plusMinutes(5)));
+                Reservation reservation = reservationService.saveOrUpdate(new Reservation(reservationRequestDTO.userId(), reservationRequestDTO.concertId(), reservationRequestDTO.seatId(), "temporary", reservationRequestDTO.cost(), LocalDateTime.now(), LocalDateTime.now().plusMinutes(1)));
                 if (reservation == null) {
                     return new ReservationResponseDTO("해당 좌석은 예약할 수 없습니다.", null);
                 }
