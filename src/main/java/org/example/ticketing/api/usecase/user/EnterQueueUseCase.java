@@ -19,7 +19,7 @@ public class EnterQueueUseCase {
         long validTokenCount = tokenManager.getValidTokenCount();
 
         String userId = userRequestDTO.userId();
-        if (validTokenCount < 3) {
+        if (validTokenCount < 1) {
             Map<String, String> checkToken = tokenManager.getCheckTokenInfo(userId);
             if (checkToken.get("token") == null) {
                 Map<String, String> tokenValue = tokenManager.issueToken(userId);

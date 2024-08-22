@@ -8,6 +8,7 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.ticketing.infrastructure.queue.QueueManager;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.filter.GenericFilterBean;
 
@@ -17,12 +18,14 @@ public class CustomLogoutFilter extends GenericFilterBean {
 
     private final JwtUtil jwtUtil;
     private final RedisTemplate<String, Object> redisTemplate;
+    private final QueueManager queueManager;
 
 
-    public CustomLogoutFilter(JwtUtil jwtUtil, RedisTemplate<String, Object> redisTemplate) {
+    public CustomLogoutFilter(JwtUtil jwtUtil, RedisTemplate<String, Object> redisTemplate, QueueManager queueManager) {
 
         this.jwtUtil = jwtUtil;
         this.redisTemplate = redisTemplate;
+        this.queueManager = queueManager;
     }
 
     @Override
@@ -66,6 +69,13 @@ public class CustomLogoutFilter extends GenericFilterBean {
             return;
         }
 
+        // 사용자 ID 추출
+        String userId = jwtUtil.getUsername(refreshToken); // JWT에서 사용자 ID 추출
+        if (userId == null) {
+            httpResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
         String key = "refreshToken:" + refreshToken;
         if (Boolean.FALSE.equals(redisTemplate.hasKey(key))) {
             httpResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -73,6 +83,10 @@ public class CustomLogoutFilter extends GenericFilterBean {
         }
 
         redisTemplate.delete(key);
+
+        queueManager.removeUserFromQueue(userId); // 대기열에서 사용자 삭제
+        String tokenKey = "token:" + userId;
+        redisTemplate.delete(tokenKey);
 
         Cookie deleteCookie = new Cookie("refresh", null);
         deleteCookie.setMaxAge(0);

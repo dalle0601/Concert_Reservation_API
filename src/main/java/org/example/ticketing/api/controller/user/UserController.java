@@ -44,7 +44,7 @@ public class UserController {
     }
     @Operation(summary = "유저 토큰 확인 요청")
     @GetMapping("/{userId}/token")
-    public ResponseEntity<TokenResponseDTO> checkUserToken (@PathVariable String userId) throws Exception {
+    public ResponseEntity<TokenResponseDTO> checkUserToken (@PathVariable(value="userId") String userId) throws Exception {
         return ResponseEntity.status(HttpStatus.OK).body(checkTokenUseCase.execute(new UserRequestDTO(userId)));
     }
 

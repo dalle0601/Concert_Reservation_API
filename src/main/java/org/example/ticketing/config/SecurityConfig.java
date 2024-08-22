@@ -6,6 +6,7 @@ import org.example.ticketing.infrastructure.jwt.CustomLogoutFilter;
 import org.example.ticketing.infrastructure.jwt.JwtFilter;
 import org.example.ticketing.infrastructure.jwt.JwtUtil;
 import org.example.ticketing.infrastructure.jwt.LoginFilter;
+import org.example.ticketing.infrastructure.queue.QueueManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -32,12 +33,14 @@ public class SecurityConfig {
     private final JwtUtil jwtUtil;
     private final RefreshTokenRepository refreshTokenRepository;
     private final RedisTemplate<String, Object> redisTemplate;
+    private final QueueManager queueManager;
 
-    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JwtUtil jwtUtil, RefreshTokenRepository refreshTokenRepository, RedisTemplate<String, Object> redisTemplate) {
+    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JwtUtil jwtUtil, RefreshTokenRepository refreshTokenRepository, RedisTemplate<String, Object> redisTemplate, QueueManager queueManager) {
         this.authenticationConfiguration = authenticationConfiguration;
         this.jwtUtil = jwtUtil;
         this.refreshTokenRepository = refreshTokenRepository;
         this.redisTemplate = redisTemplate;
+        this.queueManager = queueManager;
     }
 
     //AuthenticationManager Bean 등록
@@ -90,7 +93,7 @@ public class SecurityConfig {
         http
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshTokenRepository), UsernamePasswordAuthenticationFilter.class);
         http
-                .addFilterBefore(new CustomLogoutFilter(jwtUtil, redisTemplate), LogoutFilter.class);
+                .addFilterBefore(new CustomLogoutFilter(jwtUtil, redisTemplate, queueManager), LogoutFilter.class);
         // 세션 설정
         http
                 .sessionManagement((session) -> session

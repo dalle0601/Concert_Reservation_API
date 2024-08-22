@@ -21,14 +21,14 @@ public class UpdateTokenUseCase {
         if(firstUserInQueue != null) {
             if (userId.equals(firstUserInQueue)) {
                 long validTokenCount = tokenManager.getValidTokenCount();
-                if (validTokenCount < 3) {
+                if (validTokenCount < 1) {
                     // 유효 토큰 발급
                     Map<String, String> tokenValue = tokenManager.issueToken(userId);
                     queueManager.removeUserFromQueue(userId); // 대기열에서 사용자 삭제
                     return new TokenResponseDTO("유효토큰이 발급되었습니다.", tokenValue.get("token"), tokenValue.get("expirationTime"), null);
                 } else {
                     // 대기
-                    return new TokenResponseDTO("이제 곧 입장합니다.", "0", null, null);
+                    return new TokenResponseDTO("이제 곧 입장합니다.", null, null, 1);
                 }
             } else {
                 // 대기 번호 리턴
@@ -36,7 +36,7 @@ public class UpdateTokenUseCase {
                 if(waitCount == -1) {
                     return new TokenResponseDTO("대기열에 사용자가 없습니다.", "-1", null, null);
                 }
-                return new TokenResponseDTO("대기상태입니다.", String.valueOf(waitCount), null, null);
+                return new TokenResponseDTO("대기상태입니다.", null, null, (int) waitCount);
             }
         } else {
             return new TokenResponseDTO("대기열에 사용자가 없습니다.", "-1", null, null);
